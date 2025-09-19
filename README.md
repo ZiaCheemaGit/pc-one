@@ -1,2 +1,4 @@
-# pc-one
-pc-one is a open source computer designed just because Linus Torvalds quoted "A hardware is only good based on software built around it"-Unknown
+# Overview
+**pc-one** is a complete general purpose pc made from ground up.
+
+*Currently Under Development*
