@@ -1,6 +1,6 @@
 import sys
 
-# RV32I opcodes (for your subset)
+# RV32I opcodes 
 OPCODES = {
     "LUI":   0b0110111,
     "AUIPC": 0b0010111,
@@ -51,10 +51,12 @@ FUNCT7 = {
     "SLLI":0b0000000, "SRLI":0b0000000, "SRAI":0b0100000
 }
 
-# Simple register map
+# create a dict like 
+# {'x0': 0, 'x1':1, ...., 'x31':31}
 REGS = {f"x{i}":i for i in range(32)}
 
-# Helper to convert integer to 32-bit little-endian hex
+# 32-bit integer into a little-endian hexadecimal string 
+# for example "78563412" = int_to_hex_le(0x12345678)
 def int_to_hex_le(val):
     b0 = val & 0xFF
     b1 = (val >> 8) & 0xFF

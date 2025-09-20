@@ -1,1 +1,1 @@
-// test add, addi, lw, sw
+addi x1, x0, 59
