@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 /**
 out = in1 + in2
 **/

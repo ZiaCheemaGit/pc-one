@@ -1,7 +1,11 @@
+`timescale 1ns / 1ps
+
 /**
 
 main_alu takes in two 32 bit inputs and based on 3rd input operation 
 outputs the result as out and if out == 0 a zero flag also equals zero, otherwise 1
+
+in case of bne invert == 1 so zero flag is inverted 
 
 operations with corresponding decimal values
 0 = AND
@@ -18,6 +22,7 @@ operations with corresponding decimal values
 **/
 
 module main_alu(
+    input invert,
     input [31:0] src1, src2,
     input [3:0] operation,
     output reg zero_flag,
@@ -39,7 +44,10 @@ module main_alu(
             default: out = 32'h0;
         endcase
 
-        zero_flag = (out == 32'h0) ? 1'b1 : 1'b0;
+        if (invert == 1'b0)
+            zero_flag = (out == 32'h0) ? 1'b1 : 1'b0; 
+        else
+            zero_flag = (out == 32'h0) ? 1'b0 : 1'b1;  
     end
 
 endmodule

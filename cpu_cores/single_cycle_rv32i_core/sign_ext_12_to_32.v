@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 /**
 12 to 32 bit sign extender
 **/

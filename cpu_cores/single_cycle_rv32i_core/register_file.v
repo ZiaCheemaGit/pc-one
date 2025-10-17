@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 /**
 RV32I 32 X 32 register file
 **/

@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 /**
 
 control signals are generated based on opcode
@@ -18,10 +20,11 @@ mem_to_reg is control for write back to register mux and selection values are
 alu_op is control for alu control unit and selection values are same as defined in alu_control module
 
 **/
+
 module control_unit (
     input [6:0] opcode,
-    output reg branch, mem_read, mem_write, alu_src, reg_write,
-    output reg [1:0] alu_op, 
+    output reg mem_read, mem_write, alu_src, reg_write,
+    output reg [1:0] alu_op, pc_src, 
     output reg [2:0] mem_to_reg
 );
 
@@ -36,6 +39,7 @@ module control_unit (
             mem_read = 0;
             mem_write = 0;
             alu_op = 2'b11;
+            pc_src = 2'b00;
             end
 
             // I-Format
@@ -46,6 +50,7 @@ module control_unit (
             mem_read = 0;
             mem_write = 0;
             alu_op = 2'b10;
+            pc_src = 2'b00;
             end
 
             // load-Format
@@ -56,6 +61,7 @@ module control_unit (
             mem_read = 1;
             mem_write = 0;
             alu_op = 2'b00;
+            pc_src = 2'b00;
             end
 
             // store-Format
@@ -66,6 +72,7 @@ module control_unit (
             mem_read = 0;
             mem_write = 1;
             alu_op = 2'b00;
+            pc_src = 2'b00;
             end
 
             // branch-Format
@@ -76,6 +83,7 @@ module control_unit (
             mem_read = 0;
             mem_write = 0;
             alu_op = 2'b01;
+            pc_src = 2'b01;
             end
             
             // jal
@@ -86,6 +94,7 @@ module control_unit (
             mem_read = 0;
             mem_write = 0;
             alu_op = 2'b00; 
+            pc_src = 2'b10;
             end
             
             // jalr
@@ -96,6 +105,7 @@ module control_unit (
             mem_read = 0;
             mem_write = 0;
             alu_op = 2'b00;
+            pc_src = 2'b00;
             end
             
             // lui
