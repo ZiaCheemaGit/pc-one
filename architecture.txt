@@ -1,0 +1,99 @@
+RISC-V 32I Instruction Set (51 Instructions)
+Organized by Encoding Format
+============================================
+
+[U-Type] Upper Immediate
+Format: [imm 31:12] [rd] [opcode]
+--------------------------------------------
+1.  lui       (Load Upper Immediate)
+2.  auipc     (Add Upper Immediate to PC)
+
+
+[J-Type] Jump
+Format: [imm 20|10:1|11|19:12] [rd] [opcode]
+--------------------------------------------
+3.  jal       (Jump and Link)
+
+
+[I-Type] Immediate Processing
+Format: [imm 11:0] [rs1] [funct3] [rd] [opcode]
+--------------------------------------------
+-- Arithmetic & Logic --
+4.  addi      (Add Immediate)
+5.  slti      (Set Less Than Immediate)
+6.  sltiu     (Set Less Than Immediate Unsigned)
+7.  xori      (XOR Immediate)
+8.  ori       (OR Immediate)
+9.  andi      (AND Immediate)
+
+-- Shifts (Special I-Type: imm[4:0] is shamt) --
+10. slli      (Shift Left Logical Immediate)
+11. srli      (Shift Right Logical Immediate)
+12. srai      (Shift Right Arithmetic Immediate)
+
+-- Loads --
+13. lb        (Load Byte)
+14. lh        (Load Halfword)
+15. lw        (Load Word)
+16. lbu       (Load Byte Unsigned)
+17. lhu       (Load Halfword Unsigned)
+
+-- Control Flow --
+18. jalr      (Jump and Link Register)
+
+-- System / Environment --
+19. fence     (Memory Fence)
+20. fence.i   (Instruction Fence)
+21. ecall     (Environment Call)
+22. ebreak    (Environment Break)
+
+-- CSR Instructions (Atomic Read/Write) --
+23. csrrw     (Atomic Read/Write CSR)
+24. csrrs     (Atomic Read/Set CSR)
+25. csrrc     (Atomic Read/Clear CSR)
+26. csrrwi    (CSR Read/Write Immediate)
+27. csrrsi    (CSR Read/Set Immediate)
+28. csrrci    (CSR Read/Clear Immediate)
+
+
+[B-Type] Branch
+Format: [imm 12|10:5] [rs2] [rs1] [funct3] [imm 4:1|11] [opcode]
+--------------------------------------------
+29. beq       (Branch Equal)
+30. bne       (Branch Not Equal)
+31. blt       (Branch Less Than)
+32. bge       (Branch Greater/Equal)
+33. bltu      (Branch Less Than Unsigned)
+34. bgeu      (Branch Greater/Equal Unsigned)
+
+
+[S-Type] Store
+Format: [imm 11:5] [rs2] [rs1] [funct3] [imm 4:0] [opcode]
+--------------------------------------------
+35. sb        (Store Byte)
+36. sh        (Store Halfword)
+37. sw        (Store Word)
+
+
+[R-Type] Register-to-Register
+Format: [funct7] [rs2] [rs1] [funct3] [rd] [opcode]
+--------------------------------------------
+38. add       (Add)
+39. sub       (Subtract)
+40. sll       (Shift Left Logical)
+41. slt       (Set Less Than)
+42. sltu      (Set Less Than Unsigned)
+43. xor       (XOR)
+44. srl       (Shift Right Logical)
+45. sra       (Shift Right Arithmetic)
+46. or        (OR)
+47. and       (AND)
+
+
+[System / Privileged] (R-Type Structure)
+These use the R-Type instruction layout but have specific fixed values.
+--------------------------------------------
+48. sret      (Supervisor Return)
+49. mret      (Machine Return)
+50. wfi       (Wait for Interrupt)
+51. sfence.vma (Supervisor Memory-Management Fence)

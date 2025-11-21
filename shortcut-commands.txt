@@ -1,0 +1,1 @@
+iverilog -o core.vvp mux_2X1.v adder32.v alu_control.v control_unit.v core.v main_alu.v mux_4X1.v mux_5X1.v pc_src_control.v pc.v register_file.v shift_left_1.v sign_ext_12_to_32.v
