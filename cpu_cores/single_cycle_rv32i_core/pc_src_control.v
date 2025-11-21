@@ -22,6 +22,8 @@ module pc_src_control(
     always @(*) begin
         if(pc_mux_control == 2'b01 && zero_flag == 1) begin
             pc_control = 01;
+        end else if(pc_mux_control == 2'b10) begin
+            pc_control = pc_mux_control;
         end else begin
             pc_control = 00;
         end

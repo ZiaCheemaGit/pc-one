@@ -6,6 +6,7 @@ RV32I 32 X 32 register file
 
 module reg_file (
     input clk,
+    input rst,
     input [4:0] dest_reg, src1_reg, src2_reg,
     input [31:0] reg_write_data,
     input reg_write_control,
@@ -13,6 +14,14 @@ module reg_file (
 );
 
     reg [31:0] registers [0:31];
+
+    always @(rst) begin
+        if (rst) begin
+            for (integer i = 0; i < 32; i = i + 1) begin
+                registers[i] <= 32'd0;
+            end
+        end 
+    end
 
     always @(posedge clk) begin
         if (reg_write_control && dest_reg != 5'd0) begin

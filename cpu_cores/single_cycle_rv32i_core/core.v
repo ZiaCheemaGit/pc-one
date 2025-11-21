@@ -10,10 +10,7 @@ lb, lh, lbu, lhu, sb, sh
 fence, fence.i 
 csrrw, csrrs, csrrc, csrrwi, csrrsi, csrrci 
 ecall, ebreak 
-sret 
-mret 
-wfi 
-sfence.vma 
+sret, mret, wfi, sfence.vma 
 
 single cycle rv32i core
 
@@ -25,7 +22,7 @@ for jal pc = pc + offset sign_extend(instruction[31:12])
 
 **/
 
-module single_cycle_rv32i_core(
+module core(
     input clk,
     input rst,
     output [31:0] instruction_address,
@@ -48,22 +45,18 @@ module single_cycle_rv32i_core(
      
     wire [31:0] sign_ext_out_shifted;
     wire [31:0] sign_ext_out;
-    
-    wire [31:0] u_type_immediate, jal_offset;
+    wire [31:0] u_type_immediate, jal_offset, s_type_immediate, b_type_immediate;
     sign_ext_12_to_32 sign_ext_12_to_32_instance(
         .instruction(instruction), 
         .out(sign_ext_out), 
+        .b_type_immediate(b_type_immediate),
         .u_type_immediate(u_type_immediate),
-        .jal_offset(jal_offset)
+        .jal_offset(jal_offset),
+        .s_type_immediate(s_type_immediate)
     );
     
-    shift_left_1 shift_left_1_instance(
-        .in(sign_ext_out),
-        .out(sign_ext_out_shifted)
-    );
-    
-    wire mem_read_control, mem_write_control, alu_src_control, reg_write_control;
-    wire [1:0] alu_op_control, pc_src;
+    wire mem_read_control, mem_write_control, reg_write_control;
+    wire [1:0] alu_op_control, pc_src, alu_src_control;
     wire [2:0] mem_to_reg_control;
     control_unit control_unit_instance(
         .opcode(instruction[6:0]),
@@ -97,6 +90,7 @@ module single_cycle_rv32i_core(
     wire [31:0] rs1, rs2, reg_write_data;
     reg_file reg_file_instance(
             .clk(clk),
+            .rst(rst),
             .dest_reg(instruction[11:7]), 
             .src1_reg(instruction[19:15]), 
             .src2_reg(instruction[24:20]),
@@ -108,9 +102,11 @@ module single_cycle_rv32i_core(
     assign mem_data_to_mem = rs2;
     
     wire [31:0] alu_src_value;
-    mux_2X1 alu_src_mux(
+    mux_4X1 alu_src_mux(
         .in0(rs2),
         .in1(sign_ext_out),
+        .in2(s_type_immediate),
+        .in3(0),
         .sel(alu_src_control),
         .out(alu_src_value)
     ); 
@@ -136,7 +132,7 @@ module single_cycle_rv32i_core(
     wire [31:0] pc_plus_immediate_out;
     adder32 adder32_instance_immediate(
              .in1(pc_out_add),
-             .in2(sign_ext_out_shifted),
+             .in2(b_type_immediate),
              .out(pc_plus_immediate_out)
     );
          

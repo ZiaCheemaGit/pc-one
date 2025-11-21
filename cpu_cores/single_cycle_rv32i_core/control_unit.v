@@ -23,8 +23,8 @@ alu_op is control for alu control unit and selection values are same as defined 
 
 module control_unit (
     input [6:0] opcode,
-    output reg mem_read, mem_write, alu_src, reg_write,
-    output reg [1:0] alu_op, pc_src, 
+    output reg mem_read, mem_write, reg_write,
+    output reg [1:0] alu_op, pc_src, alu_src,
     output reg [2:0] mem_to_reg
 );
 
@@ -66,7 +66,7 @@ module control_unit (
 
             // store-Format
             7'd35: begin
-            alu_src = 1;
+            alu_src = 2;
             mem_to_reg = 3'b000; 
             reg_write = 0;
             mem_read = 0;

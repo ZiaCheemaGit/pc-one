@@ -6,11 +6,13 @@
 
 module sign_ext_12_to_32(
     input [31:0] instruction,
-    output [31:0] out, u_type_immediate, jal_offset
+    output [31:0] out, u_type_immediate, jal_offset, s_type_immediate, b_type_immediate
     );
     
+    assign b_type_immediate = { {20{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0 };
     assign jal_offset = {{12{instruction[31]}}, instruction[31:12]};
     assign out = {{20{instruction[31]}}, instruction[31:20]};
+    assign s_type_immediate = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};   
     assign u_type_immediate = {instruction[31:12], 12'b0};
     
 endmodule
