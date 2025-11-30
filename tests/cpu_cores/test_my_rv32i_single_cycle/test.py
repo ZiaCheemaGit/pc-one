@@ -14,12 +14,18 @@ module cpu_core(
 
 """
 
-import logging
+import logging, sys, os
 
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, RisingEdge
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+target_dir = os.path.join(current_dir, '..', '..', '..')
+python_classes_parent_dir = os.path.normpath(target_dir)
+if python_classes_parent_dir not in sys.path:
+    sys.path.append(python_classes_parent_dir)
+    
 from python_classes.instructions import *
 
 @cocotb.test
