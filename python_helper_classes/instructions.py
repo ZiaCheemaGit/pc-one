@@ -112,15 +112,23 @@ class I_instruction:
         self.rs1_str = self._to_binary_string(rs1, 5)
         self.rd_str = self._to_binary_string(rd, 5)
         self.funct3_str = self._to_binary_string(funct3, 3)
-        self.imm_str = self._to_binary_string(immediate, 12)
-
-    def _to_binary_string(self, value, width):
-        if isinstance(value, int):
-            return f"{value:0{width}b}"
-        elif isinstance(value, str):
+        self.imm_str = self._to_binary_string(immediate, 12, True)
+        
+    def _to_binary_string(self, value, width, signed=False):
+        if isinstance(value, str):
             return value.zfill(width)
-        else:
+        
+        if not isinstance(value, int):
             raise TypeError(f"Instruction field must be int or str, got {type(value)}")
+
+        if signed:
+            if value >= 0:
+                return f"{value:0{width}b}"
+            else:
+                two_comp_value = value & ((1 << width) - 1)
+                return f"{two_comp_value:0{width}b}"
+        else:
+            return f"{value:0{width}b}"
 
     def get_binary_string(self) -> str:
         return self.imm_str + self.rs1_str + self.funct3_str + self.rd_str + self.opcode_str
@@ -148,3 +156,4 @@ class U_instruction:
     def get_value(self) -> int:
         return int(self.get_binary_string(), 2)
     
+
