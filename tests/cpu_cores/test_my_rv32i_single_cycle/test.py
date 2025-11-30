@@ -25,8 +25,8 @@ target_dir = os.path.join(current_dir, '..', '..', '..')
 python_classes_parent_dir = os.path.normpath(target_dir)
 if python_classes_parent_dir not in sys.path:
     sys.path.append(python_classes_parent_dir)
-    
-from python_classes.instructions import *
+
+from python_helper_classes.instructions import *
 
 @cocotb.test
 async def test_instruction_formats(dut):
