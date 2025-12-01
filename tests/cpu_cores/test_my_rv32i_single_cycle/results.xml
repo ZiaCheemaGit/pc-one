@@ -1,8 +1,8 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1764514917" />
-    <testcase name="test_instruction_formats" classname="test" file="/home/zia-cheema/Desktop/git-clones/pc-one/tests/cpu_cores/test_my_rv32i_single_cycle/test.py" lineno="31" time="0.006871223449707031" sim_time_ns="16.0" ratio_time="2328.551839000694" />
-    <testcase name="test_b_type" classname="test" file="/home/zia-cheema/Desktop/git-clones/pc-one/tests/cpu_cores/test_my_rv32i_single_cycle/test.py" lineno="102" time="0.006156206130981445" sim_time_ns="14.0" ratio_time="2274.1278804074204" />
-    <testcase name="test_math_asm" classname="test" file="/home/zia-cheema/Desktop/git-clones/pc-one/tests/cpu_cores/test_my_rv32i_single_cycle/test.py" lineno="150" time="0.005574226379394531" sim_time_ns="11.000000000000004" ratio_time="1973.3680068434567" />
+    <property name="random_seed" value="1764524442" />
+    <testcase name="test_instruction_formats" classname="test" file="/home/zia-cheema/Desktop/git-clones/pc-one/tests/cpu_cores/test_my_rv32i_single_cycle/test.py" lineno="31" time="0.006080150604248047" sim_time_ns="16.0" ratio_time="2631.513763626382" />
+    <testcase name="test_b_type" classname="test" file="/home/zia-cheema/Desktop/git-clones/pc-one/tests/cpu_cores/test_my_rv32i_single_cycle/test.py" lineno="102" time="0.006501913070678711" sim_time_ns="14.0" ratio_time="2153.2124234534854" />
+    <testcase name="test_math_asm" classname="test" file="/home/zia-cheema/Desktop/git-clones/pc-one/tests/cpu_cores/test_my_rv32i_single_cycle/test.py" lineno="150" time="0.00931549072265625" sim_time_ns="11.000000000000004" ratio_time="1180.8288288288293" />
   </testsuite>
 </testsuites>

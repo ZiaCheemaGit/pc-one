@@ -158,7 +158,7 @@ async def test_math_asm(dut):
     logger.info(f"register2 = {dut.reg_file_instance.registers[2].value.to_unsigned()}")
 
     # cpu picks up addi	x2,x2,-32
-    dut.instruction.value = I_instruction(32, 2, 0, 2, "0010011").get_value()
+    dut.instruction.value = I_instruction(-32, 2, 0, 2, "0010011").get_value()
     
     # reset cpu 
     dut.rst.value = 1
@@ -172,9 +172,9 @@ async def test_math_asm(dut):
 
     # addi	x2,x2,-32 completed
     # cpu picks up sw	x8,28(x2)
-    dut.instruction.value = I_instruction(0, 0, 0, 0, 0).get_value()
+    dut.instruction.value = I_instruction(28, 2, "010", 8, "0100011").get_value()
     await RisingEdge(dut.clk)
 
     logger.critical(f"PC = {dut.instruction_address.value.to_unsigned()}")
     logger.info(f"instruction = 0x{dut.instruction.value.to_unsigned():08x}")
-    logger.info(f"register2 = {dut.reg_file_instance.registers[2].value.to_unsigned()}")
+    logger.info(f"register2 = {dut.reg_file_instance.registers[2].value.to_signed()}")

@@ -10,7 +10,7 @@ module sign_ext_12_to_32(
     );
     
     assign b_type_immediate = { {20{instruction[31]}}, instruction[7], instruction[30:25], instruction[11:8], 1'b0 };
-    assign jal_offset = {{12{instruction[31]}}, instruction[31:12]};
+    assign jal_offset = { {12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0 };
     assign out = {{20{instruction[31]}}, instruction[31:20]};
     assign s_type_immediate = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};   
     assign u_type_immediate = {instruction[31:12], 12'b0};

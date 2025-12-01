@@ -24,7 +24,7 @@ module reg_file (
     end
 
     always @(posedge clk) begin
-        if (reg_write_control && dest_reg != 5'd0) begin
+        if (reg_write_control && dest_reg != 5'd0 && !rst) begin
             registers[dest_reg] <= reg_write_data;
         end
     end
