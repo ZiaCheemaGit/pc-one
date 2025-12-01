@@ -73,8 +73,8 @@ async def test_instruction_formats(dut):
                     + f" AND PC = {dut.instruction_address.value.to_unsigned()}")
 
     # add 3, 4, 5 completed
-    # cpu picks up jal 2, 128
-    dut.instruction.value = J_instruction(128, 2, "1101111").get_value()
+    # cpu picks up jal 2, 20
+    dut.instruction.value = J_instruction(20, 2, "1101111").get_value()
     await RisingEdge(dut.clk)
 
     logger.info(f"After add 3, 4, 5 Value of reg3 = {dut.reg_file_instance.registers[3].value.to_unsigned()}"
@@ -85,7 +85,7 @@ async def test_instruction_formats(dut):
     dut.instruction.value = S_instruction(20, 5, 2, "010", "0100011").get_value()
     await RisingEdge(dut.clk)
 
-    logger.info(f"After jal 2, 128 Value of reg2 = {dut.reg_file_instance.registers[2].value.to_unsigned()}"
+    logger.info(f"After jal 2, 20 Value of reg2 = {dut.reg_file_instance.registers[2].value.to_unsigned()}"
                     + f" AND PC = {dut.instruction_address.value.to_unsigned()}")
     
     # sw 5, 20(2) completed

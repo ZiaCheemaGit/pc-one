@@ -66,10 +66,17 @@ class S_instruction:
 
 class J_instruction:
     def __init__(self, imm, rd, opcode):
-        self.imm_str = self._to_binary_string(imm, 20)
+        val_imm = int(imm)
+        imm_bin = f"{val_imm & 0x1FFFFF:021b}"
+        bit_20     = imm_bin[0]       # imm[20]
+        bits_19_12 = imm_bin[1:9]     # imm[19:12]
+        bit_11     = imm_bin[9]       # imm[11]
+        bits_10_1  = imm_bin[10:20]   # imm[10:1]
+        
+        self.imm_str = bit_20 + bits_10_1 + bit_11 + bits_19_12
         self.rd_str = self._to_binary_string(rd, 5)
         self.opcode_str = self._to_binary_string(opcode, 7)
-
+    
     def _to_binary_string(self, value, width):
         if isinstance(value, int):
             return f"{value:0{width}b}"
@@ -77,7 +84,7 @@ class J_instruction:
             return value.zfill(width)
         else:
             raise TypeError(f"Instruction field must be int or str, got {type(value)}")
-
+    
     def get_binary_string(self) -> str:
         return self.imm_str + self.rd_str + self.opcode_str
     
@@ -156,4 +163,3 @@ class U_instruction:
     def get_value(self) -> int:
         return int(self.get_binary_string(), 2)
     
-
