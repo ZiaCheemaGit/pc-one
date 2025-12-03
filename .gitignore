@@ -1,0 +1,18 @@
+# VSCode project files
+.vscode/
+*.code-workspace
+
+# Waveforms
+*.vcd
+*.fst
+*.fst.hier
+
+# packaging 
+__pycache__
+
+# sim
+sim_build
+
+# Pytest
+.pytest_cache
+
