@@ -1,6 +1,7 @@
 # Overview
 **pc-one** is a complete general purpose pc made from ground up.
 
-Successfuly ran c/cpp code on *single cycle RV32I* using gcc.Next Step single assembly program to confirm 100% accuracy of cpu. 
+Successfuly ran assembly and c/cpp programs on *single cycle RV32I*. Test programs ran using cocotb and compiled using gcc.
+Next Step: Put CPU on an FPGA and make it run a ROM program after reset. 
 
 *Currently Under Development*
