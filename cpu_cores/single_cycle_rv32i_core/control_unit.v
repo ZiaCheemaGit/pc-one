@@ -116,6 +116,7 @@ module control_unit (
             mem_read = 0;
             mem_write = 0;
             alu_op = 2'b00;
+            pc_src = 2'b00;
             end
             
             // auipc
