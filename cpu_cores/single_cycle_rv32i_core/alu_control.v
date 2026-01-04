@@ -13,9 +13,9 @@ fun3 and fun7 values
 B-type fun3  alu-operation
 BEQ	   000     sub
 BNE	   001     sub + invert
-BLT	   100     slt
-BGE	   101     slt + invert
-BLTU   110     sltu
+BLT	   100     slt + invert
+BGE	   101     slt 
+BLTU   110     sltu + invert
 BGEU   111     sltu + invert
 
 I-type fun3 fun7[5]
@@ -64,9 +64,9 @@ module alu_control(
                 case (fun3)
                     3'b000: out = 4'd3;   
                     3'b001: begin out = 4'd3; invert = 1; end   
-                    3'b100: out = 4'd6;   
-                    3'b101: begin out = 4'd6; invert = 1; end 
-                    3'b110: out = 4'd7;  
+                    3'b100: begin out = 4'd6; invert = 1; end   
+                    3'b101: begin out = 4'd6; invert = 0; end 
+                    3'b110: begin out = 4'd7; invert = 1; end  
                     3'b111: begin out = 4'd7; invert = 1; end
                     default: out = 4'd0;
                 endcase
