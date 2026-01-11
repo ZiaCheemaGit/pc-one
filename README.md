@@ -16,7 +16,7 @@ At the end(if that ever happens) we will have a project in which
 there will be verilog which can be directly dumped on an FPGA.Connect a mouse,
 a keyboard and a vga display to the FPGA and PC will be alive.
 
-# pc-one
+# PC-ONE
 
 pc-one is an attempt to place the entire PC stack in one repository —  
 hardware, kernel, operating system — all built from the ground up.
@@ -34,7 +34,7 @@ so I will add as I progress
 - Run c/cpp on cpu[done by integrating a memory(compiled by riscv64-unknown-elf) with cpu with von-neuman architecture]
 - #TODO
 
-# Next goal:
+## Next goal:
 This is what is currently being tried to be done.
 
 - dump cpu on FPGA, somehow connect it to a terminal and see print statements 
