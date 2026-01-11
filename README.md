@@ -40,11 +40,13 @@ so I will add as I progress
 - Get a good understanding of bare metal systems. One of best resources I found was [Nand to Tetris](https://www.nand2tetris.org/) 
 - Make a CPU [made a single cycle RV32I with [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions)]
 - Spend 5 days on making the CPU and 50 days on testing it[tested using cocotb because watching waveforms gets boring]
+- Add CI to project
 - Run c/cpp on cpu[done by integrating a memory(compiled by riscv64-unknown-elf) with cpu with von-neuman architecture]
 - #TODO
 
 ## Next Milestones:
 This is what is currently being tried to be done.
+- Add CI to project
 - dump cpu on FPGA connect it to a uart terminal to see your cpu's print statements of compiled c/cpp code
 - implement a timer interrupt and an interrupt handler for cpu
 - implement cpu traps
