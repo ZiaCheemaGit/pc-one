@@ -23,8 +23,8 @@ hardware, kernel, operating system — all built from the ground up.
 
 ## Progress
 
-This is where clarity starts.Follwing is the progress
-what has been done in the repo and what most likely 
+This is where clarity starts.Following is the progress
+what has been done uptill and what most likely 
 anyone does when they make a computer.It only includes the 
 completed steps. I also dont know what are the complete steps 
 so I will add as I progress  
