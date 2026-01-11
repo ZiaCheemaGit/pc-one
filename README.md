@@ -27,23 +27,27 @@ a keyboard and a vga display to the FPGA and PC will be alive.
 
 # Status
 
-eetatrhtrsh e
+This project is under development and below is current progress
+and future milestones.
 
 ## Current Progress
 
 This is where clarity starts.Following is the progress
-what has been done uptill and what most likely 
+what has been done uptill now and what most likely 
 anyone does when they make a computer.It only includes the 
 completed steps. I also dont know what are the complete steps 
 so I will add as I progress  
+- Get a good understanding of bare metal systems. One of best resources I found was [Nand to Tetris](https://www.nand2tetris.org/) 
 - Make a CPU [made a single cycle RV32I with [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions)]
 - Spend 5 days on making the CPU and 50 days on testing it[tested using cocotb because watching waveforms gets boring]
 - Run c/cpp on cpu[done by integrating a memory(compiled by riscv64-unknown-elf) with cpu with von-neuman architecture]
 - #TODO
 
-## Next Milestone:
+## Next Milestones:
 This is what is currently being tried to be done.
-- dump cpu on FPGA, somehow connect it to a terminal and see print statements 
+- dump cpu on FPGA connect it to a uart terminal to see your cpu's print statements of compiled c/cpp code
+- implement a timer interrupt and an interrupt handler for cpu
+- implement cpu traps
 
 ## Getting Started
 Clone and explore:
@@ -55,8 +59,8 @@ git clone https://github.com/ZiaCheemaGit/pc-one.git
 
 # Contributing
 
-Definitely I cannot complete this project alone. Feel free to open 
-a PR if 
+This is definitely a huge project. Pull requests, ideas, and
+corrections are welcome from anyone who shares the vision.
 
 
 
