@@ -1,0 +1,22 @@
+name: CI
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - README.md
+      - tests/README.md
+      - hardware/README.md
+
+jobs:
+  test_build:
+    ...
