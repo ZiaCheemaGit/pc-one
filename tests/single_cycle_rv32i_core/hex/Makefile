@@ -10,7 +10,7 @@ BASE := $(basename $(SRC))
 # Flags
 ARCH_FLAGS   := -march=rv32i -mabi=ilp32
 COMMON_FLAGS := -ffreestanding -nostdlib
-LINKER_SCRIPT := link.ld
+LINKER_SCRIPT := linker_files/link.ld
 
 # Outputs
 ELF  := $(BASE).elf
@@ -24,7 +24,7 @@ all: $(HEX)
 $(ELF): $(SRC)
 	$(CC) $(ARCH_FLAGS) $(COMMON_FLAGS) \
 	      -T $(LINKER_SCRIPT) \
-	      crt0.S $(SRC) -lgcc -o $@
+	      linker_files/crt0.S $(SRC) -lgcc -o $@
 
 
 # Dump generation
