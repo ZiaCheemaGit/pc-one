@@ -15,6 +15,9 @@ from cocotb.triggers import RisingEdge
 
 from instr_format.converter import *
 
+TEST_REGISTRY = {}
+
+
 def log_signals(logger, dut):
     # PC
         try: 
@@ -77,8 +80,29 @@ def log_signals(logger, dut):
         except Exception:
             logger.info(f"data_address = {dut.ram_16KB_instance.data_address.value}")
 
+
+def program_test(name):
+    def decorator(func):
+        TEST_REGISTRY[name] = func
+        return func
+    return decorator
+
+
 @cocotb.test()
-async def test_asm(dut):
+async def run_program_test(dut):
+    program_file = os.environ["PROGRAM_FILE"]
+    program_name = os.path.basename(program_file).replace(".hex", "")
+
+    dut._log.info(f"Loaded program: {program_name}")
+
+    if program_name not in TEST_REGISTRY:
+        raise RuntimeError(f"No cocotb test registered for program '{program_name}'")
+
+    await TEST_REGISTRY[program_name](dut)
+
+
+@program_test("test_basic_asm")
+async def test_basic_asm(dut):
 
     logger = logging.getLogger("test")
     file_handler = logging.FileHandler("simulation.log", mode='w')
@@ -142,5 +166,6 @@ async def test_asm(dut):
             raise Exception("cannot read PC value")
 
     
-
-
+@program_test("test_math_c")
+async def test_math_c(dut):
+    pass

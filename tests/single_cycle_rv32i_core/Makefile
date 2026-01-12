@@ -32,7 +32,7 @@ $(error PROGRAM_FILE is not set. Use: make PROGRAM_FILE=path_to_hex_file)
 endif
 
 export PROGRAM_FILE
-PLUSARGS += +PROGRAM_FILE=$(PROGRAM_FILE)
+COCOTB_PLUSARGS += +PROGRAM_FILE=$(PROGRAM_FILE)
 
 # COCOTB_TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
 COCOTB_TOPLEVEL = top
