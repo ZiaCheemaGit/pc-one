@@ -56,6 +56,9 @@ Clone and explore:
 ```sh
 git clone https://github.com/ZiaCheemaGit/pc-one.git
 ```
+In all directories and sub directories there is a `README.md`. These readme  files hopefully will 
+help anyone at the beginning to get a fair amount of clarity. After getting an overview through 
+these one can dive in source code.
 
 ---
 
