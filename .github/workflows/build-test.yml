@@ -29,6 +29,6 @@ jobs:
       - name: Install nox
         run: pip install nox
 
-      - name: Run tests
+      - name: Run cocotb tests
         run: nox -s test_build
 
