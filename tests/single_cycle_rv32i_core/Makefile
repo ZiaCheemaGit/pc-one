@@ -1,6 +1,9 @@
 # Makefile
 
+# simulator
 SIM ?= icarus
+
+# hdl 
 TOPLEVEL_LANG ?= verilog
 
 # single_cycle_rv32i_core files
@@ -21,8 +24,15 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/sign_ext_12_to_
 VERILOG_SOURCES += $(PWD)/von_neuman/top.v
 VERILOG_SOURCES += $(PWD)/von_neuman/ram_16KB.v
 
-# Program File
-PROGRAM_FILE = $(PWD)/hex/test.hex
+# Program file (passed from terminal)
+PROGRAM_FILE ?=
+
+ifndef PROGRAM_FILE
+$(error PROGRAM_FILE is not set. Use: make PROGRAM_FILE=path_to_hex_file)
+endif
+
+export PROGRAM_FILE
+PLUSARGS += +PROGRAM_FILE=$(PROGRAM_FILE)
 
 # COCOTB_TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
 COCOTB_TOPLEVEL = top
