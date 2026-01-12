@@ -51,7 +51,9 @@ This is what is currently being tried to be done.
 - implement a timer interrupt and an interrupt handler for cpu
 - implement cpu traps
 
-## Getting Started
+---
+
+# Getting Started
 Clone and explore:
 ```sh
 git clone https://github.com/ZiaCheemaGit/pc-one.git
