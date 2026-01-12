@@ -24,12 +24,11 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          sudo apt update
-          sudo apt install -y make python3 python3-pip
+          sudo apt install -y  make gcc-riscv64-unknown-elf iverilog python3 python3-pip
 
       - name: Install nox
         run: pip install nox
 
-      - name: Run tests
-        run: nox -s test_build
+      - name: Test single_cycle_rv32i_core
+        run: nox -s test_single_cycle_rv32i_core
 

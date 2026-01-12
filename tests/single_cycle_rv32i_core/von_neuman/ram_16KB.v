@@ -15,8 +15,22 @@ module ram_16KB(
     
     reg [7:0] mem [0:MEM_SIZE - 1];
 
+    // FPGA supported design
+    //initial begin
+    //    $readmemh("test.hex", mem);
+    //end
+
+    // hex file comes from cocotb
+    reg [1023:0] program_file;
     initial begin
-        $readmemh("./hex/test.hex", mem);
+        if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
+            $display("ERROR: PROGRAM_FILE not specified!");
+            $display("Run simulation with: +PROGRAM_FILE=<path_to_hex>");
+            $finish;
+        end
+
+        $display("Loading program from: %s", program_file);
+        $readmemh(program_file, mem);
     end
 
     assign instruction = {
