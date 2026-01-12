@@ -7,7 +7,7 @@ hardware, kernel, operating system — all built from the ground up.
 
 # Vision
 
-We all have listened phrase "A computer runs on 0 and 1s". I have spent alot
+We all have listened phrase `A computer runs on 0 and 1s`. I have spent alot
 of time to uncover this completely and also did to an extent. I am making this project to
 - satisfy my curiosity
 - facilitate any person who wants to understand computer as a complete system
@@ -36,7 +36,7 @@ This is where clarity starts.Following is the progress
 what has been done uptill now and what most likely 
 anyone does when they make a computer.It only includes the 
 completed steps. I also dont know what are the complete steps 
-so I will add as I progress  
+so I will add them here as I progress  
 - Get a good understanding of bare metal systems. One of best resources I found was [Nand to Tetris](https://www.nand2tetris.org/) 
 - Make a CPU [made a single cycle RV32I with [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions)]
 - Spend 5 days on making the CPU and 50 days on testing it[tested using cocotb because watching waveforms gets boring]
