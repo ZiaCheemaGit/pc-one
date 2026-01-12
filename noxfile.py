@@ -13,8 +13,11 @@ def install_deps(session: nox.Session) -> None:
 
 def test_single_cycle_rv32i_core(session: nox.Session) -> None:
     session.chdir("tests/single_cycle_rv32i_core/")
-    session.log("Entering Directory tests/single_cycle_rv32i_core")
+    session.log("Entering Directory single_cycle_rv32i_core")
 
+
+    session.chdir("../../")
+    session.log("Leaving Directory single_cycle_rv32i_core")
 
 
 @nox.session
