@@ -15,7 +15,7 @@ def test_single_cycle_rv32i_core(session: nox.Session) -> None:
 
     session.chdir("tests/single_cycle_rv32i_core/")
 
-    # build hex file
+    # Generate hex files 
     session.chdir("hex/")
     session.run("make", external=True)
     session.chdir("../")
@@ -23,7 +23,6 @@ def test_single_cycle_rv32i_core(session: nox.Session) -> None:
     session.run("make", external=True)
 
     session.chdir("../../")        
-
 
 
 def test_build(session: nox.Session) -> None:
