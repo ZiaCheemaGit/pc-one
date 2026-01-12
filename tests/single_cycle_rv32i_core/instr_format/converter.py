@@ -1,4 +1,4 @@
-from python_helper_classes.instructions import *
+from instr_format.instructions import *
 
 class MnemonicTable:
     def __init__(self):

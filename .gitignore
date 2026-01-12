@@ -11,6 +11,11 @@
 __pycache__
 
 # sim
+*.log
+*.xml
+*.dump
+*.elf
+*.hex
 sim_build
 
 # Pytest
