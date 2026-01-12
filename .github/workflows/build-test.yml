@@ -13,7 +13,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - *.md
+      - "*.md"
 
 jobs:
   test_build:
