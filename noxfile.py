@@ -2,7 +2,8 @@ import nox
 from pathlib import Path
 
 all_python_deps = [
-    "cocotb",
+    "cocotb", 
+    "pytest"
 ]
 
 
