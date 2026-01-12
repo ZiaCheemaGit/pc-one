@@ -15,6 +15,10 @@ def test_single_cycle_rv32i_core(session: nox.Session) -> None:
     session.chdir("tests/single_cycle_rv32i_core/")
     session.log("Entering Directory single_cycle_rv32i_core")
 
+    # build hex file
+    session.chdir("hex/")
+    session.run("make")
+    session.chdir("../")
 
     session.chdir("../../")
     session.log("Leaving Directory single_cycle_rv32i_core")
