@@ -21,7 +21,7 @@ def test_single_cycle_rv32i_core(session: nox.Session) -> None:
     session.run("make", external=True)
     session.chdir("../")
 
-    session.run("make")
+    session.run("make", external=True)
 
     session.log("Leaving Directory single_cycle_rv32i_core")
     session.chdir("../../")    
