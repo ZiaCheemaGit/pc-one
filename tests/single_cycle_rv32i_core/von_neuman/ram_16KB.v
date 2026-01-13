@@ -11,9 +11,7 @@ module ram_16KB(
     output reg [31:0] data_out
 );
 
-    parameter MEM_SIZE = 16384; 
-    
-    reg [7:0] mem [0:MEM_SIZE - 1];
+    reg [7:0] mem [0:16383];
 
     // FPGA supported design
     //initial begin

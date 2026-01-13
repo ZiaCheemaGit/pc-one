@@ -42,10 +42,12 @@ so I will add them here as I progress
 - Spend 5 days on making the CPU and 50 days on testing it[tested using cocotb because watching waveforms gets boring]
 - Add CI to project
 - Run c/cpp on cpu[done by integrating a memory(compiled by riscv64-unknown-elf) with cpu with von-neuman architecture]
+- Learn about FPGAs. Simulation testing isn't enough(Stakes are very high, even one wire if not on/off as intended can break everything.)     
 - #TODO
 
 ## Next Milestones:
 This is what is currently being tried to be done.
+- Learn UART protocol
 - dump cpu on FPGA connect it to a uart terminal to see your cpu's print statements of compiled c/cpp code
 - implement a timer interrupt and an interrupt handler for cpu
 - implement cpu traps
