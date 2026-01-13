@@ -19,3 +19,6 @@ directory contains file which are used by gcc to compile test files to hex.
 There is a `ram_16KB` and `TOP` module in this directory. For testing a cpu we must run a program on it i.e a hex file. 
 This can be done by connecting the cpu to a memory. In real world a unified memory is used. Hence
 a Von-Neuman architecture environment approach is used.
+
+Here is RTL for this design: 
+![RTL Schematic](../../images/von_neuman.png)

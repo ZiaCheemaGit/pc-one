@@ -173,6 +173,7 @@ async def test_math_c(dut):
 
 
 @program_test("test_uart_print_c")
-async def test_math_c(dut):
+async def test_uart_print_c(dut):
     pass
     # TODO
+
