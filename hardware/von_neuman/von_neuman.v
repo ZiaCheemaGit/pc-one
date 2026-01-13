@@ -5,7 +5,7 @@
 
 `timescale 1ns / 1ps
 
-module top(
+module von_neuman(
     input clk,
     input rst,
     output uart_tx_pin
