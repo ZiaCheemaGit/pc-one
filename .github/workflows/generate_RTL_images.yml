@@ -28,14 +28,14 @@ jobs:
       - name: Generate images
         run: |
           cd images
-          make clean
+          rm *.png
           make
 
       - name: Commit generated files
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add images/*.png images/*.svg images/*.json
+          git add images/*.png
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
