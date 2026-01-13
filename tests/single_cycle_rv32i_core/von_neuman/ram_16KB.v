@@ -11,9 +11,9 @@ module ram_16KB(
     output reg [31:0] data_out
 );
 
-    reg [7:0] mem [0:16383];
+    parameter MEM_SIZE = 16384;
+    reg [7:0] mem [0:MEM_SIZE-1];
 
-    // FPGA supported design
     //initial begin
     //    $readmemh("test.hex", mem);
     //end
@@ -31,6 +31,7 @@ module ram_16KB(
     //    $readmemh(program_file, mem);
     //end
 
+    //cocotb hex file
     `ifndef SYNTHESIS
         reg [1023:0] program_file;
         initial begin
