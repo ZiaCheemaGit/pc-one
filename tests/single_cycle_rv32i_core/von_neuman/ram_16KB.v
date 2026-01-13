@@ -21,17 +21,31 @@ module ram_16KB(
     //end
 
     // hex file comes from cocotb
-    reg [1023:0] program_file;
-    initial begin
-        if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
-            $display("ERROR: PROGRAM_FILE not specified!");
-            $display("Run simulation with: +PROGRAM_FILE=<path_to_hex>");
-            $finish;
-        end
+    //reg [1023:0] program_file;
+    //initial begin
+    //    if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
+    //        $display("ERROR: PROGRAM_FILE not specified!");
+    //        $display("Run simulation with: +PROGRAM_FILE=<path_to_hex>");
+    //        $finish;
+    //    end
+    //    
+    //    $display("Loading program from: %s", program_file);
+    //    $readmemh(program_file, mem);
+    //end
 
-        $display("Loading program from: %s", program_file);
-        $readmemh(program_file, mem);
-    end
+    `ifndef SYNTHESIS
+        reg [1023:0] program_file;
+        initial begin
+            if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
+                $display("ERROR: PROGRAM_FILE not specified!");
+                $display("Run simulation with: +PROGRAM_FILE=<path_to_hex>");
+                $finish;
+            end
+
+            $display("Loading program from: %s", program_file);
+            $readmemh(program_file, mem);
+        end
+    `endif
 
     assign instruction = {
         mem[pc_address + 3], // MSB
