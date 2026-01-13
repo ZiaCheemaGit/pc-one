@@ -20,8 +20,8 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/pc_src_control.
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/register_file.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/sign_ext_12_to_32.v
 
-# von-neuman 
-VERILOG_SOURCES += $(PWD)/../../hardware/von_neuman/von_neuman.v
+# pc_one
+VERILOG_SOURCES += $(PWD)/../../hardware/pc_one/pc_one.v
 
 # 16KB ram
 VERILOG_SOURCES += $(PWD)/../../hardware/RAMs/ram_16KB.v
@@ -43,7 +43,7 @@ export PROGRAM_FILE
 COCOTB_PLUSARGS += +PROGRAM_FILE=$(PROGRAM_FILE)
 
 # COCOTB_TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
-COCOTB_TOPLEVEL = von_neuman
+COCOTB_TOPLEVEL = pc_one
 
 # COCOTB_TEST_MODULES is the basename of the Python test file(s)
 COCOTB_TEST_MODULES = test

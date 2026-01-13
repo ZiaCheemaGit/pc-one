@@ -33,5 +33,5 @@ jobs:
         run: pip install nox
 
       - name: Test single_cycle_rv32i_core
-        run: nox -s test_single_cycle_rv32i_core
+        run: nox -s test_von_neuman
 

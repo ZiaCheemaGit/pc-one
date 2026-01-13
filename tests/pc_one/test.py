@@ -1,12 +1,3 @@
-"""
-
-module top(
-    input clk,
-    input rst
-    );
-
-"""
-
 import os
 import logging
 import cocotb
@@ -176,4 +167,5 @@ async def test_math_c(dut):
 async def test_uart_print_c(dut):
     pass
     # TODO
+
 

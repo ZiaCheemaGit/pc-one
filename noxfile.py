@@ -19,11 +19,11 @@ def collect_all_hex_files():
 
 
 @nox.session
-def test_single_cycle_rv32i_core(session: nox.Session) -> None:
+def test_pc_one(session: nox.Session) -> None:
 
     install_deps(session)
 
-    session.chdir("tests/single_cycle_rv32i_core/")
+    session.chdir("tests/pc_one/")
 
     # Generate hex files and collect each files path
     session.chdir("test_cases/")
@@ -41,12 +41,5 @@ def test_single_cycle_rv32i_core(session: nox.Session) -> None:
     session.run("make", "clean",external=True)
 
     session.chdir("../../")        
-
-
-def test_build(session: nox.Session) -> None:
-
-    install_deps(session)
-
-    # test cpu
-    test_single_cycle_rv32i_core(session)
     
+
