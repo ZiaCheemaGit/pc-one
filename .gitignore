@@ -22,7 +22,7 @@ sim_build
 .pytest_cache
 
 # Generated RTL images
-images/RV32I.*
-images/von_neuman.*
+images/RV32I.png
+images/von_neuman.png
 
 
