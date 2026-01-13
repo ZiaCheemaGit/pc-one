@@ -3,7 +3,7 @@ name: Generate RTL Images
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-  
+
 on:
   push:
     branches:
@@ -32,7 +32,7 @@ jobs:
       - name: Generate images
         run: |
           cd images
-          rm *.png
+          rm *
           make
 
       - name: Commit generated files
