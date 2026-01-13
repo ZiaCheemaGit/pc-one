@@ -19,7 +19,7 @@ TEST_REGISTRY = {}
 
 
 def log_signals(logger, dut):
-    # PC
+        # PC
         try: 
             logger.critical(f"PC = {dut.instr_add.value.to_unsigned()}")
             logger.critical(f"PC = 0x{dut.instr_add.value.to_unsigned():08x}")
@@ -169,3 +169,10 @@ async def test_basic_asm(dut):
 @program_test("test_math_c")
 async def test_math_c(dut):
     pass
+    # TODO
+
+
+@program_test("test_uart_print_c")
+async def test_math_c(dut):
+    pass
+    # TODO
