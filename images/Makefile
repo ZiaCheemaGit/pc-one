@@ -20,3 +20,6 @@ von_neuman.png: von_neuman.svg
 
 clean:
 	rm -f *.json *.svg
+
+clean_png:
+	rm -f *.png

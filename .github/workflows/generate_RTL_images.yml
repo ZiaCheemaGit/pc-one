@@ -32,7 +32,7 @@ jobs:
       - name: Generate images
         run: |
           cd images
-          rm *
+          make clean
           make
 
       - name: Commit generated files
