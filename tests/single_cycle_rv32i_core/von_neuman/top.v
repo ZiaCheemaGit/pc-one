@@ -7,7 +7,8 @@
 
 module top(
     input clk,
-    input rst
+    input rst,
+    output [31:0] fake
     );
     
     wire [31:0] data_in_cpu, data_out_cpu, mem_add, instr_add, instruction;
@@ -35,6 +36,8 @@ module top(
         .data_in(data_out_cpu),
         .data_out(data_in_cpu)
     );
+
+    assign fake = instr_add;
     
 endmodule
 
