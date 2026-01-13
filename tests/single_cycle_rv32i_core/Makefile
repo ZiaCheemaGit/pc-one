@@ -23,7 +23,7 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/sign_ext_12_to_
 # von-neuman architecture files
 VERILOG_SOURCES += $(PWD)/von_neuman/top.v
 VERILOG_SOURCES += $(PWD)/von_neuman/ram_16KB.v
-VERILOG_SOURCES += $(PWD)/von_neuman/address_decoder.v
+VERILOG_SOURCES += $(PWD)/von_neuman/MMU.v
 VERILOG_SOURCES += $(PWD)/von_neuman/uart_tx.v
 
 # Program file (passed from terminal)

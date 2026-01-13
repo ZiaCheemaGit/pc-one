@@ -1,9 +1,10 @@
 module uart_tx(
     input clk,
-    input reset,
+    input rst,
     input write_en,
     input [7:0] data,
-    output reg tx
+    output reg tx,
+    output reg uart_busy
 );
 
     always @(posedge clk) begin

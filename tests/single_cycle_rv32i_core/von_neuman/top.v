@@ -8,19 +8,21 @@
 module top(
     input clk,
     input rst,
-    output uart_tx
+    output uart_tx_pin
     );
     
     wire [31:0] data_in_cpu, data_out_cpu, mem_add, instr_add, instruction;
-    wire mem_read, mem_write, address_decoder_mem_read, address_decoder_mem_write, uart_write_en;
+    wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en;
+    wire uart_busy;
     
-    address_decoder address_decoder_instance(
-        .cpu_write_address(mem_add),
-        .mem_read_cpu_control(mem_read),
-        .mem_write_cpu_control(mem_write),
-        .mem_read(address_decoder_mem_read), 
-        .mem_write(address_decoder_mem_write), 
-        .uart_write(uart_write_en)
+    MMU MMU_instance(
+        .addr(mem_add),
+        .mem_read_cpu(mem_read),
+        .mem_write_cpu(mem_write),
+        .ram_read(mmu_mem_read),
+        .ram_write(mmu_mem_write),
+        .uart_write(uart_write_en),
+        .uart_status_read(uart_busy)
     );
 
     core core_instance(
@@ -40,18 +42,19 @@ module top(
         .pc_address(instr_add),
         .instruction(instruction),
         .data_address(mem_add),
-        .mem_read(address_decoder_mem_read),
-        .mem_write(address_decoder_mem_write),
+        .mem_read(mmu_mem_read),
+        .mem_write(mmu_mem_write),
         .data_in(data_out_cpu),
         .data_out(data_in_cpu)
     );
 
     uart_tx uart_instance(
         .clk(clk),
-        .reset(rst),
+        .rst(rst),
         .write_en(uart_write_en),
         .data(data_out_cpu[7:0]),
-        .tx(uart_tx)
+        .tx(uart_tx_pin),
+        .uart_busy(uart_busy)
     );
     
 endmodule
