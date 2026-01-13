@@ -1,6 +1,6 @@
-# mem[0x104] = 0xCAFEBBAE → CPU PASSES
-# mem[0x104] = 0xDEADCEEF → BUG    
-
+# ram[0x104] == 0xCAFEBBAE TEST PASSES
+# ram[0x104] == 0xDEADCEEF BUG in CPU (some instruction failed)
+# ram[0x104] == 0xXXXXXXXX BUG in memory system / store path
 
     .section .text
     .globl main

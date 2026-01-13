@@ -95,8 +95,9 @@ async def run_program_test(dut):
 @program_test("test_basic_asm")
 async def test_basic_asm(dut):
 
-    logger = logging.getLogger("test")
-    file_handler = logging.FileHandler("simulation.log", mode='w')
+    test_name = "test_basic_asm"
+    logger = logging.getLogger(test_name)
+    file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
@@ -131,20 +132,21 @@ async def test_basic_asm(dut):
                 logger.critical("Test ended control reached at label HALT")
 
                 try: 
-                    cell_104 = int(dut.ram_16KB_instance.mem[0x104].value)
-                    cell_105 = int(dut.ram_16KB_instance.mem[0x105].value)
-                    cell_106 = int(dut.ram_16KB_instance.mem[0x106].value)
-                    cell_107 = int(dut.ram_16KB_instance.mem[0x107].value)
+                    address = 0x104
+                    cell_107 = int(dut.ram_16KB_instance.mem[address + 3].value)
+                    cell_106 = int(dut.ram_16KB_instance.mem[address + 2].value)
+                    cell_105 = int(dut.ram_16KB_instance.mem[address + 1].value)
+                    cell_104 = int(dut.ram_16KB_instance.mem[address].value)
                 except:
                     raise Exception("cannot read mem location 0x104 - 0x107")
                 
                 try:
                     assert "cafebbae" == f"{cell_107:02x}{cell_106:02x}{cell_105:02x}{cell_104:02x}"
                     logger.info("Test Passed")
-                    logger.info(f"mem[0x107] = 0x{cell_107: 02x}")
-                    logger.info(f"mem[0x106] = 0x{cell_106: 02x}")
-                    logger.info(f"mem[0x105] = 0x{cell_105: 02x}")
-                    logger.info(f"mem[0x104] = 0x{cell_104: 02x}")
+                    logger.info(f"ram[0x107] = 0x{cell_107: 02x}")
+                    logger.info(f"ram[0x106] = 0x{cell_106: 02x}")
+                    logger.info(f"ram[0x105] = 0x{cell_105: 02x}")
+                    logger.info(f"ram[0x104] = 0x{cell_104: 02x}")
                     logger.info("All these values are set by label PASS")
                 except:
                     raise Exception("memory doesnot have values set by label PASS")
@@ -159,9 +161,65 @@ async def test_basic_asm(dut):
     
 @program_test("test_math_c")
 async def test_math_c(dut):
-    pass
-    # TODO
+    
+    test_name = "test_math_c"
+    logger = logging.getLogger(test_name)
+    file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    logger.setLevel(logging.INFO)
 
+    # run clock concurrently
+    cocotb.start_soon(Clock(dut.clk, 1, unit="ns").start()) 
+
+    # reset cpu 
+    dut.rst.value = 1
+    await RisingEdge(dut.clk)
+    await RisingEdge(dut.clk)
+    dut.rst.value = 0
+    await RisingEdge(dut.clk)
+
+    logger.info("Reset released. CPU starting execution.")
+    
+    threshold_clk_cycles = 2000
+    LOGGING_ON = os.environ.get("LOGGING_ON") == 1
+
+    for _ in range(threshold_clk_cycles):
+
+        if LOGGING_ON:
+            log_signals(logger, dut)
+
+        await RisingEdge(dut.clk)
+
+        try:
+            address = 0x2000
+            cell_0 = int(dut.ram_16KB_instance.mem[address + 3].value)
+            cell_1 = int(dut.ram_16KB_instance.mem[address + 2].value)
+            cell_2 = int(dut.ram_16KB_instance.mem[address + 1].value)
+            cell_3 = int(dut.ram_16KB_instance.mem[address].value)
+
+            result =f"0x{cell_0:02x}{cell_1:02x}{cell_2:02x}{cell_3:02x}"
+
+            logger.critical("Test ended")
+            assert "0xfffffeee" == result
+
+            logger.critical("Test passed")
+            logger.info(f"ram[0x{address}] = {result}")
+            logger.info("Test Passed")
+            logger.info(f"ram[{address + 3}] = 0x{cell_3: 02x}")
+            logger.info(f"ram[{address + 2}] = 0x{cell_2: 02x}")
+            logger.info(f"ram[{address + 1}] = 0x{cell_1: 02x}")
+            logger.info(f"ram[{address}] = 0x{cell_0: 02x}")
+            logger.info("All these values are set g3 variable")
+
+            return
+        
+        except:
+            pass
+            
+    raise Exception("Threshold cyles passed\nCouldn't read ram[0x2000]")
+        
 
 @program_test("test_uart_print_c")
 async def test_uart_print_c(dut):
