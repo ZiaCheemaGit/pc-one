@@ -4,7 +4,12 @@ RV32I.json:
 	yosys -p "read_verilog ../hardware/single_cycle_rv32i_core/*.v; hierarchy -top core; proc; opt; write_json RV32I.json"
 
 von_neuman.json:
-	yosys -p "read_verilog ../hardware/single_cycle_rv32i_core/*.v ../tests/single_cycle_rv32i_core/von_neuman/*.v; hierarchy -top top; proc; opt; write_json von_neuman.json"
+	yosys -p "read_verilog \
+	../hardware/von_neuman/von_neuman.v \
+	../hardware/UART/*.v \
+	../hardware/single_cycle_rv32i_core/*.v \
+	../hardware/RAMs/ram_16KB.v \
+	../hardware/MMU/*.v; hierarchy -top von_neuman; proc; opt; write_json von_neuman.json"
 
 RV32I.svg: RV32I.json
 	netlistsvg RV32I.json -o RV32I.svg
