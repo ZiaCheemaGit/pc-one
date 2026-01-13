@@ -15,7 +15,7 @@ This directory contains assembly and c/cpp programs which the cpu runs successfu
 `Makefile` which generates a `hex`, an `elf` and a `dump` file from each asm and c/cpp file. `linker files` sub
 directory contains file which are used by gcc to compile test files to hex. 
 
-# Von-Neuman
-There is a `ram_16KB` and `TOP` module. For testing a cpu we must run a program on it i.e a hex file. 
+## Von-Neuman
+There is a `ram_16KB` and `TOP` module in this directory. For testing a cpu we must run a program on it i.e a hex file. 
 This can be done by connecting the cpu to a memory. In real world a unified memory is used. Hence
 a Von-Neuman architecture environment approach is used.
