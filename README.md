@@ -46,7 +46,6 @@ so I will add them here as I progress
 
 ## Next Milestones:
 This is what is currently being tried to be done.
-- Add CI to project
 - dump cpu on FPGA connect it to a uart terminal to see your cpu's print statements of compiled c/cpp code
 - implement a timer interrupt and an interrupt handler for cpu
 - implement cpu traps
