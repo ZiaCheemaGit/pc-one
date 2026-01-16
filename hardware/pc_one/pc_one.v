@@ -8,7 +8,7 @@
 module pc_one(
     input clk,
     input rst,
-    output uart_tx_pin
+    output uart_tx_pin_for_FPGA
     );
     
     wire [31:0] data_in_cpu, data_out_cpu, mem_add, instr_add, instruction;
@@ -53,7 +53,7 @@ module pc_one(
         .rst(rst),
         .write_en(uart_write_en),
         .data(data_out_cpu[7:0]),
-        .tx(uart_tx_pin),
+        .tx(uart_tx_pin_for_FPGA),
         .uart_busy(uart_busy)
     );
     
