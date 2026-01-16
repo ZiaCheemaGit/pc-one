@@ -4,7 +4,7 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 
-from instr_format.converter import *
+from python_helper.converter import *
 
 TEST_REGISTRY = {}
 

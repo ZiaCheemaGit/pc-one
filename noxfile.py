@@ -32,6 +32,7 @@ def test_pc_one(session: nox.Session) -> None:
     
     session.chdir("../")
     
+    # Run all assembly and c/cpp test programs on pc-one
     for hex_file in hex_files:
         session.log(f"Collected test_cases/{hex_file}")
         session.run("make", f"PROGRAM_FILE=test_cases/{hex_file}", external=True)
@@ -43,3 +44,11 @@ def test_pc_one(session: nox.Session) -> None:
     session.chdir("../../")        
     
 
+@nox.session
+def test_uart(session: nox.Session) -> None:
+
+    install_deps(session)
+
+    session.chdir("tests/UART/")
+    session.run("make", external=True)
+    
