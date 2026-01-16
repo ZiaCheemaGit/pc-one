@@ -6,8 +6,8 @@
 `timescale 1ns / 1ps
 
 module pc_one(
-    input clk,
-    input rst,
+    input clk_from_FPGA,
+    input rst_from_FPGA,
     output uart_tx_pin_for_FPGA
     );
     
