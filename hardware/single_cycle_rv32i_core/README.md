@@ -4,4 +4,5 @@ the [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructi
 being powerful enough to execute meaningful programs.
 
 Here is RTL for this design: 
+
 ![RTL Schematic](../../images/RV32I.png)
