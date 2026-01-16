@@ -26,8 +26,8 @@ module pc_one(
     );
 
     core core_instance(
-        .clk(clk),
-        .rst(rst),
+        .clk(clk_from_FPGA),
+        .rst(rst_from_FPGA),
         .instruction_address(instr_add),
         .instruction(instruction),
         .mem_write(mem_write),
@@ -38,7 +38,7 @@ module pc_one(
     );
     
     ram_16KB ram_16KB_instance(
-        .clk(clk),
+        .clk(clk_from_FPGA),
         .pc_address(instr_add),
         .instruction(instruction),
         .data_address(mem_add),
@@ -49,8 +49,8 @@ module pc_one(
     );
 
     uart_tx uart_instance(
-        .clk(clk),
-        .rst(rst),
+        .clk(clk_from_FPGA),
+        .rst(rst_from_FPGA),
         .write_en(uart_write_en),
         .data(data_out_cpu[7:0]),
         .tx(uart_tx_pin_for_FPGA),
