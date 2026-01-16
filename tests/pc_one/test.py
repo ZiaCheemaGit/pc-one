@@ -104,14 +104,14 @@ async def test_basic_asm(dut):
     logger.setLevel(logging.INFO)
 
     # run clock concurrently
-    cocotb.start_soon(Clock(dut.clk, 1, unit="ns").start()) 
+    cocotb.start_soon(Clock(dut.clk_from_FPGA, 1, unit="ns").start()) 
 
     # reset cpu 
-    dut.rst.value = 1
-    await RisingEdge(dut.clk)
-    await RisingEdge(dut.clk)
-    dut.rst.value = 0
-    await RisingEdge(dut.clk)
+    dut.rst_from_FPGA.value = 1
+    await RisingEdge(dut.clk_from_FPGA)
+    await RisingEdge(dut.clk_from_FPGA)
+    dut.rst_from_FPGA.value = 0
+    await RisingEdge(dut.clk_from_FPGA)
 
     logger.info("Reset released. CPU starting execution.")
     
@@ -123,7 +123,7 @@ async def test_basic_asm(dut):
         if LOGGING_ON:
             log_signals(logger, dut)
 
-        await RisingEdge(dut.clk)
+        await RisingEdge(dut.clk_from_FPGA)
 
         try:
             if dut.instr_add.value.to_unsigned() == 0xe0:
@@ -171,14 +171,14 @@ async def test_math_c(dut):
     logger.setLevel(logging.INFO)
 
     # run clock concurrently
-    cocotb.start_soon(Clock(dut.clk, 1, unit="ns").start()) 
+    cocotb.start_soon(Clock(dut.clk_from_FPGA, 1, unit="ns").start()) 
 
     # reset cpu 
-    dut.rst.value = 1
-    await RisingEdge(dut.clk)
-    await RisingEdge(dut.clk)
-    dut.rst.value = 0
-    await RisingEdge(dut.clk)
+    dut.rst_from_FPGA.value = 1
+    await RisingEdge(dut.clk_from_FPGA)
+    await RisingEdge(dut.clk_from_FPGA)
+    dut.rst_from_FPGA.value = 0
+    await RisingEdge(dut.clk_from_FPGA)
 
     logger.info("Reset released. CPU starting execution.")
     
@@ -190,7 +190,7 @@ async def test_math_c(dut):
         if LOGGING_ON:
             log_signals(logger, dut)
 
-        await RisingEdge(dut.clk)
+        await RisingEdge(dut.clk_from_FPGA)
 
         try:
             address = 0x2000
@@ -199,10 +199,10 @@ async def test_math_c(dut):
             cell_2 = int(dut.ram_16KB_instance.mem[address + 1].value)
             cell_3 = int(dut.ram_16KB_instance.mem[address].value)
 
-            result =f"0x{cell_0:02x}{cell_1:02x}{cell_2:02x}{cell_3:02x}"
+            result =f"{cell_0:02x}{cell_1:02x}{cell_2:02x}{cell_3:02x}"
 
             logger.critical("Test ended")
-            assert "0xfffffeee" == result
+            assert "fffffeee" == result
 
             logger.critical("Test passed")
             logger.info(f"ram[0x{address}] = {result}")
