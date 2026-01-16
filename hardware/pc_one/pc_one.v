@@ -1,5 +1,8 @@
 /*
 
+This is the top level module for this project
+Its inputs/outputs are connected directly to FPGA ports
+
 
 */
 
