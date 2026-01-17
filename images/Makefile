@@ -1,6 +1,5 @@
 all: MMU.png pc_one.png RAM.png RV32I.png UART.png clean
 
-
 # Verilog to JSON
 
 MMU.json:
