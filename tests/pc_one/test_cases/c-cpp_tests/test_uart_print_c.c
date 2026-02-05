@@ -1,27 +1,36 @@
+#define UART_DATA_ADDR    0x00004000
+#define UART_STATUS_ADDR  0x00004004
 
-
-#define UART_BASE 0x4000
-#define UART_STATUS 0x4004
-
-static inline void uart_putc(char c) 
+static inline void uart_putc(char c)
 {
-    *(volatile unsigned int*)UART_BASE = c;
+    volatile unsigned int *uart_data   = (unsigned int *)UART_DATA_ADDR;
+    volatile unsigned int *uart_busy = (unsigned int *)UART_STATUS_ADDR;
+
+    while (*uart_busy) {
+    }
+
+    *uart_data = (unsigned int)c;
 }
 
-void uart_print(const char *s) 
+void uart_print(const char *s)
 {
-    while (*s) uart_putc(*s++);
+    while (*s) {
+        uart_putc(*s++);
+    }
 }
 
-int main()
+void uart_println(const char *s)
 {
-    uart_print("Hello from RV32I!\n");
+    uart_print(s);
+    uart_putc('\r');
+    uart_putc('\n');
 }
 
+int main(void)
+{
+    uart_println("Hello from PC-ONE CPU!");
+    uart_println("UART is working.");
 
-// static inline void uart_putc(char c)
-// {
-//     while (*(volatile unsigned int*)UART_STATUS & UART_BUSY);
-//     *(volatile unsigned int*)UART_BASE = c;
-// }
+    return 0;
+}
 

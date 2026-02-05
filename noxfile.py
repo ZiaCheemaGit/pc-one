@@ -43,12 +43,4 @@ def test_pc_one(session: nox.Session) -> None:
 
     session.chdir("../../")        
     
-
-@nox.session
-def test_uart(session: nox.Session) -> None:
-
-    install_deps(session)
-
-    session.chdir("tests/UART/")
-    session.run("make", external=True)
     
