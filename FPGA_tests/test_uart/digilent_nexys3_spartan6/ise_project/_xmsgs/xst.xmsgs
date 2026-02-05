@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="error" file="HDLCompiler" num="1401" delta="new" >"D:\git-clones\pc-one\hardware\single_cycle_rv32i_core\register_file.v" Line 18: Signal <arg fmt="%s" index="1">registers[0][31]</arg> in unit <arg fmt="%s" index="2">reg_file</arg> is connected to following multiple drivers:
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1499" delta="new" >"D:\git-clones\pc-one\hardware\single_cycle_rv32i_core\register_file.v" Line 7: Empty module &lt;<arg fmt="%s" index="1">reg_file</arg>&gt; remains a black box.
+</msg>
+
+</messages>
+

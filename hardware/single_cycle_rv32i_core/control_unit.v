@@ -29,6 +29,16 @@ module control_unit (
 );
 
     always @(*) begin
+
+        // Defaults
+        mem_read   = 0;
+        mem_write  = 0;
+        reg_write  = 0;
+        alu_src    = 0;
+        alu_op     = 2'b00;
+        pc_src     = 2'b00;
+        mem_to_reg = 3'b000;
+        
         case (opcode)
             
             // R-Type

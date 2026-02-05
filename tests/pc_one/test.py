@@ -7,7 +7,7 @@ from cocotb.triggers import Timer,RisingEdge
 from python_helper.converter import *
 
 TEST_REGISTRY = {}
-
+LOGGING_ON = os.environ.get("LOGGING_ON") == 1
 
 def log_signals(logger, dut):
         # PC
@@ -116,7 +116,6 @@ async def test_basic_asm(dut):
     logger.info("Reset released. CPU starting execution.")
     
     threshold_clk_cycles = 2000
-    LOGGING_ON = os.environ.get("LOGGING_ON") == 1
 
     for i in range(threshold_clk_cycles):
 
@@ -183,7 +182,6 @@ async def test_math_c(dut):
     logger.info("Reset released. CPU starting execution.")
     
     threshold_clk_cycles = 2000
-    LOGGING_ON = os.environ.get("LOGGING_ON") == 1
 
     for _ in range(threshold_clk_cycles):
 
@@ -292,10 +290,13 @@ async def uart_receive_byte(dut, logger, baud=9600):
 
     value = 0
     for i in range(8):
+        if LOGGING_ON:
+            log_signals(logger, dut)
         await Timer(baud_period_ns, unit="ns")
         bit = int(dut.uart_tx_pin_for_FPGA.value)
         value |= bit << i
-        logger.info(f"[UART] bit[{i}] = {bit}")
+        if LOGGING_ON:
+            logger.info(f"[UART] bit[{i}] = {bit}")
 
     # stop bit
     await Timer(baud_period_ns, unit="ns")
@@ -304,7 +305,8 @@ async def uart_receive_byte(dut, logger, baud=9600):
     if stop != 1:
         logger.error("[UART] STOP BIT ERROR")
 
-    logger.info(f"[UART] Received byte: 0x{value:02X} ('{chr(value)}')")
+    if LOGGING_ON:
+        logger.info(f"[UART] Received byte: 0x{value:02X} ('{chr(value)}')")
     return value
 
 @program_test("test_uart_print_c")
@@ -334,14 +336,13 @@ async def test_uart_print_c_debug(dut):
     await Timer(1_000, unit="ns")
     logger.info("[TEST] CPU should be running now")
 
+    expected = "Hey!\r\n"
     rx = ""
-    for i in range(23):
-        try:
-            ch = await uart_receive_byte(dut, logger)
-            rx += chr(ch)
-        except cocotb.result.TestFailure:
-            logger.critical(f"[TEST] FAILED while receiving char {i}")
-            raise
+    for _ in range(len(expected)):
+        ch = await uart_receive_byte(dut, logger)
+        rx += chr(ch)
+
+    assert rx == expected
 
     logger.critical(f"[TEST] RECEIVED: {rx}")
 

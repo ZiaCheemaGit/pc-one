@@ -20,6 +20,8 @@ module MMU(
     assign ram_write  = mem_write_cpu && is_ram;
     assign data_to_ram = data_from_cpu;
 
+    wire uart_read;
+    assign uart_read = mem_read_cpu && is_uart_status;
     assign uart_write = mem_write_cpu && is_uart_data;
 
     reg [31:0] data_to_cpu_r;
@@ -29,10 +31,10 @@ module MMU(
         data_to_cpu_r = 32'b0;
 
         if (mem_read_cpu) begin
-            if (is_ram) begin
+            if (ram_read) begin
                 data_to_cpu_r = data_from_ram;
             end
-            else if (is_uart_status) begin
+            else if (uart_read) begin
                 data_to_cpu_r = {31'b0, uart_busy};
             end
         end

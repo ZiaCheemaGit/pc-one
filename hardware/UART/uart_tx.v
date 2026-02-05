@@ -54,7 +54,7 @@ module uart_tx(
                 shift_reg <= {1'b1, shift_reg[9:1]};
                 bit_cnt <= bit_cnt + 1'b1;
 
-                if (bit_cnt == 4'd9) begin
+                if (bit_cnt == 4'd10) begin
                     uart_busy <= 1'b0;
                     bit_cnt   <= 4'd0;
                 end

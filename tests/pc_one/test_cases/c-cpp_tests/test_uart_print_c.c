@@ -29,8 +29,15 @@ void uart_println(const char *s)
 
 int main(void)
 {
-    uart_println("Hello from PC-ONE CPU!");
+    uart_putc('H');
+    uart_putc('e');
+    uart_putc('y');
+    uart_putc('!');
+    uart_putc('\r');
+    uart_putc('\n');
 
-    return 0;
+    // this would work once sb, lbu lb, etc all remaining instructions
+    // with byte load and store are implemented
+    // uart_println("Hey!");
 }
 
