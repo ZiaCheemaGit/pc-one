@@ -22,6 +22,9 @@
   <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="ise_project.xise"/>
 
   <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="MMU.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="MMU.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="MMU.xst"/>
     <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/xst.xmsgs"/>
     <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="pc_one.cmd_log"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="pc_one.lso"/>
@@ -38,6 +41,7 @@
   <transforms xmlns="http://www.xilinx.com/XMLSchema">
     <transform xil_pn:end_ts="1770312813" xil_pn:name="TRAN_copyInitialToXSTAbstractSynthesis" xil_pn:start_ts="1770312813">
       <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
     </transform>
     <transform xil_pn:end_ts="1770312813" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="1099888799229961321" xil_pn:start_ts="1770312813">
       <status xil_pn:value="SuccessfullyRun"/>
@@ -63,15 +67,15 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770313520" xil_pn:in_ck="3981531026440146634" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-3872936193571544441" xil_pn:start_ts="1770313511">
-      <status xil_pn:value="FailedRun"/>
+    <transform xil_pn:end_ts="1770316823" xil_pn:in_ck="3981531026440146634" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-3872936193571544441" xil_pn:start_ts="1770316729">
+      <status xil_pn:value="AbortedRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
       <outfile xil_pn:name="pc_one.lso"/>
       <outfile xil_pn:name="pc_one.prj"/>
       <outfile xil_pn:name="pc_one.syr"/>
       <outfile xil_pn:name="pc_one.xst"/>
-      <outfile xil_pn:name="pc_one_xst.xrpt"/>
       <outfile xil_pn:name="webtalk_pn.xml"/>
       <outfile xil_pn:name="xst"/>
     </transform>
