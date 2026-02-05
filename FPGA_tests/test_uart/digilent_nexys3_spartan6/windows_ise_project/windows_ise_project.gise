@@ -100,8 +100,8 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770319442" xil_pn:in_ck="3981531026440146634" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-3872936193571544441" xil_pn:start_ts="1770319430">
-      <status xil_pn:value="SuccessfullyRun"/>
+    <transform xil_pn:end_ts="1770319941" xil_pn:in_ck="3981531026440146634" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-3872936193571544441" xil_pn:start_ts="1770319931">
+      <status xil_pn:value="FailedRun"/>
       <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="MMU.ngr"/>
@@ -111,7 +111,6 @@
       <outfile xil_pn:name="pc_one.ngc"/>
       <outfile xil_pn:name="pc_one.ngr"/>
       <outfile xil_pn:name="pc_one.prj"/>
-      <outfile xil_pn:name="pc_one.stx"/>
       <outfile xil_pn:name="pc_one.syr"/>
       <outfile xil_pn:name="pc_one.xst"/>
       <outfile xil_pn:name="pc_one_xst.xrpt"/>
