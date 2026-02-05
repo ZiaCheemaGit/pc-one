@@ -26,6 +26,7 @@
     <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="pc_one.cmd_log"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="pc_one.lso"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="pc_one.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="pc_one.stx"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_REPORT" xil_pn:name="pc_one.syr"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST" xil_pn:name="pc_one.xst"/>
     <file xil_pn:fileType="FILE_HTML" xil_pn:name="pc_one_summary.html"/>
@@ -62,9 +63,8 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770312826" xil_pn:in_ck="3981531026440146634" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-3872936193571544441" xil_pn:start_ts="1770312813">
+    <transform xil_pn:end_ts="1770313520" xil_pn:in_ck="3981531026440146634" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-3872936193571544441" xil_pn:start_ts="1770313511">
       <status xil_pn:value="FailedRun"/>
-      <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
       <outfile xil_pn:name="pc_one.lso"/>
