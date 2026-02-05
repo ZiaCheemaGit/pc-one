@@ -3,10 +3,11 @@
 
 static inline void uart_putc(char c)
 {
-    volatile unsigned int *uart_data   = (unsigned int *)UART_DATA_ADDR;
-    volatile unsigned int *uart_busy = (unsigned int *)UART_STATUS_ADDR;
+    volatile unsigned int *uart_data = (volatile unsigned int *)UART_DATA_ADDR;
+    volatile unsigned int *uart_status = (volatile unsigned int *)UART_STATUS_ADDR;
 
-    while (*uart_busy) {
+    while ((*uart_status & 0x1) != 0) {
+        __asm__ volatile ("" ::: "memory");
     }
 
     *uart_data = (unsigned int)c;
