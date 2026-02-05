@@ -12,7 +12,6 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/adder32.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/alu_control.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/control_unit.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/main_alu.v
-VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/mux_2X1.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/mux_4X1.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/mux_5X1.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/pc.v
