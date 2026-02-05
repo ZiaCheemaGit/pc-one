@@ -81,3 +81,47 @@ module ram_16KB(
     end
 
 endmodule
+
+// `timescale 1ns / 1ps
+
+// module ram_16KB(
+//     input clk,
+//     input [31:0] pc_address,
+//     output reg [31:0] instruction,
+//     input [31:0] data_address,
+//     input mem_read,
+//     input mem_write,
+//     input [31:0] data_in,
+//     output reg [31:0] data_out
+// );
+
+//     parameter WORDS = 4096;   // 16 KB / 4
+//     reg [31:0] mem [0:WORDS-1];
+
+//     wire [11:0] pc_word_addr   = pc_address[13:2];
+//     wire [11:0] data_word_addr = data_address[13:2];
+
+// `ifndef SYNTHESIS
+//     reg [1023:0] program_file;
+//     initial begin
+//         if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
+//             $display("ERROR: PROGRAM_FILE not specified!");
+//             $finish;
+//         end
+//         $readmemh(program_file, mem);
+//     end
+// `endif
+
+//     always @(posedge clk) begin
+//         instruction <= mem[pc_word_addr];
+
+//         if (mem_write)
+//             mem[data_word_addr] <= data_in;
+
+//         if (mem_read)
+//             data_out <= mem[data_word_addr];
+//         else
+//             data_out <= 32'b0;
+//     end
+
+// endmodule
