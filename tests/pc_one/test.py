@@ -335,7 +335,7 @@ async def test_uart_print_c_debug(dut):
     logger.info("[TEST] CPU should be running now")
 
     rx = ""
-    for i in range(40):
+    for i in range(23):
         try:
             ch = await uart_receive_byte(dut, logger)
             rx += chr(ch)

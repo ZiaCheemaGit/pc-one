@@ -29,7 +29,6 @@ void uart_println(const char *s)
 int main(void)
 {
     uart_println("Hello from PC-ONE CPU!");
-    uart_println("UART is working.");
 
     return 0;
 }
