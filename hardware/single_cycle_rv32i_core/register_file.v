@@ -52,16 +52,13 @@ module reg_file (
         end 
     end
 
-    // always @(posedge clk) begin
-    //     if (reg_write_control && dest_reg != 5'd0 && !rst) begin
-    //         registers[dest_reg] <= reg_write_data;
-    //     end
-    // end
+    always @(posedge clk) begin
+        if (reg_write_control && dest_reg != 5'd0 && !rst) begin
+            registers[dest_reg] <= reg_write_data;
+        end
+    end
 
-    // assign src1_reg_value = registers[src1_reg];
-    // assign src2_reg_value = registers[src2_reg];
-
-    assign src1_reg_value = (src1_reg == 5'd0) ? 32'd0 : registers[src1_reg];
-    assign src2_reg_value = (src2_reg == 5'd0) ? 32'd0 : registers[src2_reg];
+    assign src1_reg_value = registers[src1_reg];
+    assign src2_reg_value = registers[src2_reg];
 
 endmodule
