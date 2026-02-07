@@ -1,5 +1,6 @@
 `timescale 1ns / 1ps
 
+// works on cocotb
 module ram_16KB(
     input clk,
     input [31:0] pc_address,
@@ -13,23 +14,6 @@ module ram_16KB(
 
     parameter MEM_SIZE = 16384;
     reg [7:0] mem [0:MEM_SIZE-1];
-
-    //initial begin
-    //    $readmemh("test.hex", mem);
-    //end
-
-    // hex file comes from cocotb
-    //reg [1023:0] program_file;
-    //initial begin
-    //    if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
-    //        $display("ERROR: PROGRAM_FILE not specified!");
-    //        $display("Run simulation with: +PROGRAM_FILE=<path_to_hex>");
-    //        $finish;
-    //    end
-    //    
-    //    $display("Loading program from: %s", program_file);
-    //    $readmemh(program_file, mem);
-    //end
 
     //cocotb hex file
     `ifndef SYNTHESIS
@@ -82,8 +66,7 @@ module ram_16KB(
 
 endmodule
 
-// `timescale 1ns / 1ps
-
+// works on ise
 // module ram_16KB(
 //     input clk,
 //     input [31:0] pc_address,
