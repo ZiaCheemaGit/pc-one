@@ -51,10 +51,16 @@ $(call HEXFILE,$(1)):
 	@echo "Building $(1)"
 	@mkdir -p $(call OUTDIR,$(1))
 	$(CC) $(ARCH_FLAGS) $(COMMON_FLAGS) \
-	      -T $(LINKER_SCRIPT) \
-	      $(CRT0) $(1) -lgcc -o $(call OUTDIR,$(1))/$(notdir $(basename $(1))).elf
-	$(OBJDUMP) -d -M numeric,no-aliases $(call OUTDIR,$(1))/$(notdir $(basename $(1))).elf > $(call OUTDIR,$(1))/$(notdir $(basename $(1))).dump
-	$(OBJCOPY) -O verilog $(call OUTDIR,$(1))/$(notdir $(basename $(1))).elf $$@
+		-T $(LINKER_SCRIPT) \
+		$(CRT0) $(1) -lgcc -o $(call OUTDIR,$(1))/$(notdir $(basename $(1))).elf
+	$(OBJDUMP) -d -M numeric,no-aliases \
+		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).elf \
+		> $(call OUTDIR,$(1))/$(notdir $(basename $(1))).dump
+	$(OBJCOPY) -O binary \
+		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).elf \
+		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).bin
+	python3 bin2hex32.py \
+		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).bin > $$@
 endef
 
 $(foreach src,$(SRCS),$(eval $(call BUILD_RULE,$(src))))
