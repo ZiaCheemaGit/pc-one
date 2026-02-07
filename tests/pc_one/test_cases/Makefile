@@ -35,7 +35,10 @@ endef
 
 HEX_FILES := $(foreach src,$(SRCS),$(call HEXFILE,$(src)))
 
-all: $(HEX_FILES)
+.PHONY: all clean
+
+all: clean $(HEX_FILES)
+
 
 # Build rule
 $(OUT_DIR)/%/%.hex:
