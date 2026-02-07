@@ -1,0 +1,39 @@
+Release 14.7 ngdbuild P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+
+Command Line:
+D:\xilinx\ise-install\14.7\ISE_DS\ISE\bin\nt64\unwrapped\ngdbuild.exe -intstyle
+ise -dd _ngo -nt timestamp -uc top_nexys3.ucf -p xc6slx16-csg324-3
+top_nexys3.ngc top_nexys3.ngd
+
+Reading NGO file
+"D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_
+project/top_nexys3.ngc" ...
+Gathering constraint information from source properties...
+Done.
+
+Annotating constraints to design from ucf file "top_nexys3.ucf" ...
+Resolving constraint associations...
+Checking Constraint Associations...
+Done...
+
+Checking expanded design ...
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+NGDBUILD Design Results Summary:
+  Number of errors:     0
+  Number of warnings:   0
+
+Total memory usage is 4407056 kilobytes
+
+Writing NGD file "top_nexys3.ngd" ...
+Total REAL time to NGDBUILD completion:  1 sec
+Total CPU time to NGDBUILD completion:   1 sec
+
+Writing NGDBUILD log file "top_nexys3.bld"...

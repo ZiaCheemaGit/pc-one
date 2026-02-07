@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=D:\git-clones\pc-one\FPGA_tests\test_uart\digilent_nexys3_spartan6\windows_ise_project\top_nexys3.ncd
+OUTFILE=D:\git-clones\pc-one\FPGA_tests\test_uart\digilent_nexys3_spartan6\windows_ise_project\top_nexys3.bit
+FAMILY=Spartan6
+PART=xc6slx16-3csg324
+WORKINGDIR=D:\git-clones\pc-one\FPGA_tests\test_uart\digilent_nexys3_spartan6\windows_ise_project
+LICENSE=WebPack
+USER_INFO=_

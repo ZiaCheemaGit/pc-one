@@ -1,0 +1,30 @@
+#-----------------------------------------------------------
+# PlanAhead v14.7 (64-bit)
+# Build 321239 by xbuild on Fri Sep 27 19:29:51 MDT 2013
+# Start of session at: Sat Feb 07 13:29:57 2026
+# Process ID: 1212
+# Log file: D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/planAhead_run_1/planAhead.log
+# Journal file: D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pa.fromHdl.tcl
+update_compile_order -fileset sim_1
+startgroup
+set_property package_pin A4 [get_ports clk_100MHz]
+endgroup
+startgroup
+set_property package_pin A2 [get_ports rst]
+endgroup
+startgroup
+set_property package_pin A3 [get_ports uart_tx]
+endgroup
+set_property is_loc_fixed false [get_ports [list  rst]]
+set_property is_loc_fixed false [get_ports [list  clk_100MHz]]
+set_property is_loc_fixed false [get_ports [list  uart_tx]]
+set_property is_loc_fixed true [get_ports [list  clk_100MHz]]
+set_property is_loc_fixed true [get_ports [list  rst]]
+set_property is_loc_fixed true [get_ports [list  uart_tx]]
+set_property iostandard LVCMOS33 [get_ports [list clk_100MHz]]
+set_property iostandard LVCMOS33 [get_ports [list rst]]
+set_property iostandard LVCMOS33 [get_ports [list uart_tx]]
+save_constraints

@@ -113,6 +113,8 @@ Parsing module <ram_16KB>.
 =========================================================================
 
 Elaborating module <ram_16KB>.
+Reading initialization file \":\git-clones\pc-one\hardware\RAMs\/test_uart_print_c.hex\".
+WARNING:HDLCompiler:1670 - "D:\git-clones\pc-one\hardware\RAMs\ram_16KB.v" Line 88: Signal <mem> in initial block is partially initialized.
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -351,13 +353,13 @@ Cross Clock Domains Report:
 
 
 Total REAL time to Xst completion: 3.00 secs
-Total CPU time to Xst completion: 3.24 secs
+Total CPU time to Xst completion: 3.38 secs
  
 --> 
 
 Total memory usage is 4495860 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :    4 (   0 filtered)
+Number of warnings :    5 (   0 filtered)
 Number of infos    :    1 (   0 filtered)
 
