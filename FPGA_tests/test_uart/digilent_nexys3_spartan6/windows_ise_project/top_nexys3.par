@@ -1,7 +1,7 @@
 Release 14.7 par P.20131013 (nt64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-DESKTOP-DKJK6L5::  Sat Feb 07 18:36:54 2026
+DESKTOP-DKJK6L5::  Sat Feb 07 21:20:14 2026
 
 par -w -intstyle ise -ol high -mt off top_nexys3_map.ncd top_nexys3.ncd
 top_nexys3.pcf 
@@ -27,26 +27,30 @@ Device speed data version:  "PRODUCTION 1.23 2013-10-13".
 Device Utilization Summary:
 
 Slice Logic Utilization:
-  Number of Slice Registers:                    38 out of  18,224    1%
-    Number used as Flip Flops:                  38
+  Number of Slice Registers:                    82 out of  18,224    1%
+    Number used as Flip Flops:                  82
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                         55 out of   9,112    1%
-    Number used as logic:                       55 out of   9,112    1%
-      Number using O6 output only:              33
-      Number using O5 output only:               0
+  Number of Slice LUTs:                         94 out of   9,112    1%
+    Number used as logic:                       89 out of   9,112    1%
+      Number using O6 output only:              57
+      Number using O5 output only:              10
       Number using O5 and O6:                   22
       Number used as ROM:                        0
     Number used as Memory:                       0 out of   2,176    0%
+    Number used exclusively as route-thrus:      5
+      Number with same-slice register load:      4
+      Number with same-slice carry load:         1
+      Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                    18 out of   2,278    1%
-  Number of MUXCYs used:                         0 out of   4,556    0%
-  Number of LUT Flip Flop pairs used:           55
-    Number with an unused Flip Flop:            22 out of      55   40%
-    Number with an unused LUT:                   0 out of      55    0%
-    Number of fully used LUT-FF pairs:          33 out of      55   60%
+  Number of occupied Slices:                    32 out of   2,278    1%
+  Number of MUXCYs used:                        12 out of   4,556    1%
+  Number of LUT Flip Flop pairs used:          109
+    Number with an unused Flip Flop:            39 out of     109   35%
+    Number with an unused LUT:                  15 out of     109   13%
+    Number of fully used LUT-FF pairs:          55 out of     109   50%
     Number of slice register sites lost
       to control set restrictions:               0 out of  18,224    0%
 
@@ -61,7 +65,7 @@ IO Utilization:
     Number of LOCed IOBs:                        4 out of       4  100%
 
 Specific Feature Utilization:
-  Number of RAMB16BWERs:                         0 out of      32    0%
+  Number of RAMB16BWERs:                         8 out of      32   25%
   Number of RAMB8BWERs:                          0 out of      64    0%
   Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
   Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
@@ -95,13 +99,13 @@ Finished initial Timing Analysis.  REAL time: 1 secs
 Starting Router
 
 
-Phase  1  : 338 unrouted;      REAL time: 1 secs 
+Phase  1  : 881 unrouted;      REAL time: 1 secs 
 
-Phase  2  : 302 unrouted;      REAL time: 1 secs 
+Phase  2  : 570 unrouted;      REAL time: 1 secs 
 
-Phase  3  : 109 unrouted;      REAL time: 1 secs 
+Phase  3  : 182 unrouted;      REAL time: 2 secs 
 
-Phase  4  : 109 unrouted; (Par is working to improve performance)     REAL time: 2 secs 
+Phase  4  : 182 unrouted; (Par is working to improve performance)     REAL time: 2 secs 
 
 Updating file: top_nexys3.ncd with current fully routed design.
 
@@ -137,8 +141,8 @@ Asterisk (*) preceding a constraint indicates it was not met.
   Constraint                                |    Check    | Worst Case |  Best Case | Timing |   Timing   
                                             |             |    Slack   | Achievable | Errors |    Score   
 ----------------------------------------------------------------------------------------------------------
-  Autotimespec constraint for clock net clk | SETUP       |         N/A|     3.122ns|     N/A|           0
-  _100MHz_BUFGP                             | HOLD        |     0.388ns|            |       0|           0
+  Autotimespec constraint for clock net clk | SETUP       |         N/A|     4.550ns|     N/A|           0
+  _100MHz_BUFGP                             | HOLD        |     0.270ns|            |       0|           0
 ----------------------------------------------------------------------------------------------------------
 
 
@@ -157,7 +161,7 @@ All signals are completely routed.
 Total REAL time to PAR completion: 2 secs 
 Total CPU time to PAR completion: 2 secs 
 
-Peak Memory Usage:  4467 MB
+Peak Memory Usage:  4483 MB
 
 Placer: Placement generated during map.
 Routing: Completed - No errors found.

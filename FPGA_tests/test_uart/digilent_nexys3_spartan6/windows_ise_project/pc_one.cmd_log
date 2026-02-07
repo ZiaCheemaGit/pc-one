@@ -16,3 +16,16 @@ xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys
 xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.xst" -ofn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.syr" 
 xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.xst" -ofn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.syr" 
 xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.xst" -ofn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.syr" 
+xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.xst" -ofn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-3 pc_one.ngc pc_one.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o pc_one_map.ncd pc_one.ngd pc_one.pcf 
+par -w -intstyle ise -ol high -mt off pc_one_map.ncd pc_one.ncd pc_one.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml pc_one.twx pc_one.ncd -o pc_one.twr pc_one.pcf 
+bitgen -intstyle ise -f pc_one.ut pc_one.ncd 
+xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.xst" -ofn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.syr" 
+xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.xst" -ofn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/pc_one.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-3 pc_one.ngc pc_one.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o pc_one_map.ncd pc_one.ngd pc_one.pcf 
+par -w -intstyle ise -ol high -mt off pc_one_map.ncd pc_one.ncd pc_one.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml pc_one.twx pc_one.ncd -o pc_one.twr pc_one.pcf 
+bitgen -intstyle ise -f pc_one.ut pc_one.ncd 
