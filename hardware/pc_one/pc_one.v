@@ -4,7 +4,7 @@ This is the top level module for this project
 Its inputs/outputs are connected directly to FPGA ports
 
 MMU
-RAM = 0x00000000 --> 0x00003FFF
+RAM = 0x00002000 --> 0x00003FFF
 UART =  00004000
 UART_STATUS = 0x00004004
 
@@ -22,7 +22,7 @@ module pc_one(
     cpu_data_to_mmu, mmu_data_to_cpu, mmu_data_to_ram;
 
     wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, 
-    uart_status_read, uart_busy;
+    uart_busy;
     
     MMU MMU_instance(
         .uart_busy(uart_busy),
@@ -50,15 +50,19 @@ module pc_one(
         .mem_data_to_mem(cpu_data_to_mmu)
     );
     
-    ram_16KB ram_16KB_instance(
+    ram ram_instance(
         .clk(clk_from_FPGA_100MHz),
-        .pc_address(instr_add),
-        .instruction(instruction),
         .data_address(mem_add),
         .mem_read(mmu_mem_read),
         .mem_write(mmu_mem_write),
         .data_in(mmu_data_to_ram),
         .data_out(ram_data_to_mmu)
+    );
+
+    rom rom_instance(
+        .clk(clk_from_FPGA_100MHz),
+        .pc(instr_add),       
+        .instruction(instruction)
     );
 
     uart_tx uart_instance(

@@ -22,8 +22,9 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/sign_ext_12_to_
 # pc_one
 VERILOG_SOURCES += $(PWD)/../../hardware/pc_one/pc_one.v
 
-# 16KB ram
-VERILOG_SOURCES += $(PWD)/../../hardware/RAMs/ram_16KB.v
+# memories
+VERILOG_SOURCES += $(PWD)/../../hardware/memory/rom.v
+VERILOG_SOURCES += $(PWD)/../../hardware/memory/ram.v
 
 # MMU
 VERILOG_SOURCES += $(PWD)/../../hardware/MMU/MMU.v
