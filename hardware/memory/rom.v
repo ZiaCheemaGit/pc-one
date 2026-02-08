@@ -1,22 +1,22 @@
 module rom(
     input  wire        clk,
-    input  wire [31:0] pc,       
-    output reg  [31:0] instruction
+    input  wire [31:0] pc,          // byte address (unchanged)
+    output reg  [31:0] instruction  // 32-bit instruction
 );
 
-    parameter WORDS = 16384;
-    reg [7:0] mem [0:WORDS-1];
+    parameter WORDS = 4096; // number of 32-bit words (16 KB total)
 
-    // for cocotb 
-    `ifdef SYNTHESIS
+    // 32-bit wide ROM
+    reg [31:0] mem [0:WORDS-1];
+
+    // for cocotb
+    `ifndef SYNTHESIS
         reg [1023:0] program_file;
         initial begin
             if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
                 $display("ERROR: PROGRAM_FILE not specified!");
-                $display("Run simulation with: +PROGRAM_FILE=<path_to_hex>");
                 $finish;
             end
-
             $display("Loading program from: %s", program_file);
             $readmemh(program_file, mem);
         end
@@ -27,8 +27,13 @@ module rom(
         end
     `endif
 
+    wire [31:0] word_index;
+    assign word_index = pc[31:2];  
+
     always @(posedge clk) begin
-        instruction <= mem[pc];
+        instruction <= mem[word_index];
     end
+
 endmodule
+
 
