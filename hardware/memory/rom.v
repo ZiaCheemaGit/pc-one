@@ -8,7 +8,7 @@ module rom(
     reg [7:0] mem [0:WORDS-1];
 
     // for cocotb 
-    `ifndef SYNTHESIS
+    `ifdef SYNTHESIS
         reg [1023:0] program_file;
         initial begin
             if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
