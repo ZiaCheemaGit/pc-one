@@ -10,7 +10,7 @@
 # packaging 
 __pycache__
 
-# binaries
+# hex files
 *.bin
 
 # sim

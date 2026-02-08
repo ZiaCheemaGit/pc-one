@@ -114,7 +114,7 @@ Parsing module <ram_16KB>.
 
 Elaborating module <ram_16KB>.
 Reading initialization file \":\git-clones\pc-one\hardware\RAMs\/test_uart_print_c.hex\".
-WARNING:HDLCompiler:1670 - "D:\git-clones\pc-one\hardware\RAMs\ram_16KB.v" Line 88: Signal <mem> in initial block is partially initialized.
+WARNING:HDLCompiler:1670 - "D:\git-clones\pc-one\hardware\RAMs\ram_16KB.v" Line 89: Signal <mem> in initial block is partially initialized.
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -352,8 +352,8 @@ Cross Clock Domains Report:
 =========================================================================
 
 
-Total REAL time to Xst completion: 3.00 secs
-Total CPU time to Xst completion: 3.38 secs
+Total REAL time to Xst completion: 4.00 secs
+Total CPU time to Xst completion: 3.37 secs
  
 --> 
 

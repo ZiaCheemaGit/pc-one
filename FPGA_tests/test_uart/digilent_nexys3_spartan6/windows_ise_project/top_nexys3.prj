@@ -1,2 +1,3 @@
 verilog work "../../../../hardware/UART/uart_tx.v"
+verilog work "../../../../hardware/RAMs/ram_16KB.v"
 verilog work "top_nexys3.v"

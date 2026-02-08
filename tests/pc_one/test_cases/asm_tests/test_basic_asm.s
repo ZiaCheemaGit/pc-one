@@ -7,8 +7,10 @@
 
 main:
     # Setup base address for memory test
-    lui   x1, 0x0
-    addi  x1, x1, 0x100        # x1 = 0x100
+    .extern _ram_base
+    la    x1, _ram_base
+    addi  x1, x1, 0x100    # x1 = RAM_BASE + 0x100
+
 
     # U-type
     lui   x2, 0x12345

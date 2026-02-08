@@ -8,7 +8,7 @@ from cocotb.utils import get_sim_time
 from python_helper.converter import *
 
 TEST_REGISTRY = {}
-LOGGING_ON = os.environ.get("LOGGING_ON") == 1
+LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
 
 def log_signals(logger, dut):
         # PC
@@ -44,33 +44,33 @@ def log_signals(logger, dut):
 
         # mem_write
         try: 
-            logger.info(f"mem_write = {dut.ram_16KB_instance.mem_write.value.to_unsigned()}")
+            logger.info(f"mem_write = {dut.ram_instance.mem_write.value.to_unsigned()}")
         except Exception:
-            logger.info(f"mem_write = {dut.ram_16KB_instance.mem_write.value}")
+            logger.info(f"mem_write = {dut.ram_instance.mem_write.value}")
 
         # data_in
         try: 
-            logger.info(f"data_in = {dut.ram_16KB_instance.data_in.value.to_unsigned()}")
+            logger.info(f"data_in = {dut.ram_instance.data_in.value.to_unsigned()}")
         except Exception:
-            logger.info(f"data_in = {dut.ram_16KB_instance.data_in.value}")
+            logger.info(f"data_in = {dut.ram_instance.data_in.value}")
 
         # mem_read
         try: 
-            logger.info(f"mem_read = {dut.ram_16KB_instance.mem_read.value.to_unsigned()}")
+            logger.info(f"mem_read = {dut.ram_instance.mem_read.value.to_unsigned()}")
         except Exception:
-            logger.info(f"mem_read = {dut.ram_16KB_instance.mem_read.value}")
+            logger.info(f"mem_read = {dut.ram_instance.mem_read.value}")
 
         # data_out
         try: 
-            logger.info(f"data_out = {dut.ram_16KB_instance.data_out.value.to_unsigned()}")
+            logger.info(f"data_out = {dut.ram_instance.data_out.value.to_unsigned()}")
         except Exception:
-            logger.info(f"data_out = {dut.ram_16KB_instance.data_out.value}")
+            logger.info(f"data_out = {dut.ram_instance.data_out.value}")
 
         # data_address
         try: 
-            logger.info(f"data_address = {dut.ram_16KB_instance.data_address.value.to_unsigned()}")
+            logger.info(f"data_address = {dut.ram_instance.data_address.value.to_unsigned()}")
         except Exception:
-            logger.info(f"data_address = {dut.ram_16KB_instance.data_address.value}")
+            logger.info(f"data_address = {dut.ram_instance.data_address.value}")
 
 
 def program_test(name):
@@ -115,28 +115,25 @@ async def test_basic_asm(dut):
     await RisingEdge(dut.clk_from_FPGA_100MHz)
 
     logger.info("Reset released. CPU starting execution.")
+    logger.info("Starting test_basic_asm")
     
     threshold_clk_cycles = 2000
 
     for i in range(threshold_clk_cycles):
-
         if LOGGING_ON:
             log_signals(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA_100MHz)
-
         try:
             if dut.instr_add.value.to_unsigned() == 0xe0:
-                if LOGGING_ON:
-                    log_signals(logger, dut)
                 logger.critical("Test ended control reached at label HALT")
 
                 try: 
-                    address = 0x104
-                    cell_107 = int(dut.ram_16KB_instance.mem[address + 3].value)
-                    cell_106 = int(dut.ram_16KB_instance.mem[address + 2].value)
-                    cell_105 = int(dut.ram_16KB_instance.mem[address + 1].value)
-                    cell_104 = int(dut.ram_16KB_instance.mem[address].value)
+                    address = 0x2104
+                    cell_107 = int(dut.ram_instance.mem[address + 3].value)
+                    cell_106 = int(dut.ram_instance.mem[address + 2].value)
+                    cell_105 = int(dut.ram_instance.mem[address + 1].value)
+                    cell_104 = int(dut.ram_instance.mem[address].value)
                 except:
                     raise Exception("cannot read mem location 0x104 - 0x107")
                 
@@ -154,7 +151,8 @@ async def test_basic_asm(dut):
                 return
             
             elif i >= 2000 and dut.instr_add.value.to_unsigned() != 0xe0:
-                assert False, "TIMEOUT: PC never reached 0xE09label HALT)"
+                assert False, "TIMEOUT: PC never reached 0xE09 label HALT)"
+            
         except:
             raise Exception("cannot read PC value")
 
@@ -193,10 +191,10 @@ async def test_math_c(dut):
 
         try:
             address = 0x2000
-            cell_0 = int(dut.ram_16KB_instance.mem[address + 3].value)
-            cell_1 = int(dut.ram_16KB_instance.mem[address + 2].value)
-            cell_2 = int(dut.ram_16KB_instance.mem[address + 1].value)
-            cell_3 = int(dut.ram_16KB_instance.mem[address].value)
+            cell_0 = int(dut.ram_insta.mem[address + 3].value)
+            cell_1 = int(dut.ram_insta.mem[address + 2].value)
+            cell_2 = int(dut.ram_insta.mem[address + 1].value)
+            cell_3 = int(dut.ram_insta.mem[address].value)
 
             result =f"{cell_0:02x}{cell_1:02x}{cell_2:02x}{cell_3:02x}"
 

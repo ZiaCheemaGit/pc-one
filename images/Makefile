@@ -1,4 +1,4 @@
-all: MMU.png pc_one.png RAM.png RV32I.png UART.png clean
+all: MMU.png pc_one.png RAM.png ROM.png RV32I.png UART.png clean
 
 
 # Verilog to JSON
@@ -11,11 +11,15 @@ pc_one.json:
 	../hardware/pc_one/pc_one.v \
 	../hardware/UART/*.v \
 	../hardware/single_cycle_rv32i_core/*.v \
-	../hardware/RAMs/ram_16KB.v \
+	../hardware/memory/ram.v \
+	../hardware/memory/rom.v \
 	../hardware/MMU/*.v; hierarchy -top pc_one; proc; opt; write_json pc_one.json"
 
 RAM.json:
-	yosys -p "read_verilog ../hardware/RAMs/*.v; hierarchy -top ram_16KB; proc; opt; write_json RAM.json"
+	yosys -p "read_verilog ../hardware/memory/ram.v; hierarchy -top ram; proc; opt; write_json RAM.json"
+
+ROM.json:
+	yosys -p "read_verilog ../hardware/memory/rom.v; hierarchy -top rom; proc; opt; write_json ROM.json"
 
 RV32I.json:
 	yosys -p "read_verilog ../hardware/single_cycle_rv32i_core/*.v; hierarchy -top core; proc; opt; write_json RV32I.json"
@@ -35,6 +39,9 @@ pc_one.svg: pc_one.json
 RAM.svg: RAM.json
 	netlistsvg RAM.json -o RAM.svg
 
+ROM.svg: ROM.json
+	netlistsvg ROM.json -o ROM.svg
+
 RV32I.svg: RV32I.json
 	netlistsvg RV32I.json -o RV32I.svg
 
@@ -52,6 +59,9 @@ pc_one.png: pc_one.svg
 
 RAM.png: RAM.svg
 	rsvg-convert -b white RAM.svg -o RAM.png
+
+ROM.png: ROM.svg
+	rsvg-convert -b white ROM.svg -o ROM.png
 
 RV32I.png: RV32I.svg
 	rsvg-convert -b white RV32I.svg -o RV32I.png
