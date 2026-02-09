@@ -145,55 +145,117 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770493490" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="1099888799229961321" xil_pn:start_ts="1770493490">
+    <transform xil_pn:end_ts="1770626525" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="-8505954047582904047" xil_pn:start_ts="1770626525">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770493490" xil_pn:name="TRAN_regenerateCores" xil_pn:prop_ck="2476812547556506296" xil_pn:start_ts="1770493490">
+    <transform xil_pn:end_ts="1770626525" xil_pn:name="TRAN_regenerateCores" xil_pn:prop_ck="8194165478072988768" xil_pn:start_ts="1770626525">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770493490" xil_pn:name="TRAN_SubProjectAbstractToPreProxy" xil_pn:start_ts="1770493490">
+    <transform xil_pn:end_ts="1770626525" xil_pn:name="TRAN_SubProjectAbstractToPreProxy" xil_pn:start_ts="1770626525">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770493490" xil_pn:name="TRAN_xawsTohdl" xil_pn:prop_ck="-7140397997653959189" xil_pn:start_ts="1770493490">
+    <transform xil_pn:end_ts="1770626525" xil_pn:name="TRAN_xawsTohdl" xil_pn:prop_ck="-8970657125123503213" xil_pn:start_ts="1770626525">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770493490" xil_pn:name="TRAN_SubProjectPreToStructuralProxy" xil_pn:prop_ck="1106364426758808884" xil_pn:start_ts="1770493490">
+    <transform xil_pn:end_ts="1770626525" xil_pn:name="TRAN_SubProjectPreToStructuralProxy" xil_pn:prop_ck="1106364426758808884" xil_pn:start_ts="1770626525">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770493490" xil_pn:name="TRAN_platgen" xil_pn:prop_ck="7780553698324335938" xil_pn:start_ts="1770493490">
+    <transform xil_pn:end_ts="1770626525" xil_pn:name="TRAN_platgen" xil_pn:prop_ck="2983124320136248298" xil_pn:start_ts="1770626525">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1770493504" xil_pn:in_ck="501215717074941376" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-3872936193571544441" xil_pn:start_ts="1770493490">
+    <transform xil_pn:end_ts="1770626696" xil_pn:in_ck="501215717074941376" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-7194605429074155729" xil_pn:start_ts="1770626684">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="MMU.ngr"/>
       <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
       <outfile xil_pn:name="core.ngr"/>
-      <outfile xil_pn:name="pc_one.lso"/>
-      <outfile xil_pn:name="pc_one.ngc"/>
       <outfile xil_pn:name="pc_one.ngr"/>
-      <outfile xil_pn:name="pc_one.prj"/>
-      <outfile xil_pn:name="pc_one.stx"/>
-      <outfile xil_pn:name="pc_one.syr"/>
-      <outfile xil_pn:name="pc_one.xst"/>
-      <outfile xil_pn:name="pc_one_xst.xrpt"/>
       <outfile xil_pn:name="ram.ngr"/>
       <outfile xil_pn:name="rom.ngr"/>
+      <outfile xil_pn:name="top_nexys3.lso"/>
+      <outfile xil_pn:name="top_nexys3.ngc"/>
+      <outfile xil_pn:name="top_nexys3.ngr"/>
+      <outfile xil_pn:name="top_nexys3.prj"/>
+      <outfile xil_pn:name="top_nexys3.stx"/>
+      <outfile xil_pn:name="top_nexys3.syr"/>
+      <outfile xil_pn:name="top_nexys3.xst"/>
+      <outfile xil_pn:name="top_nexys3_xst.xrpt"/>
       <outfile xil_pn:name="uart_tx.ngr"/>
       <outfile xil_pn:name="webtalk_pn.xml"/>
       <outfile xil_pn:name="xst"/>
     </transform>
-    <transform xil_pn:end_ts="1770455850" xil_pn:in_ck="8587377677943186952" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="8767990256692670910" xil_pn:start_ts="1770455850">
+    <transform xil_pn:end_ts="1770626537" xil_pn:in_ck="8587377677943186952" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="8767990256692670910" xil_pn:start_ts="1770626537">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForProperties"/>
+    </transform>
+    <transform xil_pn:end_ts="1770626700" xil_pn:in_ck="1147943095145390856" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="-3251971578503324095" xil_pn:start_ts="1770626696">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_ngo"/>
+      <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+      <outfile xil_pn:name="top_nexys3.bld"/>
+      <outfile xil_pn:name="top_nexys3.ngd"/>
+      <outfile xil_pn:name="top_nexys3_ngdbuild.xrpt"/>
+    </transform>
+    <transform xil_pn:end_ts="1770626704" xil_pn:in_ck="-4452473175746361333" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="1463976855095865663" xil_pn:start_ts="1770626700">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
+      <outfile xil_pn:name="top_nexys3.pcf"/>
+      <outfile xil_pn:name="top_nexys3_map.map"/>
+      <outfile xil_pn:name="top_nexys3_map.mrp"/>
+      <outfile xil_pn:name="top_nexys3_map.ncd"/>
+      <outfile xil_pn:name="top_nexys3_map.ngm"/>
+      <outfile xil_pn:name="top_nexys3_map.xrpt"/>
+      <outfile xil_pn:name="top_nexys3_summary.xml"/>
+      <outfile xil_pn:name="top_nexys3_usage.xml"/>
+    </transform>
+    <transform xil_pn:end_ts="1770626711" xil_pn:in_ck="7177335658723826020" xil_pn:name="TRANEXT_par_spartan6" xil_pn:prop_ck="-1178055513630676559" xil_pn:start_ts="1770626704">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/par.xmsgs"/>
+      <outfile xil_pn:name="top_nexys3.ncd"/>
+      <outfile xil_pn:name="top_nexys3.pad"/>
+      <outfile xil_pn:name="top_nexys3.par"/>
+      <outfile xil_pn:name="top_nexys3.ptwx"/>
+      <outfile xil_pn:name="top_nexys3.unroutes"/>
+      <outfile xil_pn:name="top_nexys3.xpi"/>
+      <outfile xil_pn:name="top_nexys3_pad.csv"/>
+      <outfile xil_pn:name="top_nexys3_pad.txt"/>
+      <outfile xil_pn:name="top_nexys3_par.xrpt"/>
+    </transform>
+    <transform xil_pn:end_ts="1770626715" xil_pn:in_ck="8587377677943179327" xil_pn:name="TRANEXT_bitFile_spartan6" xil_pn:prop_ck="396117104113915555" xil_pn:start_ts="1770626711">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/bitgen.xmsgs"/>
+      <outfile xil_pn:name="top_nexys3.bgn"/>
+      <outfile xil_pn:name="top_nexys3.bit"/>
+      <outfile xil_pn:name="top_nexys3.drc"/>
+      <outfile xil_pn:name="top_nexys3.ut"/>
+      <outfile xil_pn:name="usage_statistics_webtalk.html"/>
+      <outfile xil_pn:name="webtalk.log"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+    </transform>
+    <transform xil_pn:end_ts="1770626721" xil_pn:in_ck="8587377677943166473" xil_pn:name="TRAN_configureTargetDevice" xil_pn:prop_ck="8482462020707587906" xil_pn:start_ts="1770626715">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1770626711" xil_pn:in_ck="-7901742634386182009" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="445577401284416185" xil_pn:start_ts="1770626708">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/trce.xmsgs"/>
+      <outfile xil_pn:name="top_nexys3.twr"/>
+      <outfile xil_pn:name="top_nexys3.twx"/>
     </transform>
   </transforms>
 

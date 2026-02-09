@@ -9,6 +9,11 @@ module top_nexys3(
 
     assign rst_on = rst;
 
+    pc_one pc_one_instance(
+		 .clk_from_FPGA_100MHz(clk_100MHz),
+		 .rst_from_FPGA(rst),
+		 .uart_tx_pin_for_FPGA(uart_tx)
+    );
     
 
 endmodule
