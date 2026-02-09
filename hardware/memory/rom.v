@@ -1,13 +1,16 @@
 module rom(
-    input  wire        clk,
-    input  wire [31:0] pc,          // byte address (unchanged)
-    output reg  [31:0] instruction  // 32-bit instruction
+    input  wire [31:0] pc,          
+    output wire  [31:0] instruction,
+    input  wire [31:0] addr, 
+    output wire [31:0] data
 );
 
     parameter WORDS = 4096; // number of 32-bit words (16 KB total)
 
     // 32-bit wide ROM
     reg [31:0] mem [0:WORDS-1];
+
+    assign data = mem[addr[31:2]];
 
     // for cocotb
     `ifndef SYNTHESIS
@@ -30,9 +33,7 @@ module rom(
     wire [31:0] word_index;
     assign word_index = pc[31:2];  
 
-    always @(posedge clk) begin
-        instruction <= mem[word_index];
-    end
+    assign instruction = mem[word_index];
 
 endmodule
 

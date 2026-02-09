@@ -19,7 +19,7 @@ module pc_one(
     );
     
     wire [31:0] mem_add, instr_add, instruction, ram_data_to_mmu, 
-    cpu_data_to_mmu, mmu_data_to_cpu, mmu_data_to_ram;
+    cpu_data_to_mmu, mmu_data_to_cpu, mmu_data_to_ram, rom_data_to_mmu;
 
     wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, 
     uart_busy;
@@ -27,6 +27,7 @@ module pc_one(
     MMU MMU_instance(
         .uart_busy(uart_busy),
         .addr(mem_add),
+        .data_from_rom(rom_data_to_mmu),
         .data_from_ram(ram_data_to_mmu),
         .data_from_cpu(cpu_data_to_mmu),
         .mem_read_cpu(mem_read),
@@ -60,9 +61,10 @@ module pc_one(
     );
 
     rom rom_instance(
-        .clk(clk_from_FPGA_100MHz),
         .pc(instr_add),       
-        .instruction(instruction)
+        .instruction(instruction),
+        .addr(mem_add),
+        .data(rom_data_to_mmu)
     );
 
     uart_tx uart_instance(

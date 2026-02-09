@@ -10,6 +10,10 @@ from python_helper.converter import *
 TEST_REGISTRY = {}
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
 
+CLK_FREQ = 100_000_000
+BAUD     = 115200
+BAUD_CLKS = CLK_FREQ // BAUD
+
 def log_signals(logger, dut):
         # PC
         try: 
@@ -125,33 +129,30 @@ async def test_basic_asm(dut):
 
         await RisingEdge(dut.clk_from_FPGA_100MHz)
         try:
-            if dut.instr_add.value.to_unsigned() == 0xe0:
+            if dut.rom_instance.pc.value.to_unsigned() == 0x12c:
                 logger.critical("Test ended control reached at label HALT")
-
+                await RisingEdge(dut.clk_from_FPGA_100MHz)
                 try: 
                     address = 0x2104
-                    cell_107 = int(dut.ram_instance.mem[address + 3].value)
-                    cell_106 = int(dut.ram_instance.mem[address + 2].value)
-                    cell_105 = int(dut.ram_instance.mem[address + 1].value)
-                    cell_104 = int(dut.ram_instance.mem[address].value)
+                    word_index = address >> 2
+                    cell_2104 = int(dut.ram_instance.mem[word_index].value)
                 except:
-                    raise Exception("cannot read mem location 0x104 - 0x107")
+                    raise Exception("cannot read mem location 0x2104")
                 
                 try:
-                    assert "cafebbae" == f"{cell_107:02x}{cell_106:02x}{cell_105:02x}{cell_104:02x}"
+                    PASS = 0xCAFEBBAE
+                    FAIL = 0xDEADBEEF
+                    assert cell_2104 == PASS, f"Expected PASS, got 0x{cell_2104:08x}"
                     logger.info("Test Passed")
-                    logger.info(f"ram[0x107] = 0x{cell_107: 02x}")
-                    logger.info(f"ram[0x106] = 0x{cell_106: 02x}")
-                    logger.info(f"ram[0x105] = 0x{cell_105: 02x}")
-                    logger.info(f"ram[0x104] = 0x{cell_104: 02x}")
-                    logger.info("All these values are set by label PASS")
+                    logger.info(f"ram[0x104] = 0x{cell_2104: 02x}")
+                    logger.info("Value is Correctly set by label PASS")
                 except:
                     raise Exception("memory doesnot have values set by label PASS")
                 
                 return
             
-            elif i >= 2000 and dut.instr_add.value.to_unsigned() != 0xe0:
-                assert False, "TIMEOUT: PC never reached 0xE09 label HALT)"
+            elif i >= (threshold_clk_cycles - 1) and dut.instr_add.value.to_unsigned() != 0xe0:
+                assert False, "TIMEOUT: PC never reached label HALT)"
             
         except:
             raise Exception("cannot read PC value")
@@ -188,38 +189,123 @@ async def test_math_c(dut):
             log_signals(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA_100MHz)
+        
+        address = 0x2000
+        
+        if dut.rom_instance.pc.value.to_unsigned() == 0x58:
+            logger.critical("Test ended PC reached 0x58")
+            word_index = address >> 2
+            cell_3 = int(dut.ram_instance.mem[word_index].value)
 
-        try:
-            address = 0x2000
-            cell_0 = int(dut.ram_insta.mem[address + 3].value)
-            cell_1 = int(dut.ram_insta.mem[address + 2].value)
-            cell_2 = int(dut.ram_insta.mem[address + 1].value)
-            cell_3 = int(dut.ram_insta.mem[address].value)
+            result =f"{cell_3:08x}"
 
-            result =f"{cell_0:02x}{cell_1:02x}{cell_2:02x}{cell_3:02x}"
-
-            logger.critical("Test ended")
             assert "fffffeee" == result
 
             logger.critical("Test passed")
             logger.info(f"ram[0x{address}] = {result}")
             logger.info("Test Passed")
-            logger.info(f"ram[{address + 3}] = 0x{cell_3: 02x}")
-            logger.info(f"ram[{address + 2}] = 0x{cell_2: 02x}")
-            logger.info(f"ram[{address + 1}] = 0x{cell_1: 02x}")
-            logger.info(f"ram[{address}] = 0x{cell_0: 02x}")
-            logger.info("All these values are set g3 variable")
-
+            logger.info("g3 variable value is correctly calculated")
+            
             return
         
-        except:
-            pass
-            
-    raise Exception("Threshold cyles passed\nCouldn't read ram[0x2000]")
+    raise Exception("Threshold cyles passed\nPC never reached end")
+
+
+async def uart_tx_monitor(dut, logger):
+    try:
+        last = int(dut.uart_tx_pin_for_FPGA.value)
+        logger.info(f"[UART_MON] initial TX = {last}")
+
+        while True:
+            await RisingEdge(dut.clk_from_FPGA_100MHz)
+            cur = int(dut.uart_tx_pin_for_FPGA.value)
+
+            if cur != last:
+                t = cocotb.utils.get_sim_time("ns")
+                logger.info(f"[UART_MON] {t} ns : TX {last} → {cur}")
+                last = cur
+    except Exception:
+        pass
+    
+async def wait_for_uart_start(dut, logger, timeout_ns=5_000_000):
+    start_time = cocotb.utils.get_sim_time("ns")
+
+    while True:
+        await RisingEdge(dut.clk_from_FPGA_100MHz)
+
+        if int(dut.uart_tx_pin_for_FPGA.value) == 0:
+            t = cocotb.utils.get_sim_time("ns")
+            logger.info(f"[UART] Start bit detected at {t} ns")
+            return t
+
+        now = cocotb.utils.get_sim_time("ns")
+        if now - start_time > timeout_ns:
+            logger.error(
+                f"[UART] TIMEOUT: No start bit after {timeout_ns} ns "
+                f"(TX still = {int(dut.uart_tx_pin_for_FPGA.value)})"
+            )
+            raise Exception("UART never started")
+
+async def uart_receive_byte(dut, logger):
+
+    # wait for start bit (TX goes low)
+    while int(dut.uart_tx_pin_for_FPGA.value) == 1:
+        await RisingEdge(dut.clk_from_FPGA_100MHz)
+
+    t = cocotb.utils.get_sim_time("ns")
+    logger.info(f"[UART] Start bit detected at {t} ns")
+
+    # move to middle of start bit
+    for _ in range(BAUD_CLKS // 2):
+        await RisingEdge(dut.clk_from_FPGA_100MHz)
+
+    value = 0
+    for i in range(8):
+        # wait exactly one bit period
+        for _ in range(BAUD_CLKS):
+            await RisingEdge(dut.clk_from_FPGA_100MHz)
+
+        bit = int(dut.uart_tx_pin_for_FPGA.value)
+        value |= bit << i
+        logger.info(f"[UART] bit[{i}] = {bit}")
+
+    # stop bit
+    for _ in range(BAUD_CLKS):
+        await RisingEdge(dut.clk_from_FPGA_100MHz)
+
+    stop = int(dut.uart_tx_pin_for_FPGA.value)
+    if stop != 1:
+        logger.error("[UART] STOP BIT ERROR")
+
+    logger.info(f"[UART] Received byte: 0x{value:02X} ('{chr(value)}')")
+    return value
 
 
 @program_test("test_uart_print_c")
 async def test_uart_print_c_debug(dut):
-    pass
 
+    logger = logging.getLogger("uart_debug")
+    logger.setLevel(logging.INFO)
+    fh = logging.FileHandler("uart_debug.log", mode="w")
+    logger.addHandler(fh)
 
+    cocotb.start_soon(
+        Clock(dut.clk_from_FPGA_100MHz, 10, unit="ns").start()
+    )
+
+    # reset
+    dut.rst_from_FPGA.value = 1
+    for _ in range(5):
+        await RisingEdge(dut.clk_from_FPGA_100MHz)
+    dut.rst_from_FPGA.value = 0
+    logger.info("[TEST] Reset released")
+
+    expected = "Hey!\r\n"
+    received = ""
+
+    for ch in expected:
+        rx = await uart_receive_byte(dut, logger)
+        received += chr(rx)
+
+    logger.critical(f"[TEST] RECEIVED = '{received}'")
+    assert received == expected

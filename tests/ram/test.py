@@ -1,29 +1,23 @@
-import logging
-import random
 import cocotb
-from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
-
+from cocotb.clock import Clock
+import logging
 
 @cocotb.test()
 async def test_rom(dut):
-    test_name = "test_rom"
-    logger = logging.getLogger(test_name)
-    file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
+    """Basic instruction fetch + data read/write test"""
+    logger = logging.getLogger("test_rom")
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
 
-    cocotb.start_soon(Clock(dut.clk, 1, units="ns").start())
+    Timer(20, "ns")
 
-    for i in range(0x128):
-        dut.pc.value = i
-
-        await RisingEdge(dut.clk)  
+    for pc in range(0x134):
+        dut.pc.value = pc
+        await RisingEdge(dut.clk)
+        
         try:
-            instr = int(dut.instruction.value)
-            logger.critical(f"PC=0x{i:08x} INSTR=0x{instr:08x}")
+            logger.critical(f"PC = {pc: 03x} instruction = {int(dut.instruction.value): 08x}")
         except Exception:
-            instr = dut.instruction
-            logger.critical(f"PC=0x{i:08x} INSTR=0x{instr}")
+            logger.critical(f"PC = {pc: 03x} instruction = Cannot read Instruction Value")
+
 

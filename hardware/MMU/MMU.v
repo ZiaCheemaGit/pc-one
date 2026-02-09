@@ -1,6 +1,7 @@
 module MMU(
     input uart_busy,
     input  [31:0] addr, 
+    input  [31:0] data_from_rom, 
     input  [31:0] data_from_ram, 
     input  [31:0] data_from_cpu,  
     input         mem_read_cpu,
@@ -12,10 +13,12 @@ module MMU(
     output        uart_write
 );
 
+    wire is_rom = (addr < 32'h00002000);
     wire is_ram = (addr >= 32'h00002000) && (addr <= 32'h00003FFF);
     wire is_uart_data = (addr == 32'h00004000);
     wire is_uart_status = (addr == 32'h00004004);
 
+    wire rom_read = mem_read_cpu && is_rom;
     assign ram_read = mem_read_cpu && is_ram;
     assign ram_write = mem_write_cpu && is_ram;
     assign data_to_ram = data_from_cpu;
@@ -26,16 +29,16 @@ module MMU(
     reg [31:0] data_to_cpu_r;
     assign data_to_cpu = data_to_cpu_r;
 
+
     always @(*) begin
         data_to_cpu_r = 32'b0;
 
         if (ram_read) begin
-            if (ram_read) begin
-                data_to_cpu_r = data_from_ram;
-            end
-            else if (uart_read) begin
-                data_to_cpu_r = {31'b0, uart_busy};
-            end
+            data_to_cpu_r = data_from_ram;
+        end else if (uart_read) begin
+            data_to_cpu_r = {31'b0, uart_busy};
+        end else if (rom_read) begin
+            data_to_cpu_r = data_from_rom;
         end
     end
 

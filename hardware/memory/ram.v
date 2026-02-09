@@ -8,22 +8,24 @@ module ram (
 );
 
     // 8 KB RAM = 2048 words
-    parameter WORDS = 2048;
+    parameter WORDS = 4096;
 
     reg [31:0] mem [0:WORDS-1];
 
-    wire [10:0] word_addr = data_address[12:2];
+    wire [11:0] word_addr = data_address[13:2];
 
     always @(posedge clk) begin
         if (mem_write) begin
             mem[word_addr] <= data_in;
         end
-
-        if (mem_read) begin
-            data_out <= mem[word_addr];
-        end else begin
-            data_out <= 32'b0;
-        end
     end
+
+    always @(*) begin
+    if (mem_read)
+        data_out = mem[word_addr];
+    else
+        data_out = 32'b0;
+end
+
 
 endmodule

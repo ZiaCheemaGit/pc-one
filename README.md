@@ -43,14 +43,14 @@ so I will add them here as I progress
 - Add CI to project[nox and github actions used for this project. All tests in Dir `tests/` are ran before merge]
 - Run c/cpp on cpu[done by integrating a memory(compiled by riscv64-unknown-elf) with cpu with von-neuman architecture]    
 - Learn UART and Memory Mapped IO Concepts because UART cannot be added in previously made von-neuman without MMU. 
-- Learn about FPGAs. Simulation testing isn't enough(Stakes are very high, even one wire if not on/off as intended can break everything) 
+- Learn about FPGAs. Simulation testing isn't enough(Stakes are very high, even one wire if not on/off as intended can break everything).  
+- First I tested c/cpp code UART prints on cocotb in simulation. When I programmed my pc in FPGA it required two changes i.e division of memory in ram(data memory) and rom(instruction memory). Other thing was FPGA(nexys3) support 32 bits array memory not byte addressable memory(RISCV). UART timimg also required some changes. After all these changes my design succesfully ran on FPGA. But all my previously written simulation cocotb tests started failing. All tests had to be re-written. In short what works in simulation doesn't always work on hardware. Its best to run your design on hardware in parallel to development.
 - 
-- #TODO
+-
+-# TODO
 
 ## Next Milestones:
 This is what is currently being tried to be done.
-- dump cpu on FPGA connect it to a uart terminal to see your cpu's print statements of compiled c/cpp code
-- implement a timer interrupt and an interrupt handler for cpu
 - implement cpu traps
 
 ---
