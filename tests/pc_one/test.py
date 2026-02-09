@@ -2,8 +2,7 @@ import os
 import logging
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import Timer,RisingEdge, FallingEdge
-from cocotb.utils import get_sim_time
+from cocotb.triggers import RisingEdge
 
 from python_helper.converter import *
 
@@ -280,7 +279,6 @@ async def uart_receive_byte(dut, logger):
     logger.info(f"[UART] Received byte: 0x{value:02X} ('{chr(value)}')")
     return value
 
-
 @program_test("test_uart_print_c")
 async def test_uart_print_c_debug(dut):
 
@@ -309,3 +307,4 @@ async def test_uart_print_c_debug(dut):
 
     logger.critical(f"[TEST] RECEIVED = '{received}'")
     assert received == expected
+
