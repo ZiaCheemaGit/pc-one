@@ -38,7 +38,7 @@ anyone does when they make a computer.It only includes the
 completed steps. I also dont know what are the complete steps 
 so I will add them here as I progress  
 - Get a good understanding of bare metal systems. One of best resources I found was [Nand to Tetris](https://www.nand2tetris.org/) 
-- Make a CPU [made a single cycle RV32I with [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions)]
+- Make a CPU , I made a single cycle RV32I with this [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions)
 - Spend 5 days on making the CPU and 50 days on testing it[tested using cocotb because watching waveforms gets boring]
 - Add CI to project[nox and github actions used for this project. All tests in Dir `tests/` are ran before merge]
 - Run c/cpp on cpu[done by integrating a memory(compiled by riscv64-unknown-elf) with cpu with von-neuman architecture]    
@@ -47,10 +47,11 @@ so I will add them here as I progress
 - First I tested c/cpp code UART prints on cocotb in simulation. When I programmed my pc in FPGA it required two changes i.e division of memory in ram(data memory) and rom(instruction memory). Other thing was FPGA(nexys3) support 32 bits array memory not byte addressable memory(RISCV). UART timimg also required some changes. After all these changes my design succesfully programmed on FPGA. But all my previously written simulation cocotb tests started failing. All tests had to be re-written. Even  after that c/cpp terminal prints didn't work on FPGA. In short what works in simulation doesn't always work on hardware. Its best to run your design on hardware in parallel to development.
 - 
 - 
-- # TODO
+- TODO
 
 ## Next Milestones:
 This is what is currently being tried to be done.
+- Make UART work on FPGA
 - implement cpu traps
 
 ---
