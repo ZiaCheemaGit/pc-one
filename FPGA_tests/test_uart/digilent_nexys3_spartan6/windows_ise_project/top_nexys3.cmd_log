@@ -283,3 +283,15 @@ map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -re
 par -w -intstyle ise -ol high -mt off top_nexys3_map.ncd top_nexys3.ncd top_nexys3.pcf 
 trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml top_nexys3.twx top_nexys3.ncd -o top_nexys3.twr top_nexys3.pcf -ucf top_nexys3.ucf 
 bitgen -intstyle ise -f top_nexys3.ut top_nexys3.ncd 
+xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/top_nexys3.xst" -ofn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/top_nexys3.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc top_nexys3.ucf -p xc6slx16-csg324-3 top_nexys3.ngc top_nexys3.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o top_nexys3_map.ncd top_nexys3.ngd top_nexys3.pcf 
+par -w -intstyle ise -ol high -mt off top_nexys3_map.ncd top_nexys3.ncd top_nexys3.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml top_nexys3.twx top_nexys3.ncd -o top_nexys3.twr top_nexys3.pcf -ucf top_nexys3.ucf 
+bitgen -intstyle ise -f top_nexys3.ut top_nexys3.ncd 
+xst -intstyle ise -ifn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/top_nexys3.xst" -ofn "D:/git-clones/pc-one/FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/top_nexys3.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc top_nexys3.ucf -p xc6slx16-csg324-3 top_nexys3.ngc top_nexys3.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o top_nexys3_map.ncd top_nexys3.ngd top_nexys3.pcf 
+par -w -intstyle ise -ol high -mt off top_nexys3_map.ncd top_nexys3.ncd top_nexys3.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml top_nexys3.twx top_nexys3.ncd -o top_nexys3.twr top_nexys3.pcf -ucf top_nexys3.ucf 
+bitgen -intstyle ise -f top_nexys3.ut top_nexys3.ncd 
