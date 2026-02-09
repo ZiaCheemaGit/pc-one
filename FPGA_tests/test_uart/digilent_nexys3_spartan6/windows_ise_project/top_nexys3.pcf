@@ -1,11 +1,11 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Mon Feb 09 14:12:48 2026
+// Written by: Map P.20131013 on Mon Feb 09 19:41:57 2026
 //! **************************************************************************
 
 SCHEMATIC START;
+COMP "rst" LOCATE = SITE "T10" LEVEL 1;
 COMP "clk_100MHz" LOCATE = SITE "V10" LEVEL 1;
 COMP "uart_tx" LOCATE = SITE "N18" LEVEL 1;
 COMP "rst_on" LOCATE = SITE "U16" LEVEL 1;
-COMP "rst" LOCATE = SITE "T10" LEVEL 1;
 SCHEMATIC END;
 

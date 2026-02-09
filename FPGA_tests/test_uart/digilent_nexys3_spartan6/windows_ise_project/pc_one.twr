@@ -36,7 +36,7 @@ Setup/Hold to clock clk_from_FPGA_100MHz
              |Max Setup to|  Process   |Max Hold to |  Process   |                          | Clock  |
 Source       | clk (edge) |   Corner   | clk (edge) |   Corner   |Internal Clock(s)         | Phase  |
 -------------+------------+------------+------------+------------+--------------------------+--------+
-rst_from_FPGA|    6.337(R)|      SLOW  |   -0.310(R)|      SLOW  |clk_from_FPGA_100MHz_BUFGP|   0.000|
+rst_from_FPGA|   10.129(R)|      SLOW  |   -0.329(R)|      SLOW  |clk_from_FPGA_100MHz_BUFGP|   0.000|
 -------------+------------+------------+------------+------------+--------------------------+--------+
 
 Clock clk_from_FPGA_100MHz to Pad
@@ -44,7 +44,7 @@ Clock clk_from_FPGA_100MHz to Pad
                     |Max (slowest) clk|  Process   |Min (fastest) clk|  Process   |                          | Clock  |
 Destination         |  (edge) to PAD  |   Corner   |  (edge) to PAD  |   Corner   |Internal Clock(s)         | Phase  |
 --------------------+-----------------+------------+-----------------+------------+--------------------------+--------+
-uart_tx_pin_for_FPGA|         7.879(R)|      SLOW  |         4.143(R)|      FAST  |clk_from_FPGA_100MHz_BUFGP|   0.000|
+uart_tx_pin_for_FPGA|         7.150(R)|      SLOW  |         3.701(R)|      FAST  |clk_from_FPGA_100MHz_BUFGP|   0.000|
 --------------------+-----------------+------------+-----------------+------------+--------------------------+--------+
 
 Clock to Setup on destination clock clk_from_FPGA_100MHz
@@ -52,18 +52,18 @@ Clock to Setup on destination clock clk_from_FPGA_100MHz
                     | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock        |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 --------------------+---------+---------+---------+---------+
-clk_from_FPGA_100MHz|   16.719|         |         |         |
+clk_from_FPGA_100MHz|   30.547|         |         |         |
 --------------------+---------+---------+---------+---------+
 
 
-Analysis completed Sat Feb 07 21:18:14 2026 
+Analysis completed Mon Feb 09 19:34:50 2026 
 --------------------------------------------------------------------------------
 
 Trace Settings:
 -------------------------
 Trace Settings 
 
-Peak Memory Usage: 4622 MB
+Peak Memory Usage: 4689 MB
 
 
 
