@@ -217,6 +217,8 @@
     <transform xil_pn:end_ts="1770652125" xil_pn:in_ck="1147943095145390856" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="-3251971578503324095" xil_pn:start_ts="1770652121">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="_ngo"/>
       <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
       <outfile xil_pn:name="top_nexys3.bld"/>
@@ -226,6 +228,8 @@
     <transform xil_pn:end_ts="1770652129" xil_pn:in_ck="6105620297179814" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="1463976855095865663" xil_pn:start_ts="1770652125">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
       <outfile xil_pn:name="top_nexys3.pcf"/>
       <outfile xil_pn:name="top_nexys3_map.map"/>
@@ -265,6 +269,8 @@
     <transform xil_pn:end_ts="1770652220" xil_pn:in_ck="8587377677943166473" xil_pn:name="TRAN_configureTargetDevice" xil_pn:prop_ck="8482462020707587906" xil_pn:start_ts="1770652143">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="_impact.cmd"/>
       <outfile xil_pn:name="_impact.log"/>
     </transform>
