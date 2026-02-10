@@ -5,13 +5,12 @@ from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 
 from python_helper.converter import *
+from python_helper.uart_terminal import UARTTerminal
 
 TEST_REGISTRY = {}
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
-
-CLK_FREQ = 100_000_000
-BAUD     = 115200
-BAUD_CLKS = CLK_FREQ // BAUD
+BAUD_CLKS = 868   
+CLK_PERIOD_NS = 10
 
 def log_signals(logger, dut):
         # PC
@@ -210,101 +209,38 @@ async def test_math_c(dut):
     raise Exception("Threshold cyles passed\nPC never reached end")
 
 
-async def uart_tx_monitor(dut, logger):
-    try:
-        last = int(dut.uart_tx_pin_for_FPGA.value)
-        logger.info(f"[UART_MON] initial TX = {last}")
-
-        while True:
-            await RisingEdge(dut.clk_from_FPGA_100MHz)
-            cur = int(dut.uart_tx_pin_for_FPGA.value)
-
-            if cur != last:
-                t = cocotb.utils.get_sim_time("ns")
-                logger.info(f"[UART_MON] {t} ns : TX {last} → {cur}")
-                last = cur
-    except Exception:
-        pass
-    
-async def wait_for_uart_start(dut, logger, timeout_ns=5_000_000):
-    start_time = cocotb.utils.get_sim_time("ns")
-
-    while True:
-        await RisingEdge(dut.clk_from_FPGA_100MHz)
-
-        if int(dut.uart_tx_pin_for_FPGA.value) == 0:
-            t = cocotb.utils.get_sim_time("ns")
-            logger.info(f"[UART] Start bit detected at {t} ns")
-            return t
-
-        now = cocotb.utils.get_sim_time("ns")
-        if now - start_time > timeout_ns:
-            logger.error(
-                f"[UART] TIMEOUT: No start bit after {timeout_ns} ns "
-                f"(TX still = {int(dut.uart_tx_pin_for_FPGA.value)})"
-            )
-            raise Exception("UART never started")
-
-async def uart_receive_byte(dut, logger):
-
-    # wait for start bit (TX goes low)
-    while int(dut.uart_tx_pin_for_FPGA.value) == 1:
-        await RisingEdge(dut.clk_from_FPGA_100MHz)
-
-    t = cocotb.utils.get_sim_time("ns")
-    logger.info(f"[UART] Start bit detected at {t} ns")
-
-    # move to middle of start bit
-    for _ in range(BAUD_CLKS // 2):
-        await RisingEdge(dut.clk_from_FPGA_100MHz)
-
-    value = 0
-    for i in range(8):
-        # wait exactly one bit period
-        for _ in range(BAUD_CLKS):
-            await RisingEdge(dut.clk_from_FPGA_100MHz)
-
-        bit = int(dut.uart_tx_pin_for_FPGA.value)
-        value |= bit << i
-        logger.info(f"[UART] bit[{i}] = {bit}")
-
-    # stop bit
-    for _ in range(BAUD_CLKS):
-        await RisingEdge(dut.clk_from_FPGA_100MHz)
-
-    stop = int(dut.uart_tx_pin_for_FPGA.value)
-    if stop != 1:
-        logger.error("[UART] STOP BIT ERROR")
-
-    logger.info(f"[UART] Received byte: 0x{value:02X} ('{chr(value)}')")
-    return value
-
 @program_test("test_uart_print_c")
-async def test_uart_print_c_debug(dut):
+async def test_uart_terminal_display(dut):
 
-    logger = logging.getLogger("uart_debug")
+    test_name = "test_math_c"
+    logger = logging.getLogger(test_name)
+    file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
     logger.setLevel(logging.INFO)
-    fh = logging.FileHandler("uart_debug.log", mode="w")
-    logger.addHandler(fh)
 
-    cocotb.start_soon(
-        Clock(dut.clk_from_FPGA_100MHz, 10, unit="ns").start()
-    )
+    # start clock
+    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, CLK_PERIOD_NS, unit="ns").start())
 
     # reset
     dut.rst_from_FPGA.value = 1
-    for _ in range(5):
+    for _ in range(10):
         await RisingEdge(dut.clk_from_FPGA_100MHz)
     dut.rst_from_FPGA.value = 0
-    logger.info("[TEST] Reset released")
 
-    expected = "Hey!\r\n"
-    received = ""
+    print("\n===== UART TERMINAL START =====\n")
 
-    for ch in expected:
-        rx = await uart_receive_byte(dut, logger)
-        received += chr(rx)
+    # UART terminal (minicom-equivalent)
+    term = UARTTerminal(
+        LOGGING_ON,
+        logger,
+        dut=dut,
+        tx=dut.uart_tx_pin_for_FPGA,
+        baud_clks=BAUD_CLKS,
+        clk_period_ns=CLK_PERIOD_NS,
+        echo=True
+    )
 
-    logger.critical(f"[TEST] RECEIVED = '{received}'")
-    assert received == expected
+    await term.run()
 

@@ -22,6 +22,9 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/sign_ext_12_to_
 # pc_one
 VERILOG_SOURCES += $(PWD)/../../hardware/pc_one/pc_one.v
 
+# FPGA top
+VERILOG_SOURCES += $(PWD)/../../FPGA_tests/test_uart/digilent_nexys3_spartan6/windows_ise_project/top_nexys3.v
+
 # memories
 VERILOG_SOURCES += $(PWD)/../../hardware/memory/rom.v
 VERILOG_SOURCES += $(PWD)/../../hardware/memory/ram.v

@@ -5,7 +5,7 @@ module rom(
     output wire [31:0] data
 );
 
-    parameter WORDS = 4096; // number of 32-bit words (16 KB total)
+    parameter WORDS = 4096; 
 
     // 32-bit wide ROM
     reg [31:0] mem [0:WORDS-1];
@@ -14,7 +14,7 @@ module rom(
 
     // for cocotb
     `ifndef SYNTHESIS
-        reg [1023:0] program_file;
+        string program_file;
         initial begin
             if (!$value$plusargs("PROGRAM_FILE=%s", program_file)) begin
                 $display("ERROR: PROGRAM_FILE not specified!");
