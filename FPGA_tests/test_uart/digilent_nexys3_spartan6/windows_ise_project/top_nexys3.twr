@@ -37,7 +37,7 @@ Setup/Hold to clock clk_100MHz
             |Max Setup to|  Process   |Max Hold to |  Process   |                  | Clock  |
 Source      | clk (edge) |   Corner   | clk (edge) |   Corner   |Internal Clock(s) | Phase  |
 ------------+------------+------------+------------+------------+------------------+--------+
-rst         |    2.565(R)|      SLOW  |   -0.399(R)|      SLOW  |clk_100MHz_BUFGP  |   0.000|
+rst         |    3.905(R)|      SLOW  |    0.043(R)|      SLOW  |clk_100MHz_BUFGP  |   0.000|
 ------------+------------+------------+------------+------------+------------------+--------+
 
 Clock clk_100MHz to Pad
@@ -45,7 +45,7 @@ Clock clk_100MHz to Pad
             |Max (slowest) clk|  Process   |Min (fastest) clk|  Process   |                  | Clock  |
 Destination |  (edge) to PAD  |   Corner   |  (edge) to PAD  |   Corner   |Internal Clock(s) | Phase  |
 ------------+-----------------+------------+-----------------+------------+------------------+--------+
-uart_tx     |         8.290(R)|      SLOW  |         4.650(R)|      FAST  |clk_100MHz_BUFGP  |   0.000|
+uart_tx     |         7.855(R)|      SLOW  |         4.378(R)|      FAST  |clk_100MHz_BUFGP  |   0.000|
 ------------+-----------------+------------+-----------------+------------+------------------+--------+
 
 Clock to Setup on destination clock clk_100MHz
@@ -53,18 +53,18 @@ Clock to Setup on destination clock clk_100MHz
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-clk_100MHz     |    3.122|         |         |         |
+clk_100MHz     |    5.463|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 Pad to Pad
 ---------------+---------------+---------+
 Source Pad     |Destination Pad|  Delay  |
 ---------------+---------------+---------+
-rst            |rst_on         |    7.437|
+rst            |rst_on         |    7.408|
 ---------------+---------------+---------+
 
 
-Analysis completed Sat Feb 07 18:36:59 2026 
+Analysis completed Mon Feb 09 20:48:56 2026 
 --------------------------------------------------------------------------------
 
 Trace Settings:
