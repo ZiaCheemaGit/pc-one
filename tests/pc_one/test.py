@@ -215,8 +215,8 @@ async def test_uart_terminal_display(dut):
 
     CLK_FREQ_HZ = 100_000_000
     CLK_PERIOD_NS = 1e9 / CLK_FREQ_HZ
-    BAUD_RATE = 115200
-    BAUD_CLKS = int(CLK_FREQ_HZ / BAUD_RATE)
+    BAUD_RATE = 9600
+    BAUD_CLKS = int(1_000_000 / BAUD_RATE)
 
     test_name = "test_math_c"
     logger = logging.getLogger(test_name)

@@ -7,8 +7,8 @@ module uart_tx(
     output reg        uart_busy
 );
 
-    parameter CLK_FREQ = 100_000_000;
-    parameter BAUD     = 115200;
+    parameter CLK_FREQ = 1_000_000;
+    parameter BAUD     = 9600;
 
     localparam integer BAUD_CNT_MAX = (CLK_FREQ / BAUD) - 1;
 

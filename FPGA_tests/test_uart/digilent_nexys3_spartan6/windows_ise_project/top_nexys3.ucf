@@ -247,7 +247,7 @@ NET "rst_from_FPGA"          LOC = "T10" | IOSTANDARD = "LVCMOS33";   #Bank = 2,
 
 
 ## Usb-RS232 interface
-NET "uart_tx_pin_for_FPGA"           LOC = "N17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L48P_HDC_M1DQ8,                 Sch name = MCU-RX
+#NET "uart_rx_pin_from_FPGA"           LOC = "N17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L48P_HDC_M1DQ8,                 Sch name = MCU-RX
 NET "uart_tx_pin_for_FPGA"           LOC = "N18" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L48N_M1DQ9,                     Sch name = MCU-TX
 
 
