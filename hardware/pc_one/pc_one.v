@@ -13,7 +13,7 @@ UART_STATUS = 0x00004004
 `timescale 1ns / 1ps
 
 module pc_one(
-    input clk_from_FPGA_100MHz,
+    input clk_from_FPGA,
     input rst_from_FPGA,
     output uart_tx_pin_for_FPGA
     );
@@ -40,7 +40,7 @@ module pc_one(
     );
 
     core core_instance(
-        .clk(clk_from_FPGA_100MHz),
+        .clk(clk_from_FPGA),
         .rst(rst_from_FPGA),
         .instruction_address(instr_add),
         .instruction(instruction),
@@ -52,7 +52,7 @@ module pc_one(
     );
     
     ram ram_instance(
-        .clk(clk_from_FPGA_100MHz),
+        .clk(clk_from_FPGA),
         .data_address(mem_add),
         .mem_read(mmu_mem_read),
         .mem_write(mmu_mem_write),
@@ -68,7 +68,7 @@ module pc_one(
     );
 
     uart_tx uart_instance(
-        .clk(clk_from_FPGA_100MHz),
+        .clk(clk_from_FPGA),
         .rst(rst_from_FPGA),
         .write_en(uart_write_en),
         .data(cpu_data_to_mmu[7:0]),

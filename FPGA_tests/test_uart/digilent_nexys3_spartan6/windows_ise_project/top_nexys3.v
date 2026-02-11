@@ -1,22 +1,24 @@
+`timescale 1ns/1ps
+
 // module top_nexys3(
-//     input  wire clk_from_FPGA_100MHz,
+//     input  wire clk_from_FPGA,
 //     input  wire rst_from_FPGA,
 //     output wire rst_on,
 //     output wire uart_tx_pin_for_FPGA
 // );
 
-//     assign rst_on = rst;
+//     assign rst_on = rst_from_FPGA;
 
 //     reg  [7:0] uart_data;
 //     reg        write_en;
 //     wire       uart_busy;
 
 //     uart_tx uart_instance (
-//         .clk(clk_100MHz),
-//         .rst(rst),
+//         .clk(clk_from_FPGA),
+//         .rst(rst_from_FPGA),
 //         .write_en(write_en),
 //         .data(uart_data),
-//         .tx(uart_tx),
+//         .tx(uart_tx_pin_for_FPGA),
 //         .uart_busy(uart_busy)
 //     );
 
@@ -49,8 +51,8 @@
 //         end
 //     endfunction
 
-//     always @(posedge clk_100MHz) begin
-//         if (rst) begin
+//     always @(posedge clk_from_FPGA) begin
+//         if (rst_from_FPGA) begin
 //             pc_reg         <= 32'h0000_0000;
 //             instr_latched  <= 32'h0000_0000;
 //             state          <= FETCH_PC;
@@ -112,7 +114,7 @@
 
 
 module top_nexys3(
-    input  wire clk_from_FPGA_100MHz,
+    input  wire clk_from_FPGA,
     input  wire rst_from_FPGA,
     output wire rst_on,
     output wire uart_tx_pin_for_FPGA
@@ -121,11 +123,11 @@ module top_nexys3(
     assign rst_on = rst_from_FPGA;
 
     pc_one pc_one_instance(
-		 .clk_from_FPGA_100MHz(clk_from_FPGA_100MHz),
-		 .rst_from_FPGA(rst_from_FPGA),
-		 .uart_tx_pin_for_FPGA(uart_tx_pin_for_FPGA)
+        .clk_from_FPGA(clk_from_FPGA),
+        .rst_from_FPGA(rst_from_FPGA),
+        .uart_tx_pin_for_FPGA(uart_tx_pin_for_FPGA)
     );
-    
 
 endmodule
+
 

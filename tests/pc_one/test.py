@@ -1,5 +1,6 @@
 import os
 import logging
+
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
@@ -7,10 +8,10 @@ from cocotb.triggers import RisingEdge
 from python_helper.converter import *
 from python_helper.uart_terminal import UARTTerminal
 
+
 TEST_REGISTRY = {}
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
-BAUD_CLKS = 868   
-CLK_PERIOD_NS = 10
+
 
 def log_signals(logger, dut):
         # PC
@@ -107,14 +108,14 @@ async def test_basic_asm(dut):
     logger.setLevel(logging.INFO)
 
     # run clock concurrently
-    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, 1, unit="ns").start()) 
+    cocotb.start_soon(Clock(dut.clk_from_FPGA, 1, unit="ns").start()) 
 
     # reset cpu 
     dut.rst_from_FPGA.value = 1
-    await RisingEdge(dut.clk_from_FPGA_100MHz)
-    await RisingEdge(dut.clk_from_FPGA_100MHz)
+    await RisingEdge(dut.clk_from_FPGA)
+    await RisingEdge(dut.clk_from_FPGA)
     dut.rst_from_FPGA.value = 0
-    await RisingEdge(dut.clk_from_FPGA_100MHz)
+    await RisingEdge(dut.clk_from_FPGA)
 
     logger.info("Reset released. CPU starting execution.")
     logger.info("Starting test_basic_asm")
@@ -125,11 +126,11 @@ async def test_basic_asm(dut):
         if LOGGING_ON:
             log_signals(logger, dut)
 
-        await RisingEdge(dut.clk_from_FPGA_100MHz)
+        await RisingEdge(dut.clk_from_FPGA)
         try:
             if dut.rom_instance.pc.value.to_unsigned() == 0x12c:
                 logger.critical("Test ended control reached at label HALT")
-                await RisingEdge(dut.clk_from_FPGA_100MHz)
+                await RisingEdge(dut.clk_from_FPGA)
                 try: 
                     address = 0x2104
                     word_index = address >> 2
@@ -168,14 +169,14 @@ async def test_math_c(dut):
     logger.setLevel(logging.INFO)
 
     # run clock concurrently
-    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, 1, unit="ns").start()) 
+    cocotb.start_soon(Clock(dut.clk_from_FPGA, 1, unit="ns").start()) 
 
     # reset cpu 
     dut.rst_from_FPGA.value = 1
-    await RisingEdge(dut.clk_from_FPGA_100MHz)
-    await RisingEdge(dut.clk_from_FPGA_100MHz)
+    await RisingEdge(dut.clk_from_FPGA)
+    await RisingEdge(dut.clk_from_FPGA)
     dut.rst_from_FPGA.value = 0
-    await RisingEdge(dut.clk_from_FPGA_100MHz)
+    await RisingEdge(dut.clk_from_FPGA)
 
     logger.info("Reset released. CPU starting execution.")
     
@@ -186,7 +187,7 @@ async def test_math_c(dut):
         if LOGGING_ON:
             log_signals(logger, dut)
 
-        await RisingEdge(dut.clk_from_FPGA_100MHz)
+        await RisingEdge(dut.clk_from_FPGA)
         
         address = 0x2000
         
@@ -212,6 +213,11 @@ async def test_math_c(dut):
 @program_test("test_uart_print_c")
 async def test_uart_terminal_display(dut):
 
+    CLK_FREQ_HZ = 100_000_000
+    CLK_PERIOD_NS = 1e9 / CLK_FREQ_HZ
+    BAUD_RATE = 115200
+    BAUD_CLKS = int(CLK_FREQ_HZ / BAUD_RATE)
+
     test_name = "test_math_c"
     logger = logging.getLogger(test_name)
     file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
@@ -221,12 +227,12 @@ async def test_uart_terminal_display(dut):
     logger.setLevel(logging.INFO)
 
     # start clock
-    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, CLK_PERIOD_NS, unit="ns").start())
+    cocotb.start_soon(Clock(dut.clk_from_FPGA, CLK_PERIOD_NS, unit="ns").start())
 
     # reset
     dut.rst_from_FPGA.value = 1
     for _ in range(10):
-        await RisingEdge(dut.clk_from_FPGA_100MHz)
+        await RisingEdge(dut.clk_from_FPGA)
     dut.rst_from_FPGA.value = 0
 
     print("\n===== UART TERMINAL START =====\n")
