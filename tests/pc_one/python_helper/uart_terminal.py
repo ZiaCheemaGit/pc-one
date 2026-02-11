@@ -33,7 +33,7 @@ class UARTTerminal:
                 await Timer(1, unit="ns")
                 count += 1
                 if count >= threshold:
-                    self.logger.info("[LOGGING_ON] - tx pin idle for Threshold cycles")
+                    self.logger.info("tx pin idle for Threshold cycles")
                     self.stopTerminal = True
                     return
 

@@ -46,7 +46,7 @@ export PROGRAM_FILE
 COCOTB_PLUSARGS += +PROGRAM_FILE=$(PROGRAM_FILE)
 
 # COCOTB_TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
-COCOTB_TOPLEVEL = pc_one
+COCOTB_TOPLEVEL = top_nexys3
 
 # COCOTB_TEST_MODULES is the basename of the Python test file(s)
 COCOTB_TEST_MODULES = test
