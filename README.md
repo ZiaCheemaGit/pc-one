@@ -41,19 +41,19 @@ so I will add them here as I progress
 - Make a CPU , I made a single cycle RV32I with this [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions)
 - Spend 5 days on making the CPU and 50 days on testing it , I tested using cocotb because watching waveforms gets boring
 - Add CI to project , nox and github actions used for this project. All tests in Dir `tests/` are ran before merge
-- Run c/cpp on cpu this is done by integrating a memory(compiled by riscv64-unknown-elf) with cpu   
+- Run c/cpp on cpu this is done by integrating a rom memory(compiled by riscv64-unknown-elf) with cpu 
+- At this point start working on first I/O device. Core of Debugging is print statements. For this sake I decided to implement UART and see c/cpp print statemetns over it.       
 - Learn UART and Memory Mapped IO Concepts because UART cannot be added without MMU. 
 - Learn about FPGAs. Simulation testing isn't enough(Stakes are very high, even one wire if not on/off as intended can break everything).  
 - First I tested c/cpp code UART prints on cocotb in simulation. When I programmed my pc in FPGA it required two changes i.e division of memory in ram(data memory) and rom(instruction memory). Other thing was FPGA(nexys3) support 32 bits array memory not byte addressable memory(RISCV). UART timimg also required some changes. After all these changes my design succesfully programmed on FPGA. But all my previously written simulation cocotb tests started failing. All tests had to be re-written. Even  after that c/cpp terminal prints didn't work on FPGA. In short what works in simulation doesn't always work on hardware. Its best to run your design on hardware in parallel to development.
-- 
+- At last UART works and I can see c/cpp prints on a physical terminal i.e minicom. Problem was that in cocotb clock frequency can be simulated to be anything and design will be simulated regradless of clk frequency but on FPGA a single cycle rv32i cannot run above the time required by the longest instruction.
 - 
 - TODO
 
 ## Next Milestones:
 This is what is currently being tried to be done.
-- Make UART work on FPGA
 - implement cpu traps
-
+- 
 ---
 
 # Getting Started
