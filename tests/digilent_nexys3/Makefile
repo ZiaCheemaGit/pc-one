@@ -36,7 +36,7 @@ VERILOG_SOURCES += $(PWD)/../../hardware/MMU/MMU.v
 VERILOG_SOURCES += $(PWD)/../../hardware/UART/uart_tx.v
  
 # Program file (passed from terminal)
-PROGRAM_FILE ?=
+PROGRAM_FILE ?= $(PWD)/../../software/build/rom_image.hex
 
 ifndef PROGRAM_FILE
 $(error PROGRAM_FILE is not set. Use: make PROGRAM_FILE=path_to_hex_file)

@@ -80,7 +80,9 @@ async def test_uart_terminal_display(dut):
     CLK_FREQ_HZ = 100_000_000
     CLK_PERIOD_NS = 1e9 / CLK_FREQ_HZ
     BAUD_RATE = 9600
-    BAUD_CLKS = int(1_000_000 / BAUD_RATE)
+    UART_FREQ_HZ = 1_000_000
+    UART_CLK_PERIOD_NS = 1e9 / UART_FREQ_HZ
+    BAUD_CLKS = int(UART_FREQ_HZ / BAUD_RATE)
 
     test_name = "uart_terminal_display"
     logger = logging.getLogger(test_name)
@@ -108,7 +110,7 @@ async def test_uart_terminal_display(dut):
         dut=dut,
         tx=dut.uart_tx_pin_for_FPGA,
         baud_clks=BAUD_CLKS,
-        clk_period_ns=CLK_PERIOD_NS,
+        clk_period_ns=UART_CLK_PERIOD_NS,
         echo=True
     )
 
