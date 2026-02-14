@@ -9,17 +9,15 @@ module top_nexys3(
 
     assign rst_on = rst_from_FPGA;
 
-    // pc-one runs smooth on 1 MHz
     reg clk_1MHz = 0;
-    reg [10:0] counter = 0;
+    reg [5:0] counter = 0;
 
     always @(posedge clk_from_FPGA) begin
-        if (counter < 10'd100) begin
-            counter = counter + 1;
-            clk_1MHz = 0;
+        if (counter == 49) begin
+            counter <= 0;
+            clk_1MHz <= ~clk_1MHz;
         end else begin
-            counter = 0;
-            clk_1MHz = 1;
+            counter <= counter + 1;
         end
     end
 
