@@ -1,19 +1,10 @@
-# VSCode project files
 .vscode/
 *.code-workspace
-
-# Waveforms
 *.vcd
 *.fst
 *.fst.hier
-
-# packaging 
 __pycache__
-
-# hex files
 *.bin
-
-# sim
 clear
 *.log
 *.xml
@@ -21,9 +12,7 @@ clear
 *.elf
 *.hex
 sim_build
-
-# Pytest
 .pytest_cache
-
+build/
 
 

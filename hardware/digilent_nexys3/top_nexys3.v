@@ -9,20 +9,26 @@ module top_nexys3(
 
     assign rst_on = rst_from_FPGA;
 
-    reg clk_1MHz = 0;
+    reg clk_MHz = 0;
     reg [5:0] counter = 0;
 
+    parameter counter_1MHz = 49;
+    parameter counter_2MHz = 24;
+    parameter counter_5MHz = 9;
+    parameter counter_10MHz = 4;
+    parameter counter_25MHz = 1;
+
     always @(posedge clk_from_FPGA) begin
-        if (counter == 49) begin
+        if (counter == counter_1MHz) begin
             counter <= 0;
-            clk_1MHz <= ~clk_1MHz;
+            clk_MHz <= ~clk_MHz;
         end else begin
             counter <= counter + 1;
         end
     end
 
     pc_one pc_one_instance(
-        .clk_from_FPGA(clk_1MHz),
+        .clk_from_FPGA(clk_MHz),
         .rst_from_FPGA(rst_from_FPGA),
         .uart_tx_pin_for_FPGA(uart_tx_pin_for_FPGA)
     );

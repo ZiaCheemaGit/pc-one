@@ -18,7 +18,7 @@ on:
       - "*.md"
 
 jobs:  
-  test_build:
+  test_pc_one:
     name: test pc-one(full system)
     runs-on: ubuntu-latest
 
@@ -34,22 +34,6 @@ jobs:
 
       - name: Test pc-one
         run: nox -s test_pc_one
-
-  # unit_tests:
-  #   name: hardware Unit tests
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Install system dependencies
-  #       run: |
-  #         sudo apt install -y  make iverilog python3 python3-pip
-
-  #     - name: Install nox
-  #       run: pip install nox
-
-  #     - name: Test UART
-  #       run: nox -s test_uart
-        
-
+      
+      - name: FPGA | digilent_nexys3
+        run: nox -s test_nexys3

@@ -8,12 +8,12 @@ class UARTTerminal:
     Matches FPGA + minicom exactly.
     """
 
-    def __init__(self, LOGGING_ON, logger: logging, dut, tx, baud_clks, clk_period_ns=10, echo=True):
+    def __init__(self, expected_string, LOGGING_ON, logger: logging, dut, tx, baud_clks, clk_period_ns=10):
+        self.expected_string = expected_string
         self.LOGGING_ON = LOGGING_ON
         self.logger = logger
         self.dut = dut
         self.tx = tx
-        self.echo = echo
 
         self.stopTerminal = False
 
@@ -58,19 +58,19 @@ class UARTTerminal:
         """Continuously receive and display UART output"""
 
         while not self.stopTerminal:
-            
             ch = await self.receive_byte()
 
             if ch is not None:
                 c = chr(ch)
-                if c == "\r":
-                    continue
-                elif c == "\n":
-                    if self.echo:
-                        self.logger.critical(f"[UART Terminal] - {self.buffer}")
-                    self.buffer = ""
+                if c == "\n":
+                    self.logger.critical(f"[UART Terminal] - {self.buffer}")
+                    self.buffer += c
                 else:
                     self.buffer += c
 
-        if self.LOGGING_ON:
-            self.logger.info(f"[LOGGING_ON] - UART stopped")
+        self.logger.info(f"[UART Terminal] - UART stopped")    
+
+        if self.expected_string != self.buffer:
+            raise Exception(f"Expected = {self.expected_string}, Received = {self.buffer}")
+        else:
+            self.logger.info(f"Expected = {self.expected_string}, Received = {self.buffer} UART Test Passed")
