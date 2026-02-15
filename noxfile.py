@@ -36,12 +36,6 @@ def test_pc_one(session: nox.Session) -> None:
     for hex_file in hex_files:
         session.log(f"Collected test_cases/{hex_file}")
         session.run("make", f"PROGRAM_FILE=test_cases/{hex_file}", external=True)
-
-    # Clean generated hex files
-    session.chdir("test_cases/")
-    session.run("make", "clean",external=True)
-
-    session.chdir("../../")        
     
     
 @nox.session
@@ -57,10 +51,4 @@ def test_nexys3(session: nox.Session) -> None:
     session.chdir("../tests/digilent_nexys3/")
     session.run("make", external=True)
 
-    # Clean rom image hex file
-    session.chdir("../software/")
-    session.run("make", "clean",external=True)
-
-    session.chdir("../../")        
-    
     
