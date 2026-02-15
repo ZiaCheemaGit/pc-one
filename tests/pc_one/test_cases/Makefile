@@ -59,7 +59,7 @@ $(call HEXFILE,$(1)):
 	$(OBJCOPY) -O binary \
 		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).elf \
 		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).bin
-	python3 ../../python_helper/bin2hex32.py \
+	python3 ../../../python_helper/bin2hex32.py \
 		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).bin > $$@
 endef
 
