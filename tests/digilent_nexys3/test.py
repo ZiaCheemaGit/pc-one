@@ -105,13 +105,13 @@ async def test_uart_terminal_display(dut):
 
     # UART terminal (minicom-equivalent)
     term = UARTTerminal(
+        "Hey!\r\n",
         LOGGING_ON,
         logger,
         dut=dut,
         tx=dut.uart_tx_pin_for_FPGA,
         baud_clks=BAUD_CLKS,
-        clk_period_ns=UART_CLK_PERIOD_NS,
-        echo=True
+        clk_period_ns=UART_CLK_PERIOD_NS
     )
 
     await term.run()
