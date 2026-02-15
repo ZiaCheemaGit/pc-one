@@ -7,7 +7,6 @@ from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 
 sys.path.append(os.path.abspath("../../"))
-
 from python_helper.converter import *
 
 

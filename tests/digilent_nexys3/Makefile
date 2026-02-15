@@ -19,12 +19,6 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/pc_src_control.
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/register_file.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/sign_ext_12_to_32.v
 
-# pc_one
-VERILOG_SOURCES += $(PWD)/../../hardware/pc_one/pc_one.v
-
-# FPGA top
-VERILOG_SOURCES += $(PWD)/../../hardware/digilent_nexys3/top_nexys3.v
-
 # memories
 VERILOG_SOURCES += $(PWD)/../../hardware/memory/rom.v
 VERILOG_SOURCES += $(PWD)/../../hardware/memory/ram.v
@@ -34,7 +28,17 @@ VERILOG_SOURCES += $(PWD)/../../hardware/MMU/MMU.v
 
 #UART
 VERILOG_SOURCES += $(PWD)/../../hardware/UART/uart_tx.v
- 
+
+#UART
+VERILOG_SOURCES += $(PWD)/../../hardware/VGA/vga.v 
+
+# pc_one
+VERILOG_SOURCES += $(PWD)/../../hardware/pc_one/pc_one.v
+
+# FPGA top
+VERILOG_SOURCES += $(PWD)/../../hardware/digilent_nexys3/top_nexys3.v
+
+
 # Program file (passed from terminal)
 PROGRAM_FILE ?= ../../software/build/rom_image.hex
 
