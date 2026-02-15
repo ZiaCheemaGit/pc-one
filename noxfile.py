@@ -55,7 +55,7 @@ def test_nexys3(session: nox.Session) -> None:
     
     # run test
     session.chdir("../tests/digilent_nexys3/")
-    session.run("make", f"PROGRAM_FILE=../software/build/rom_image.hex", external=True)
+    session.run("make", external=True)
 
     # Clean rom image hex file
     session.chdir("../software/")
