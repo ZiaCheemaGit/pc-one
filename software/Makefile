@@ -13,8 +13,8 @@ CFLAGS += -Iinclude
 # Sources
 KERNEL_SRC  = kernel/main.c
 DRIVER_SRC  = drivers/uart.c
-CRT0        = linker/crt0.S
-LINKER      = linker/link.ld
+CRT0        = bootloader/crt0.S
+LINKER      = bootloader/link.ld
 
 # Output files
 ELF  = $(BUILD_DIR)/rom_image.elf
