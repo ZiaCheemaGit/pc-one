@@ -1,12 +1,14 @@
 import os
 import logging
+import sys
 
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 
+sys.path.append(os.path.abspath("../../"))
+
 from python_helper.converter import *
-from python_helper.uart_terminal import UARTTerminal
 
 
 TEST_REGISTRY = {}
