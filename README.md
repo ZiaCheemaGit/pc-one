@@ -52,6 +52,7 @@ so I will add them here as I progress
 ## Next Milestones:
 This is what is currently being tried to be done.
 - implement cpu traps
+- Add VGA
 ---
 
 # Getting Started
