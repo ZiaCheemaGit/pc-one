@@ -69,8 +69,7 @@ these one can dive into source code.
 
 # Contributing
 
-This is definitely a huge project. Pull requests, ideas, and
-corrections are welcome from anyone who shares the vision.
+This is definitely a huge project. Pull requests, ideas, and corrections are welcome from anyone who shares the vision.
 
 
 
