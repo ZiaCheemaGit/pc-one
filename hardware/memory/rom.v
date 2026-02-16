@@ -26,7 +26,7 @@ module rom(
     // for ISE Design Suite
     `else
         initial begin
-        $readmemh("D:/git-clones/pc-one/tests/pc_one/test_cases/generated_hex/c-cpp_tests_test_uart_print_c/test_uart_print_c.hex", mem);
+        $readmemh("D:/git-clones/pc-one/software/build/rom_image.hex", mem);
         end
     `endif
 

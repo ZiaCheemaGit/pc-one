@@ -19,7 +19,7 @@ module top_nexys3(
     parameter counter_25MHz = 1;
 
     always @(posedge clk_from_FPGA) begin
-        if (counter == counter_1MHz) begin
+        if (counter == counter_10MHz) begin
             counter <= 0;
             clk_MHz <= ~clk_MHz;
         end else begin

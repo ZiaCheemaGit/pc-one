@@ -1,17 +1,43 @@
 import pygame
 import sys
 
-H_VISIBLE = 640
-H_FRONT   = 16
-H_SYNC    = 96
-H_BACK    = 48
-H_TOTAL   = H_VISIBLE + H_FRONT + H_SYNC + H_BACK
 
-V_VISIBLE = 480
-V_FRONT   = 10
-V_SYNC    = 2
-V_BACK    = 33
-V_TOTAL   = V_VISIBLE + V_FRONT + V_SYNC + V_BACK
+class VGAFormat:
+    def __init__(
+            self, frequency : int, 
+            H_VISIBLE : int, H_FRONT : int, H_SYNC : int, H_BACK : int,
+            V_VISIBLE : int, V_FRONT : int, V_SYNC : int, V_BACK : int,
+        ):
+        self.height = V_VISIBLE
+        self.width = H_VISIBLE
+        self.frequency = frequency
+
+        self.H_VISIBLE = H_VISIBLE
+        self.H_FRONT   = H_FRONT
+        self.H_SYNC    = H_SYNC
+        self.H_BACK    = H_BACK
+        self.H_TOTAL   = H_VISIBLE + H_FRONT + H_SYNC + H_BACK
+        
+        self.V_VISIBLE = V_VISIBLE
+        self.V_FRONT   = V_FRONT
+        self.V_SYNC    = V_SYNC
+        self.V_BACK    = V_BACK
+        self.V_TOTAL   = V_VISIBLE + V_FRONT + V_SYNC + V_BACK
+         
+
+"""
+VESA Table source
+
+https://web.mit.edu/6.111/www/s2004/NEWKIT/vga.shtml
+
+More entries can be added as per requirements
+"""
+
+VGA_640_480_60Hz = VGAFormat(60, 640, 16, 96, 48, 480, 11, 2, 31)
+
+VESA_TABLE = [
+    VGA_640_480_60Hz
+]
 
 class VGAMonitor:
 
