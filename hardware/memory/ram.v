@@ -7,8 +7,7 @@ module ram (
     output reg  [31:0] data_out
 );
 
-    // 8 KB RAM = 2048 words
-    parameter WORDS = 2048;
+    parameter WORDS = 4096;
 
     reg [31:0] mem [0:WORDS-1];
 
