@@ -2,15 +2,31 @@ import pygame
 import sys
 
 
-class VGAFormat:
+class VGA_CABLE:
     def __init__(
-            self, frequency : int, 
+            self, Red : int, Green : int, Blue : int, 
+            H_SYNC: bool, V_SYNC: bool, pixel_clk_MHz : float
+        ):
+        self.red = Red
+        self.green = Green
+        self.blue = Blue
+
+        self.H_SYNC = H_SYNC
+        self.V_SYNC = V_SYNC
+
+        self.pixel_clk_MHz = pixel_clk_MHz
+
+
+class VGA_Format:
+    def __init__(
+            self, frequency : int, pixel_clk : float,
             H_VISIBLE : int, H_FRONT : int, H_SYNC : int, H_BACK : int,
             V_VISIBLE : int, V_FRONT : int, V_SYNC : int, V_BACK : int,
         ):
         self.height = V_VISIBLE
         self.width = H_VISIBLE
         self.frequency = frequency
+        self.pixel_clk = pixel_clk
 
         self.H_VISIBLE = H_VISIBLE
         self.H_FRONT   = H_FRONT
@@ -30,83 +46,130 @@ VESA Table source
 
 https://web.mit.edu/6.111/www/s2004/NEWKIT/vga.shtml
 
-More entries can be added as per requirements
+More entries can be added here
 """
-
-VGA_640_480_60Hz = VGAFormat(60, 640, 16, 96, 48, 480, 11, 2, 31)
+VGA_480p = VGA_Format(60, 25.175, 640, 16, 96, 48, 480, 11, 2, 31)
 
 VESA_TABLE = [
-    VGA_640_480_60Hz
+    VGA_480p,
 ]
 
-class VGAMonitor:
 
+class VGAMonitor:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((H_VISIBLE, V_VISIBLE))
+        self.format : VGA_Format = None
+
+        self.x_position = 0
+        self.y_position = 0
+
+        self.prev_hsync = True
+        self.prev_vsync = True
+
+    def initialize_display(self):
+        self.screen = pygame.display.set_mode(
+            (self.format.H_VISIBLE, self.format.V_VISIBLE)
+        )
         pygame.display.set_caption("VGA Monitor Simulator")
-        self.surface = pygame.Surface((H_VISIBLE, V_VISIBLE))
-
-        self.prev_clk = 0
-        self.prev_hsync = 1
-        self.prev_vsync = 1
-
-        self.x = 0
-        self.y = 0
-
-        self.h_count = 0
-        self.v_count = 0
-
-    def step(self, clk, hsync, vsync, r, g, b):
-        if self.prev_clk == 0 and clk == 1:
-
-            if self.prev_vsync == 1 and vsync == 0:
-                self.v_count = 0
-                self.y = 0
-                self.update_display()
-
-            if self.prev_hsync == 1 and hsync == 0:
-                self.h_count = 0
-                self.x = 0
-                self.v_count += 1
-                self.y = self.v_count
-
-            if (self.h_count < H_VISIBLE) and (self.v_count < V_VISIBLE):
-                color = (
-                    int(r * 17),
-                    int(g * 17),
-                    int(b * 17)
-                )
-                if self.x < H_VISIBLE and self.y < V_VISIBLE:
-                    self.surface.set_at((self.x, self.y), color)
-
-                self.x += 1
-
-            self.h_count += 1
-
-        self.prev_clk = clk
-        self.prev_hsync = hsync
-        self.prev_vsync = vsync
-
-    def update_display(self):
-        self.screen.blit(self.surface, (0, 0))
-        pygame.display.flip()
 
     def handle_events(self):
+        """
+        Check if user closed pygame GUI
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
+    def select_format(self, pixel_clk_MHz : float) -> VGA_Format:
+        """
+        Iterate over VESA_TABLE adn select matching 
+        VGA Format
+        """
+        for fmt in VESA_TABLE:
+            if abs(fmt.pixel_clk - pixel_clk_MHz) < 0.6:
+                return fmt
+        return None
+
+    def update_display(self, VGA_CABLE: VGA_CABLE):
+        VESA_STANDARD = self.select_format(VGA_CABLE.pixel_clk_MHz)
+        if VESA_STANDARD is None:
+            print(f"Invalid Pixel Clock = {VGA_CABLE.pixel_clk_MHz}")
+            pygame.quit()
+            sys.exit()
+
+        if self.format is None or self.format != VESA_STANDARD:
+            self.format = VESA_STANDARD
+            self.initialize_display()
+            self.x_position = 0
+            self.y_position = 0
+
+        if self.prev_hsync and not VGA_CABLE.H_SYNC:
+            self.x_position = 0
+            self.y_position += 1
+
+        if self.prev_vsync and not VGA_CABLE.V_SYNC:
+            self.y_position = 0
+            pygame.display.flip()
+
+        if (self.x_position < self.format.H_VISIBLE and
+            self.y_position < self.format.V_VISIBLE):
+
+            self.screen.set_at(
+                (self.x_position, self.y_position),
+                (VGA_CABLE.red, VGA_CABLE.green, VGA_CABLE.blue)
+            )
+
+        self.x_position += 1
+
+        self.prev_hsync = VGA_CABLE.H_SYNC
+        self.prev_vsync = VGA_CABLE.V_SYNC
+
+
 
 def main():
     monitor = VGAMonitor()
-    clock = pygame.time.Clock()
+
+    h_clk = 0
+    v_clk = 0
+    h_sync = False
+    v_sync = False
 
     while True:
         monitor.handle_events()
-        clock.tick(1000)
+
+        if h_clk < (640 + 16):
+            h_sync = True
+        elif h_clk >= (640 + 16) and h_clk < (640 + 16 + 96):
+            h_sync = False
+        elif h_clk >= (640 + 16 + 96) and h_clk < (640 + 16 + 96 + 48):
+            h_sync = True
+        elif h_clk >= (640 + 16 + 96 + 48):
+            h_clk = 0
+            v_clk += 1
+
+        if v_clk < (480 + 10):
+            v_sync = True
+        elif v_clk >= (480 + 10) and v_clk < (480 + 10 + 2):
+            v_sync = False
+        elif v_clk >= (480 + 10 + 2) and v_clk < (480 + 10 + 2 + 33):
+            v_sync = True
+        elif v_clk >= (480 + 10 + 2 + 33):
+            v_clk = 0
+
+        vga_cable = VGA_CABLE(
+            255,      
+            255,      
+            255,      
+            h_sync,    
+            v_sync,    
+            25    
+        )
+
+        monitor.update_display(vga_cable)
+        h_clk += 1
 
 
 if __name__ == "__main__":
     main()
+
