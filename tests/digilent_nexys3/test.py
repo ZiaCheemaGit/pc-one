@@ -81,7 +81,7 @@ async def test_uart_terminal_display(dut):
     CLK_FREQ_HZ = 100_000_000
     CLK_PERIOD_NS = 1e9 / CLK_FREQ_HZ
     BAUD_RATE = 9600
-    UART_FREQ_HZ = 10_000_000
+    UART_FREQ_HZ = 25_000_000
     UART_CLK_PERIOD_NS = 1e9 / UART_FREQ_HZ
     BAUD_CLKS = int(UART_FREQ_HZ / BAUD_RATE)
 
