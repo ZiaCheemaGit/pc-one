@@ -26,11 +26,12 @@ VERILOG_SOURCES += $(PWD)/../../hardware/memory/ram.v
 # MMU
 VERILOG_SOURCES += $(PWD)/../../hardware/MMU/MMU.v
 
-#UART
+# UART
 VERILOG_SOURCES += $(PWD)/../../hardware/UART/uart_tx.v
 
-#UART
-VERILOG_SOURCES += $(PWD)/../../hardware/VGA/vga.v 
+# VGA
+VERILOG_SOURCES += $(PWD)/../../hardware/VGA/vga_controller.v 
+VERILOG_SOURCES += $(PWD)/../../hardware/VGA/vram.v 
 
 # pc_one
 VERILOG_SOURCES += $(PWD)/../../hardware/pc_one/pc_one.v
