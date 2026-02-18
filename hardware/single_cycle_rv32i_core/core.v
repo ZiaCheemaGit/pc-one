@@ -6,11 +6,13 @@ RV32I ISA
 https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions
 
 Instructions which are not yet implemented but are mentioned for RV32I in the docs above
-lb, lh, lbu, lhu, sb, sh 
+lb, lh, lbu, lhu
+sb, sh 
 fence, fence.i 
 csrrw, csrrs, csrrc, csrrwi, csrrsi, csrrci 
 ecall, ebreak 
-sret, mret, wfi, sfence.vma 
+sret, mret
+wfi, sfence.vma 
 
 single cycle rv32i core
 
