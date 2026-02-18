@@ -38,16 +38,16 @@ what has been done uptill now and what most likely
 anyone does when they make a computer.It only includes the 
 completed steps. I also dont know what are the complete steps 
 so I will add them here as I progress  
-- Get a good understanding of bare metal systems. One of best resources I found was [Nand to Tetris](https://www.nand2tetris.org/) 
-- Make a CPU , I made a single cycle RV32I with this [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions)
-- Spend 5 days on making the CPU and 50 days on testing it , I tested using cocotb because watching waveforms gets boring
-- Add CI to project , nox and github actions used for this project. All tests in Dir `tests/` are ran before merge
-- Run c/cpp on cpu this is done by integrating a rom memory(compiled by riscv64-unknown-elf) with cpu 
-- At this point start working on first I/O device. Core of Debugging is print statements. For this sake I decided to implement UART and see c/cpp print statemetns over it.       
-- Learn UART and Memory Mapped IO Concepts because UART cannot be added without MMU. 
-- Learn about FPGAs. Simulation testing isn't enough(Stakes are very high, even one wire if not on/off as intended can break everything).  
-- First I tested c/cpp code UART prints on cocotb in simulation. When I programmed my pc in FPGA it required two changes i.e division of memory in ram(data memory) and rom(instruction memory). Other thing was FPGA(nexys3) support 32 bits array memory not byte addressable memory(RISCV). UART timimg also required some changes. After all these changes my design succesfully programmed on FPGA. But all my previously written simulation cocotb tests started failing. All tests had to be re-written. Even  after that c/cpp terminal prints didn't work on FPGA. In short what works in simulation doesn't always work on hardware. Its best to run your design on hardware in parallel to development.
-- At last UART works and I can see c/cpp prints on a physical terminal i.e minicom. Problem was that in cocotb clock frequency can be simulated to be anything and design will be simulated regradless of clk frequency but on FPGA a single cycle rv32i cannot run above the time required by the longest instruction.
+- Get a good understanding of bare metal systems. One of best resources I found was [Nand to Tetris](https://www.nand2tetris.org/).
+- Make a CPU , I made a single cycle RV32I with this [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions).
+- Spend 5 days on making the CPU and 50 days on testing it , I tested using [cocotb](https://www.cocotb.org/) because watching waveforms gets boring.
+- Add CI to project , [nox](https://nox.thea.codes/en/stable/) and [github actions](https://github.com/features/actions) used for this project. All tests in Dir `tests/` are ran before merge.
+- Run c/cpp on cpu this is done by integrating a rom memory(compiled by riscv64-unknown-elf) with cpu.
+- At this point start working on first I/O device. Core of Debugging is print statements. For this sake I decided to implement UART and see c/cpp print statements over it.       
+- Learn [UART](https://digilent.com/blog/uart-explained/?srsltid=AfmBOooOWkUeD289G3AGz7XpwJ_4cPnZfhXwZAYZa62Rj4YD0beE04W1) and [Memory Mapped IO](https://www.geeksforgeeks.org/computer-organization-architecture/memory-mapped-i-o-and-isolated-i-o/) Concepts because UART cannot be added without [MMU](https://wiki.osdev.org/Memory_Management_Unit). 
+- Learn about [FPGAs](https://en.wikipedia.org/wiki/Field-programmable_gate_array). Simulation testing isn't enough(Stakes are very high, even one wire if not on/off as intended can break everything).  
+- First I tested c/cpp code UART prints on cocotb in simulation. When I programmed my design on FPGA it required two changes i.e division of memory in ram(data memory) and rom(instruction memory). Other thing was FPGA(nexys3) support 32 bits array memory not byte addressable memory(RISCV). UART timimg also required some changes. After all these changes my design was succesfully programmed on FPGA. But all my previously written simulation cocotb tests started failing. All tests had to be re-written. Even  after that c/cpp terminal prints didn't work on FPGA. In short what works in simulation doesn't always work on hardware. Its best to run your design on hardware in parallel to development.
+- At last UART works and I can see c/cpp prints on a physical terminal i.e [minicom](https://linux.die.net/man/1/minicom). Problem was that in cocotb clock frequency can be simulated to be anything and design will be simulated regradless of clk frequency but on FPGA a single cycle rv32i cannot run above the time required by the longest instruction.
 - At this point I am a bit lost and confused. Cant decide between `cpu traps` and `VGA` or maybe I should entirely do something else.  
 - 
 - TODO
