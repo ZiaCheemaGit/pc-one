@@ -21,7 +21,8 @@ upto to an OS running applications.
 
 At the end(if that ever happens) we will have a project in which 
 there will be verilog which can be directly dumped on an FPGA.Connect a mouse,
-a keyboard and a vga display to the FPGA and PC will be alive.
+a keyboard and a vga display to the FPGA and PC will be alive. The OS will be linux inspired
+but very small. Just a terminal runnning simple programs.
 
 ---
 
@@ -62,7 +63,7 @@ Clone and explore:
 ```sh
 git clone https://github.com/ZiaCheemaGit/pc-one.git
 ```
-In all directories and sub directories there is a `README.md`. These readme  files hopefully will 
+In all directories and sub directories there is a `README.md`. These readme files hopefully will 
 help anyone at the beginning to get a fair amount of clarity. After getting an overview through 
 these one can dive into source code.
 
