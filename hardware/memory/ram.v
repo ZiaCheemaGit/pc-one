@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module ram (
     input  wire        clk,
     input  wire [31:0] data_address,   // byte address from CPU
