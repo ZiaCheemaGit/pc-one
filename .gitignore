@@ -14,5 +14,7 @@ clear
 sim_build
 .pytest_cache
 build/
+.json
+.svg
 
 
