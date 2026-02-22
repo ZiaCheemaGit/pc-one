@@ -54,17 +54,15 @@ VESA_TABLE = [
     VGA_480p,
 ]
 
-
 class VGAMonitor:
     def __init__(self):
         pygame.init()
-        self.format : VGA_Format = None
+        self.format: VGA_Format = None
 
-        self.x_position = 0
-        self.y_position = 0
+        self.h_counter = 0
+        self.v_counter = 0
 
-        self.prev_hsync = True
-        self.prev_vsync = True
+        self.screen = None
 
     def initialize_display(self):
         self.screen = pygame.display.set_mode(
@@ -73,19 +71,12 @@ class VGAMonitor:
         pygame.display.set_caption("VGA Monitor Simulator")
 
     def handle_events(self):
-        """
-        Check if user closed pygame GUI
-        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-    def select_format(self, pixel_clk_MHz : float) -> VGA_Format:
-        """
-        Iterate over VESA_TABLE adn select matching 
-        VGA Format
-        """
+    def select_format(self, pixel_clk_MHz: float) -> VGA_Format:
         for fmt in VESA_TABLE:
             if abs(fmt.pixel_clk - pixel_clk_MHz) < 0.6:
                 return fmt
@@ -98,33 +89,31 @@ class VGAMonitor:
             pygame.quit()
             sys.exit()
 
-        if self.format is None or self.format != VESA_STANDARD:
+        if self.format is None:
             self.format = VESA_STANDARD
             self.initialize_display()
-            self.x_position = 0
-            self.y_position = 0
 
-        if self.prev_hsync and not VGA_CABLE.H_SYNC:
-            self.x_position = 0
-            self.y_position += 1
+        # Advance horizontal counter
+        self.h_counter += 1
 
-        if self.prev_vsync and not VGA_CABLE.V_SYNC:
-            self.y_position = 0
+        if self.h_counter >= self.format.H_TOTAL:
+            self.h_counter = 0
+            self.v_counter += 1
+
+        # Advance vertical counter
+        if self.v_counter >= self.format.V_TOTAL:
+            self.v_counter = 0
             pygame.display.flip()
 
-        if (self.x_position < self.format.H_VISIBLE and
-            self.y_position < self.format.V_VISIBLE):
-
+        # Draw only visible region
+        if (
+            self.h_counter < self.format.H_VISIBLE and
+            self.v_counter < self.format.V_VISIBLE
+        ):
             self.screen.set_at(
-                (self.x_position, self.y_position),
+                (self.h_counter, self.v_counter),
                 (VGA_CABLE.red, VGA_CABLE.green, VGA_CABLE.blue)
             )
-
-        self.x_position += 1
-
-        self.prev_hsync = VGA_CABLE.H_SYNC
-        self.prev_vsync = VGA_CABLE.V_SYNC
-
 
 
 def main():
