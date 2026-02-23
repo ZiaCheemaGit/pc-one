@@ -31,6 +31,10 @@ VERILOG_SOURCES += $(PWD)/../../hardware/MMU/MMU.v
 
 #UART
 VERILOG_SOURCES += $(PWD)/../../hardware/UART/uart_tx.v
+
+# VGA
+VERILOG_SOURCES += $(PWD)/../../hardware/VGA/vga_controller.v 
+VERILOG_SOURCES += $(PWD)/../../hardware/VGA/vram.v 
  
 # Program file (passed from terminal)
 PROGRAM_FILE ?=
