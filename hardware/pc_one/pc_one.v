@@ -4,6 +4,7 @@ This is the top level module for this project
 Its inputs/outputs are connected directly to FPGA ports
 
 MMU
+ROM = 0x00000000 --> 0x00001FFF
 RAM = 0x00002000 --> 0x00003FFF
 UART =  00004000
 UART_STATUS = 0x00004004
@@ -14,8 +15,14 @@ UART_STATUS = 0x00004004
 
 module pc_one(
     input clk_from_FPGA,
+    input clk_25MHz,
     input rst_from_FPGA,
-    output uart_tx_pin_for_FPGA
+    output uart_tx_pin_for_FPGA,
+    output vga_red_for_FPGA, 
+    output vga_green_for_FPGA,
+    output vga_blue_for_FPGA,
+    output vsync_for_FPGA,
+    output hsync_for_FPGA
     );
     
     wire [31:0] mem_add, instr_add, instruction, ram_data_to_mmu, 
@@ -74,6 +81,18 @@ module pc_one(
         .data(cpu_data_to_mmu[7:0]),
         .tx(uart_tx_pin_for_FPGA),
         .uart_busy(uart_busy)
+    );
+
+    vga_controller vga_controller_instance(
+        .clk_25MHz(clk_25MHz),     
+        .reset(rst_from_FPGA),
+        .pixel_data(7),  // From VRAM
+        .red(vga_red_for_FPGA),         
+        .green(vga_green_for_FPGA),       
+        .blue(vga_blue_for_FPGA),         
+        .hsync(hsync_for_FPGA),
+        .vsync(vsync_for_FPGA),
+        .mem_address()  // To VRAM
     );
     
 endmodule
