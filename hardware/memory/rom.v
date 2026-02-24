@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module rom(
     input  wire [31:0] pc,          
     output wire  [31:0] instruction,
