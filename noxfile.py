@@ -48,7 +48,7 @@ def test_nexys3(session: nox.Session) -> None:
     session.run("make", external=True)
     
     # run test
-    session.chdir("../tests/digilent_nexys3/")
+    session.chdir("../tests/FPGA_digilent_nexys3/")
     session.run("make", external=True)
 
     

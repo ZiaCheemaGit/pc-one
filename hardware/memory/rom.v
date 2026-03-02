@@ -25,7 +25,7 @@ module rom(
             $display("Loading program from: %s", program_file);
             $readmemh(program_file, mem);
         end
-    // for ISE Design Suite
+    // for ISE Design Suite(Full path)
     `else
         initial begin
         $readmemh("D:/git-clones/pc-one/software/build/rom_image.hex", mem);
