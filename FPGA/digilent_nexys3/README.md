@@ -5,3 +5,4 @@ after successfully running assemlby and c/cpp programs on rv32i in simulation, w
 must also test that on an FPGA. 
 
 
+You can also [Download Adept](https://digilent.com/shop/software/digilent-adept/), a legacy software
