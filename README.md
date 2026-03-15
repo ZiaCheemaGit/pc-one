@@ -48,14 +48,16 @@ so I will add them here as I progress
 - Learn about [FPGAs](https://en.wikipedia.org/wiki/Field-programmable_gate_array). Simulation testing isn't enough(Stakes are very high, even one wire if not on/off as intended can break everything).  
 - First I tested c/cpp code UART prints on cocotb in simulation. When I programmed my design on FPGA it required two changes i.e division of memory in ram(data memory) and rom(instruction memory). Other thing was FPGA(nexys3) support 32 bits array memory not byte addressable memory(RISCV). UART timimg also required some changes. After all these changes my design was succesfully programmed on FPGA. But all my previously written simulation cocotb tests started failing. All tests had to be re-written. Even  after that c/cpp terminal prints didn't work on FPGA. In short what works in simulation doesn't always work on hardware. Its best to run your design on hardware in parallel to development.
 - At last UART works and I can see c/cpp prints on a physical terminal i.e [minicom](https://linux.die.net/man/1/minicom). Problem was that in cocotb clock frequency can be simulated to be anything and design will be simulated regradless of clk frequency but on FPGA a single cycle rv32i cannot run above the time required by the longest instruction.
-- At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community.  
+- At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Another problem is FPGA has limited BRAM and for making a complete general purpose pc memory alot of memory is required. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA. On most FPGAs an on board dedicated memory is provided which can be used via DMA. So I have decided to implement that. Another thing is booting over UART can be added to skip hassle of FPGA Re-configuration when changes are software only.
 - 
 - TODO
 
 ## Next Milestones:
 This is what is currently being tried to be done.
+- Add DMA
 - implement cpu traps
 - Add VGA
+- Boot over UART
 ---
 
 # Getting Started
