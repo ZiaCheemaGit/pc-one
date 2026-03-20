@@ -29,7 +29,7 @@ module pc_one(
     cpu_data_to_mmu, mmu_data_to_cpu, mmu_data_to_ram, rom_data_to_mmu;
 
     wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, 
-    uart_busy;
+    uart_busy, byte_op , half_op, unsigned_op, stall;
     
     MMU MMU_instance(
         .uart_busy(uart_busy),
@@ -55,7 +55,10 @@ module pc_one(
         .mem_read(mem_read),
         .mem_address(mem_add),
         .mem_data_from_mem(mmu_data_to_cpu),
-        .mem_data_to_mem(cpu_data_to_mmu)
+        .mem_data_to_mem(cpu_data_to_mmu),
+        .byte_op(byte_op),
+        .half_op(half_op),
+        .unsigned_op(unsigned_op)
     );
     
     ram ram_instance(
@@ -63,6 +66,9 @@ module pc_one(
         .data_address(mem_add),
         .mem_read(mmu_mem_read),
         .mem_write(mmu_mem_write),
+        .byte_op(byte_op),
+        .half_op(half_op),
+        .unsigned_op(unsigned_op), 
         .data_in(mmu_data_to_ram),
         .data_out(ram_data_to_mmu)
     );

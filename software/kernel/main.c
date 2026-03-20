@@ -12,8 +12,5 @@ int main(void)
     while (1){
         
     };
-}
 
-// this would work once sb, lbu lb, etc all remaining instructions
-// with byte load and store are implemented
-// uart_println("Hey!");
+}

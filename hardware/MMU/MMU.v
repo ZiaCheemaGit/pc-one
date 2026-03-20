@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module MMU(
     input uart_busy,
     input  [31:0] addr, 

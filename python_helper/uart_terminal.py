@@ -2,10 +2,10 @@ import logging
 
 from cocotb.triggers import Timer
 
+
 class UARTTerminal:
     """
-    UART terminal emulator (8N1) with ZERO drift.
-    Matches FPGA + minicom exactly.
+    UART terminal emulator (8N1)
     """
 
     def __init__(self, expected_string, LOGGING_ON, logger: logging, dut, tx, baud_clks, clk_period_ns=10):
@@ -30,12 +30,12 @@ class UARTTerminal:
 
         # wait for start bit
         while int(self.tx.value) == 1: 
-                await Timer(1, unit="ns")
-                count += 1
-                if count >= threshold:
-                    self.logger.info("tx pin idle for Threshold cycles")
-                    self.stopTerminal = True
-                    return
+            await Timer(1, unit="ns")
+            count += 1
+            if count >= threshold:
+                self.logger.info("tx pin idle for Threshold cycles")
+                self.stopTerminal = True
+                return
 
         # move to middle of start bit
         await Timer(self.half_bit_ns, unit="ns")

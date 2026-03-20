@@ -23,6 +23,10 @@ alu_op is control for alu control unit and selection values are same as defined 
 
 module control_unit (
     input [6:0] opcode,
+    input [2:0] func3,
+    output reg byte_op,
+    output reg half_op,
+    output reg unsigned_op, 
     output reg mem_read, mem_write, reg_write,
     output reg [1:0] alu_op, pc_src, alu_src,
     output reg [2:0] mem_to_reg
@@ -38,6 +42,43 @@ module control_unit (
         alu_op     = 2'b00;
         pc_src     = 2'b00;
         mem_to_reg = 3'b000;
+        byte_op = 0;
+        half_op = 0;
+        unsigned_op = 0;
+
+        if (opcode == 7'd3 || opcode == 7'd35) begin
+            case (func3)
+                3'd0: begin // LB / SB
+                    byte_op = 1;
+                    half_op = 0;
+                    unsigned_op = 0;
+                end
+
+                3'd1: begin // LH / SH
+                    byte_op = 0;
+                    half_op = 1;
+                    unsigned_op = 0;
+                end
+
+                3'd2: begin // LW / SW
+                    byte_op = 0;
+                    half_op = 0;
+                    unsigned_op = 0;
+                end
+
+                3'd4: begin // LBU
+                    byte_op = 1;
+                    half_op = 0;
+                    unsigned_op = 1;
+                end
+
+                3'd5: begin // LHU
+                    byte_op = 0;
+                    half_op = 1;
+                    unsigned_op = 1;
+                end
+            endcase
+        end
         
         case (opcode)
             

@@ -1,5 +1,6 @@
 `timescale 1ns/1ps
 
+
 module ram (
     input  wire        clk,
     input  wire [31:0] data_address,   
@@ -48,7 +49,7 @@ module ram (
         end
     end
 
-    always @(posedge clk) begin
+    always @(*) begin
         if (mem_read) begin
             read_word = mem[word_addr];
 

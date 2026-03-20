@@ -18,12 +18,8 @@ SRCS := $(ASM_SRCS) $(C_SRCS) $(CPP_SRCS)
 # Flags
 ARCH_FLAGS    := -march=rv32i -mabi=ilp32
 COMMON_FLAGS  := -ffreestanding -nostdlib
-LINKER_SCRIPT := linker_files/link.ld
-CRT0          := linker_files/crt0.S
-
-# Map:
-# asm_tests/test_basic.s  -> generated_hex/asm_tests_test_basic/test_basic.hex
-# c-cpp_tests/test_math.c -> generated_hex/c-cpp_tests_test_math/test_math.hex
+LINKER_SCRIPT := ../../../software/bootloader/link.ld
+CRT0          := ../../../software/bootloader/crt0.S
 
 define OUTDIR
 $(OUT_DIR)/$(subst /,_,$(basename $(1)))

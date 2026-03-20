@@ -31,6 +31,9 @@ module core(
     input [31:0] instruction,
     output mem_write,
     output mem_read,
+    output byte_op,
+    output half_op,
+    output unsigned_op, 
     output [31:0] mem_address,
     input [31:0] mem_data_from_mem,
     output [31:0] mem_data_to_mem
@@ -57,11 +60,15 @@ module core(
         .s_type_immediate(s_type_immediate)
     );
     
-    wire mem_read_control, mem_write_control, reg_write_control;
+    wire func3, mem_read_control, mem_write_control, reg_write_control;
     wire [1:0] alu_op_control, pc_src, alu_src_control;
     wire [2:0] mem_to_reg_control;
     control_unit control_unit_instance(
         .opcode(instruction[6:0]),
+        .func3(instruction[14:12]),
+        .byte_op(byte_op),
+        .half_op(half_op),
+        .unsigned_op(unsigned_op), 
         .mem_read(mem_read), 
         .mem_write(mem_write), 
         .alu_src(alu_src_control), 
@@ -84,22 +91,22 @@ module core(
     wire [1:0] pc_src_control;
     wire zero_flag;
     pc_src_control pc_src_control_instance(
-            .pc_mux_control(pc_src),
-            .zero_flag(zero_flag),
-            .pc_control(pc_src_control)
+        .pc_mux_control(pc_src),
+        .zero_flag(zero_flag),
+        .pc_control(pc_src_control)
     );
     
     wire [31:0] rs1, rs2, reg_write_data;
     reg_file reg_file_instance(
-            .clk(clk),
-            .rst(rst),
-            .dest_reg(instruction[11:7]), 
-            .src1_reg(instruction[19:15]), 
-            .src2_reg(instruction[24:20]),
-            .reg_write_data(reg_write_data),
-            .reg_write_control(reg_write_control),
-            .src1_reg_value(rs1), 
-            .src2_reg_value(rs2)
+        .clk(clk),
+        .rst(rst),
+        .dest_reg(instruction[11:7]), 
+        .src1_reg(instruction[19:15]), 
+        .src2_reg(instruction[24:20]),
+        .reg_write_data(reg_write_data),
+        .reg_write_control(reg_write_control),
+        .src1_reg_value(rs1), 
+        .src2_reg_value(rs2)
     );
     assign mem_data_to_mem = rs2;
     
@@ -126,16 +133,16 @@ module core(
     
     wire [31:0] pc_plus_4;
     adder32 adder32_instance_const4(
-            .in1(4),
-            .in2(pc_out_add),
-            .out(pc_plus_4)
+        .in1(4),
+        .in2(pc_out_add),
+        .out(pc_plus_4)
     );
     
     wire [31:0] pc_plus_immediate_out;
     adder32 adder32_instance_immediate(
-             .in1(pc_out_add),
-             .in2(b_type_immediate),
-             .out(pc_plus_immediate_out)
+        .in1(pc_out_add),
+        .in2(b_type_immediate),
+        .out(pc_plus_immediate_out)
     );
          
     wire [31:0] jal_pc;
