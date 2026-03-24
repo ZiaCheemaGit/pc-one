@@ -38,6 +38,9 @@ what has been done uptill now and what most likely
 anyone does when they make a computer.It only includes the 
 completed steps. I also dont know what are the complete steps 
 so I will add them here as I progress  
+
+### MileStone 01
+
 - Get a good understanding of bare metal systems. One of best resources I found was [Nand to Tetris](https://www.nand2tetris.org/).
 - Make a CPU , I made a single cycle RV32I with this [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions).
 - Spend 5 days on making the CPU and 50 days on testing it , I tested using [cocotb](https://www.cocotb.org/) because watching waveforms gets boring.
@@ -49,7 +52,10 @@ so I will add them here as I progress
 - First I tested c/cpp code UART prints on cocotb in simulation. When I programmed my design on FPGA it required two changes i.e division of memory in ram(data memory) and rom(instruction memory). Other thing was FPGA(nexys3) support 32 bits array memory not byte addressable memory(RISCV). UART timimg also required some changes. After all these changes my design was succesfully programmed on FPGA. But all my previously written simulation cocotb tests started failing. All tests had to be re-written. Even  after that c/cpp terminal prints didn't work on FPGA. In short what works in simulation doesn't always work on hardware. Its best to run your design on hardware in parallel to development.
 - At last UART works and I can see c/cpp prints on a physical terminal i.e [minicom](https://linux.die.net/man/1/minicom). Problem was that in cocotb clock frequency can be simulated to be anything and design will be simulated regradless of clk frequency but on FPGA a single cycle rv32i cannot run above the time required by the longest instruction. Here is a [demo video](https://youtu.be/YHuOQX06mLM?si=AHQMabuc4YgpbC6A).
 [![Hello World from pc-one over UART on Nexys3](images/youtube/M1.png)](https://youtu.be/YHuOQX06mLM?si=AHQMabuc4YgpbC6A)
-- At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Another problem is FPGA has limited BRAM and for making a complete general purpose pc memory alot of memory is required. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA. On most FPGAs an on board dedicated memory is present. So I have decided to implement that. Another thing is booting over UART can be added to skip hassle of FPGA Re-configuration when changes are software only. After that VGA can be completed.
+
+### Milestone 02
+
+- At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Another problem is FPGA has limited BRAM and for making a complete general purpose pc alot of memory is required. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA. On most FPGAs an on board dedicated memory is present. So I have decided to implement that. Another thing is booting over UART can be added to skip hassle of FPGA Re-configuration when changes are software only. After that VGA can be completed.
 - 
 - TODO
 
