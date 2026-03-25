@@ -8,7 +8,7 @@ from cocotb.triggers import Timer, RisingEdge
 sys.path.append(os.path.abspath("../../"))
 from python_helper.converter import *
 from python_helper.uart_terminal import UARTTerminal
-
+from python_helper.logging import log_signals_pc_one
 
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
 
@@ -44,7 +44,7 @@ async def test_uart_terminal_display(dut):
 
     # UART terminal (minicom-equivalent)
     term = UARTTerminal(
-        "Hey!\r\n",
+        "Hello from pc-one!\r\n",
         LOGGING_ON,
         logger,
         dut=dut,
@@ -52,5 +52,8 @@ async def test_uart_terminal_display(dut):
         baud_clks=BAUD_CLKS,
         clk_period_ns=UART_CLK_PERIOD_NS
     )
+
+    if LOGGING_ON:
+        cocotb.start_soon(log_signals_pc_one(logger, dut.pc_one_instance))
 
     await term.run()
