@@ -12,6 +12,7 @@ void uart_putc(char c)
     *uart_data = (uint32_t)c;
 }
 
+__attribute__((noinline))
 void uart_print(const char *s)
 {
     while (*s) {

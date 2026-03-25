@@ -1,8 +1,10 @@
+from cocotb.triggers import RisingEdge
 
+from python_helper.converter import binary_to_assembly
 
-
-
-def log_signals_pc_one(logger, dut):
+async def log_signals_pc_one(logger, dut):
+    while True:
+        await RisingEdge(dut.clk_from_FPGA)
         # PC
         try: 
             logger.critical(f"PC = {dut.instr_add.value.to_unsigned()}")

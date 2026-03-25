@@ -74,6 +74,9 @@ module pc_one(
     );
 
     rom rom_instance(
+        .byte_op(byte_op),
+        .half_op(half_op),
+        .unsigned_op(unsigned_op), 
         .pc(instr_add),       
         .instruction(instruction),
         .addr(mem_add),

@@ -2,7 +2,6 @@ import logging
 
 from cocotb.triggers import Timer
 
-
 class UARTTerminal:
     """
     UART terminal emulator (8N1)
