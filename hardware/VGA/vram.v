@@ -1,4 +1,4 @@
-module vram (
+module vram(
     input clk_vga,
     input clk_cpu,
 

@@ -32,7 +32,7 @@ module pc_one(
     wire [1:0] data_from_vram;
 
     wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, 
-    uart_busy, byte_op , half_op, unsigned_op, stall, vram_write, vram_read;
+    uart_busy, byte_op , half_op, unsigned_op, vram_write;
     
     MMU MMU_instance(
         .uart_busy(uart_busy),
@@ -94,29 +94,29 @@ module pc_one(
         .uart_busy(uart_busy)
     );
 
-    wire [17:0] addr_vga;
-    wire [1:0] data_vga;
-    vga_controller vga_controller_instance(
-        .clk_25MHz(clk_25MHz),     
+    wire [17:0] vga_addr;
+    wire [1:0] vga_data;
+    vga_controller vga_inst (
+        .clk_25MHz(clk_25MHz),
         .reset(rst_from_FPGA),
-        .pixel_data(data_vga),  // From VRAM
-        .red(vga_red_for_FPGA),         
-        .green(vga_green_for_FPGA),       
-        .blue(vga_blue_for_FPGA),         
+        .pixel_data(vga_data),
+        .red(vga_red_for_FPGA),
+        .green(vga_green_for_FPGA),
+        .blue(vga_blue_for_FPGA),
         .hsync(hsync_for_FPGA),
         .vsync(vsync_for_FPGA),
-        .mem_address(addr_vga)  // To VRAM
+        .mem_address(vga_addr)
     );
 
-    vram vram_instance(
+    vram vram_inst (
         .clk_vga(clk_25MHz),
-        .clk_cpu(clk_from_FPGA),
-        .addr_vga(addr_vga),
-        .data_vga(data_vga),
-        .we_cpu(vram_write),
-        .addr_cpu(mem_add),
-        .data_cpu(data_from_cpu),
-        .data_cpu_out(data_from_vram)
+        .clk_cpu(clk_from_FPGA),        
+        .addr_vga(vga_addr),
+        .data_vga(vga_data),
+        .we_cpu(vram_write),         
+        .addr_cpu(mem_add),       
+        .data_cpu(data_from_cpu),        
+        .data_cpu_out()          
     );
     
 endmodule
