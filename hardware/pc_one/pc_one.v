@@ -71,6 +71,7 @@ module pc_one(
         .mem_write(mmu_mem_write),
         .byte_op(byte_op),
         .half_op(half_op),
+        .unsigned_op(unsigned_op),
         .data_in(data_from_cpu),
         .data_out(ram_data_to_mmu)
     );
@@ -78,6 +79,8 @@ module pc_one(
     rom rom_instance(
         .pc(instr_add),       
         .instruction(instruction),
+        .byte_op(byte_op),
+        .half_op(half_op),
         .addr(mem_add),
         .data(rom_data_to_mmu)
     );
