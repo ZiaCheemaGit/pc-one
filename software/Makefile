@@ -12,7 +12,7 @@ CFLAGS += -Iinclude
 
 # Sources
 KERNEL_SRC  = kernel/main.c
-DRIVER_SRC  = drivers/uart.c
+DRIVER_SRC = $(wildcard drivers/*.c)
 CRT0        = bootloader/crt0.S
 LINKER      = bootloader/link.ld
 

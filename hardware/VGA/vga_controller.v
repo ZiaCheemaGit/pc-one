@@ -3,7 +3,7 @@
 module vga_controller(
     input wire clk_25MHz,     
     input wire reset,
-    input wire [2:0] pixel_data,  // From VRAM
+    input wire [1:0] pixel_data,  // From VRAM
     output wire red,         
     output wire green,       
     output wire blue,         
@@ -56,7 +56,7 @@ module vga_controller(
     // Memory address calculation (640/2 = 320 pixels per line in memory)
     always @(posedge clk_25MHz) begin
         if (h_count < H_DISPLAY && v_count < V_DISPLAY) 
-            address_reg <= (v_count * 320) + h_count[9:1]; 
+            address_reg <= (v_count * 320) + h_count[9:0]; 
         else
             address_reg <= 0;
     end
@@ -73,8 +73,8 @@ module vga_controller(
     // Active video region
     wire active_video = (h_count < H_DISPLAY) && (v_count < V_DISPLAY);
     
-    wire r_bit = pixel_data[2]; // Red
-    wire g_bit = pixel_data[1]; // Green
+    wire r_bit = pixel_data[1]; // Red
+    wire g_bit = pixel_data[0]; // Green
     wire b_bit = pixel_data[0]; // Blue
     
     assign red   = active_video && (r_bit);

@@ -1,3 +1,6 @@
+![CI](https://github.com/ZiaCheemaGit/pc-one/actions/workflows/build-test.yml/badge.svg)
+![License](https://img.shields.io/github/license/ZiaCheemaGit/pc-one?style=for-the-badge)
+
 # PC-ONE
 
 pc-one is an attempt to place the entire PC stack in one repository —  

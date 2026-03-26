@@ -12,21 +12,12 @@ module uart_tx(
 
     localparam integer BAUD_CNT_MAX = (CLK_FREQ / BAUD) - 1;
 
-    // --------------------------------------------------
-    // State
-    // --------------------------------------------------
     reg [$clog2(BAUD_CNT_MAX+1)-1:0] baud_cnt;
     reg [3:0]  bit_cnt;
     reg [9:0]  shift_reg;
 
-    // --------------------------------------------------
-    // TX line is ALWAYS driven by shift register
-    // --------------------------------------------------
     assign tx = shift_reg[0];
 
-    // --------------------------------------------------
-    // UART transmit logic
-    // --------------------------------------------------
     always @(posedge clk or posedge rst) begin
         if (rst) begin
             shift_reg <= 10'b1111111111; // idle HIGH
@@ -43,7 +34,6 @@ module uart_tx(
                     bit_cnt   <= 0;
                 end
             end else begin
-                // Actively transmitting
                 if (baud_cnt == BAUD_CNT_MAX) begin
                     baud_cnt  <= 0;
                     shift_reg <= {1'b1, shift_reg[9:1]};
