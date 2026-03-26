@@ -6,15 +6,15 @@
 #define VRAM_START_ADDR 0x00004008
 #define VRAM_END_ADDR 0x00007C2F
 
+#define BLACK_COLOR 0
+#define CYAN_COLOR 1
+#define RED_COLOR 2
+#define WHITE_COLOR 3
+
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 480
 
-#define VRAM ((volatile uint32_t*)VRAM_START_ADDR)
-
-void display_white(void);
-void display_black(void);
-
-void draw_pixel(uint32_t x, uint32_t y, uint8_t color);
+void display_plain_color(int color);
 
 # endif 
 

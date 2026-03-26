@@ -12,7 +12,8 @@ module MMU(
     output        ram_write,
     output        vram_write,
     output [31:0] data_to_cpu,
-    output        uart_write
+    output        uart_write,
+    output [17:0] vram_addr // valid from 0 to 153,599 
 );
 
     wire is_rom = (addr < 32'h00002000);
@@ -29,6 +30,8 @@ module MMU(
 
     wire uart_read = mem_read_cpu && is_uart_status;
     assign uart_write = mem_write_cpu && is_uart_data && !uart_busy;
+
+    assign vram_addr = addr - 32'h00004008;
 
     reg [31:0] data_to_cpu_r;
     assign data_to_cpu = data_to_cpu_r;

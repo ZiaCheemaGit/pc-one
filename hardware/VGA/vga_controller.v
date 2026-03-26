@@ -56,7 +56,7 @@ module vga_controller(
     // Memory address calculation (640/2 = 320 pixels per line in memory)
     always @(posedge clk_25MHz) begin
         if (h_count < H_DISPLAY && v_count < V_DISPLAY) 
-            address_reg <= (v_count * 320) + h_count[9:0]; 
+            address_reg <= (v_count * 320) + h_count[9:1]; 
         else
             address_reg <= 0;
     end

@@ -34,6 +34,7 @@ module pc_one(
     wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, 
     uart_busy, byte_op , half_op, unsigned_op, vram_write;
     
+    wire [17:0] vram_add;
     MMU MMU_instance(
         .uart_busy(uart_busy),
         .addr(mem_add),
@@ -46,7 +47,8 @@ module pc_one(
         .data_to_cpu(mmu_data_to_cpu),
         .uart_write(uart_write_en),
         .vram_write(vram_write),
-        .data_from_vram(data_from_vram)
+        .data_from_vram(data_from_vram),
+        .vram_addr(vram_add)
     );
     
     core core_instance(
@@ -114,8 +116,8 @@ module pc_one(
         .addr_vga(vga_addr),
         .data_vga(vga_data),
         .we_cpu(vram_write),         
-        .addr_cpu(mem_add),       
-        .data_cpu(data_from_cpu),        
+        .addr_cpu(vram_add),       
+        .data_cpu(data_from_cpu[1:0]),        
         .data_cpu_out()          
     );
     
