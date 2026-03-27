@@ -12,9 +12,6 @@ module vram(
 );
 
 	reg [1:0] mem [0:153599];
-	initial begin
-		$readmemh("vram_init.hex", mem);
-	end
 
 	always @(posedge clk_vga)
 		data_vga <= mem[addr_vga];

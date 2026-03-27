@@ -2,8 +2,9 @@ module uart_rx(
     input wire clk,
     input wire rst,
     input wire rx,
+    input wire data_read,
     output reg [7:0] data,
-    output reg data_valid
+    output wire busy
 );
 
 parameter CLK_FREQ = 25_000_000;
@@ -15,6 +16,9 @@ reg [$clog2(BAUD_CNT_MAX)-1:0] baud_cnt;
 reg [3:0] bit_cnt;
 reg [9:0] shift_reg;
 reg receiving;
+reg data_valid;
+
+assign busy = !data_valid;
 
 always @(posedge clk or posedge rst) begin
     if (rst) begin
@@ -24,10 +28,12 @@ always @(posedge clk or posedge rst) begin
         data_valid <= 0;
     end else begin
 
-        data_valid <= 0;
+        // clear valid flag when CPU reads data
+        if (data_read)
+            data_valid <= 0;
 
         if (!receiving) begin
-            if (!rx) begin
+            if (!rx && !data_valid) begin
                 receiving <= 1;
                 baud_cnt <= BAUD_CNT_MAX/2;
                 bit_cnt <= 0;

@@ -18,6 +18,7 @@ module pc_one(
     input clk_from_FPGA,
     input clk_25MHz,
     input rst_from_FPGA,
+    input uart_rx_pin_from_FPGA,
     output uart_tx_pin_for_FPGA,
     output vga_red_for_FPGA, 
     output vga_green_for_FPGA,
@@ -31,12 +32,15 @@ module pc_one(
     
     wire [1:0] data_from_vram;
 
-    wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, 
-    uart_busy, byte_op , half_op, unsigned_op, vram_write;
+    wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, uart_read, 
+    uart_tx_busy, uart_rx_busy, byte_op , half_op, unsigned_op, vram_write;
     
     wire [17:0] vram_add;
+    wire [7:0] uart_rx_data;
     MMU MMU_instance(
-        .uart_busy(uart_busy),
+        .uart_tx_busy(uart_tx_busy),
+        .uart_rx_data(uart_rx_data),
+        .uart_rx_busy(uart_rx_busy),
         .addr(mem_add),
         .data_from_rom(rom_data_to_mmu),
         .data_from_ram(ram_data_to_mmu),
@@ -48,7 +52,8 @@ module pc_one(
         .uart_write(uart_write_en),
         .vram_write(vram_write),
         .data_from_vram(data_from_vram),
-        .vram_addr(vram_add)
+        .vram_addr(vram_add),
+        .uart_read(uart_read)
     );
     
     core core_instance(
@@ -93,7 +98,16 @@ module pc_one(
         .write_en(uart_write_en),
         .data(data_from_cpu[7:0]),
         .tx(uart_tx_pin_for_FPGA),
-        .uart_busy(uart_busy)
+        .uart_busy(uart_tx_busy)
+    );
+
+    uart_rx uart_rx_instance(
+        .clk(clk_from_FPGA),
+        .rst(rst_from_FPGA),
+        .rx(uart_rx_pin_from_FPGA),
+        .data(uart_rx_data),
+        .busy(uart_rx_busy),
+        .data_read(uart_read)
     );
 
     wire [17:0] vga_addr;

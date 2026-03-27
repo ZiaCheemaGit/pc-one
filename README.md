@@ -42,7 +42,7 @@ anyone does when they make a computer.It only includes the
 completed steps. I also dont know what are the complete steps 
 so I will add them here as I progress  
 
-### MileStone 01
+### MileStone 01 (Hello World over UART)
 
 - Get a good understanding of bare metal systems. One of best resources I found was [Nand to Tetris](https://www.nand2tetris.org/).
 - Make a CPU , I made a single cycle RV32I with this [ISA](https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions).
@@ -56,10 +56,12 @@ so I will add them here as I progress
 - At last UART works and I can see c/cpp prints on a physical terminal i.e [minicom](https://linux.die.net/man/1/minicom). Problem was that in cocotb clock frequency can be simulated to be anything and design will be simulated regradless of clk frequency but on FPGA a single cycle rv32i cannot run above the time required by the longest instruction. Here is a [demo video](https://youtu.be/YHuOQX06mLM?si=AHQMabuc4YgpbC6A).
 [![Hello World from pc-one over UART on Nexys3](images/youtube/M1.png)](https://youtu.be/YHuOQX06mLM?si=AHQMabuc4YgpbC6A)
 
-### Milestone 02
+### Milestone 02 (Boot over UART)
 
-- At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Another problem is FPGA has limited BRAM and for making a complete general purpose pc alot of memory is required. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA. On most FPGAs an on board dedicated memory is present. So I have decided to implement that. Another thing is booting over UART can be added to skip hassle of FPGA Re-configuration when changes are software only. After that VGA can be completed.
-- 
+- At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA and booting over UART to skip hassle of FPGA Re-configuration when changes are software only. After that VGA can be completed.
+- For this milestone I decided to implement VGA. It has heavy OS dependency, just to show a blank white screen I had to repeat `edit software --> reconfig FPGA(8 mins per bitgen file) --> test`. Thus I changed milestone02 to Add boot capability over UART.  
+- Learn about BIOS, bootloader, OS , their responsibilities and how these three load and execute. This is required to support booting over UART.
+-
 - TODO
 
 ## Next Milestones:
@@ -67,7 +69,6 @@ This is what is currently being tried to be done.
 - Add DMA
 - implement cpu traps
 - Add VGA
-- Boot over UART
 ---
 
 # Getting Started

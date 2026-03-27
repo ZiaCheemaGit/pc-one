@@ -1,14 +1,18 @@
 # include "../include/time.h"
-# include "../include/uart.h"
 
-void delay_second(int seconds)
+void delay_one_second()
 {
-    uart_println("CPU on hold for 5 seconds");
-    volatile int cycles;
-    while (seconds--)
+    register int cycles = CPU_FREQ / 3;
+
+    while(cycles--)
     {
-        cycles = CPU_FREQ;
-        while (cycles--){}
+        __asm__("nop");
+    }
+}
+
+void delay_second(int seconds){
+    while(seconds--){
+        delay_one_second();
     }
 }
 

@@ -6,12 +6,14 @@ int main(void)
 {
     uart_println("Hello from pc-one!");
 
-    delay_second(5);
-
-    uart_println("Display plain White color on VGA Screen");
-    display_plain_color(CYAN_COLOR);
-    uart_println("Done");
-
-    while (1){};
+    uart_println("Start Obsereving uart_rx");
+    while (1){
+        char c = uart_readc();
+        uart_print("Received: ");
+        uart_putc(c);
+        uart_putc('\n');
+        uart_println("Delay 3 second");
+        delay_second(3);
+    };
 }
 
