@@ -4,7 +4,7 @@ void uart_putc(char c){
     volatile uint32_t *uart_data   = (volatile uint32_t *)UART_DATA_ADDR;
     volatile uint32_t *uart_tx_status = (volatile uint32_t *)UART_TX_STATUS_ADDR;
 
-    while ((*uart_tx_status & 0x1) != 0) {
+    while (*uart_tx_status) {
         __asm__ volatile ("" ::: "memory");
     }
 
@@ -27,7 +27,7 @@ char uart_readc(){
     volatile uint32_t *uart_data   = (volatile uint32_t *)UART_DATA_ADDR;
     volatile uint32_t *uart_rx_status = (volatile uint32_t *)UART_RX_STATUS_ADDR;
 
-    while ((*uart_rx_status & 0x1) != 0) {
+    while (*uart_rx_status) {
         __asm__ volatile ("" ::: "memory");
     }
 

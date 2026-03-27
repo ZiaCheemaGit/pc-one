@@ -4,9 +4,10 @@
 
 int main(void)
 {
-    uart_println("Hello from pc-one!");
+    uart_println("H!");
 
-    uart_println("Start Obsereving uart_rx");
+    uart_println("Sx");
+    
     while (1){
         char c = uart_readc();
         uart_print("Received: ");
