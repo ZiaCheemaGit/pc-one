@@ -13,7 +13,7 @@ module ram (
     output reg  [31:0] data_out
 );
 
-    parameter MEM_SIZE = 16384;
+    parameter MEM_SIZE = 8192;
 
     reg [31:0] mem [0:(MEM_SIZE/4)-1];
 

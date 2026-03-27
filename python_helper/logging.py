@@ -39,9 +39,9 @@ async def log_signals_pc_one(logger, dut):
 
         # mem_write
         try: 
-            logger.info(f"mem_write = {dut.ram_instance.mem_write.value.to_unsigned()}")
+            logger.info(f"ram_mem_write = {dut.ram_instance.mem_write.value.to_unsigned()}")
         except Exception:
-            logger.info(f"mem_write = {dut.ram_instance.mem_write.value}")
+            logger.info(f"ram_mem_write = {dut.ram_instance.mem_write.value}")
 
         # data_in
         try: 
@@ -52,9 +52,9 @@ async def log_signals_pc_one(logger, dut):
 
         # mem_read
         try: 
-            logger.info(f"mem_read = {dut.ram_instance.mem_read.value.to_unsigned()}")
+            logger.info(f"ram_mem_read = {dut.ram_instance.mem_read.value.to_unsigned()}")
         except Exception:
-            logger.info(f"mem_read = {dut.ram_instance.mem_read.value}")
+            logger.info(f"ram_mem_read = {dut.ram_instance.mem_read.value}")
 
         # data_out
         try: 
@@ -69,3 +69,37 @@ async def log_signals_pc_one(logger, dut):
                         f"0x{dut.ram_instance.data_address.value.to_unsigned():08x}")
         except Exception:
             logger.info(f"data_address = {dut.ram_instance.data_address.value}")
+
+        # MMU mem_write_cpu
+        try: 
+            logger.info(f"MMU mem_write_cpu = {dut.MMU_instance.mem_write_cpu.value.to_unsigned()}")
+        except Exception:
+            logger.info(f"MMU mem_write_cpu = {dut.MMU_instance.mem_write_cpu.value}")
+
+        # MMU mem_read_cpu
+        try: 
+            logger.info(f"MMU mem_read_cpu = {dut.MMU_instance.mem_read_cpu.value.to_unsigned()}")
+        except Exception:
+            logger.info(f"MMU mem_read_cpu = {dut.MMU_instance.mem_read_cpu.value}")
+
+        # MMU addr
+        try: 
+            logger.info(f"MMU addr = {dut.MMU_instance.addr.value.to_unsigned()}")
+        except Exception:
+            logger.info(f"MMU addr = {dut.MMU_instance.addr.value}")
+
+        # MMU uart_tx_busy
+        try: 
+            logger.info(f"MMU uart_tx_busy = {dut.MMU_instance.uart_tx_busy.value.to_unsigned()}")
+        except Exception:
+            logger.info(f"MMU uart_tx_busy = {dut.MMU_instance.uart_tx_busy.value}")
+
+        # MMU uart_rx_busy
+        try: 
+            logger.info(f"MMU uart_rx_busy = {dut.MMU_instance.uart_rx_busy}")
+        except Exception:
+            logger.info(f"MMU uart_rx_busy = {dut.MMU_instance.uart_rx_busy.value.to_unsigned()}")
+
+
+
+

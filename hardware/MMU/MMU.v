@@ -1,8 +1,9 @@
 `timescale 1ns / 1ps
 
 module MMU(
+    input clk,
     input uart_tx_busy,
-    input uart_rx_busy,
+    input uart_rx_valid,
     input [7:0] uart_rx_data,
     input  [31:0] addr, 
     input  [31:0] data_from_rom, 
@@ -17,13 +18,18 @@ module MMU(
     output        uart_write,
     output [17:0] vram_addr // valid from 0 to 153,599 
 );
+    reg [31:0] uart_rx_data_reg = {24'b0, 8'h30};
+    always @(posedge clk) begin
+        if (uart_rx_valid)
+            uart_rx_data_reg <= {24'b0, uart_rx_data};
+    end
 
     wire is_rom = (addr < 32'h00002000);
     wire is_ram = (addr >= 32'h00002000) && (addr <= 32'h00003FFF);
     wire is_uart_data = (addr == 32'h00004000);
     wire is_uart_tx_status = (addr == 32'h00004004);
     wire is_uart_rx_status = (addr == 32'h00004008);
-    wire is_vram = (addr >= 32'h0000400C) && (addr <= 32'h00007C33);
+    wire is_vram = (addr >= 32'h0000400C) && (addr <= 32'h0002980B);
 
     wire rom_read = mem_read_cpu && is_rom;
     assign ram_read = mem_read_cpu && is_ram;
@@ -34,7 +40,7 @@ module MMU(
     wire uart_tx_status_read = mem_read_cpu && is_uart_tx_status;
     wire uart_rx_status_read = mem_read_cpu && is_uart_rx_status;
     assign uart_write = mem_write_cpu && is_uart_data && !uart_tx_busy;
-    assign uart_read = mem_read_cpu && is_uart_data && !uart_rx_busy;
+    assign uart_read = mem_read_cpu && is_uart_data;
 
     assign vram_addr = addr - 32'h0000400C;
 
@@ -49,9 +55,9 @@ module MMU(
         end else if (uart_tx_status_read) begin
             data_to_cpu_r = {31'b0, uart_tx_busy};
         end else if (uart_rx_status_read) begin
-            data_to_cpu_r = {31'b0, uart_rx_busy};
+            data_to_cpu_r = 32'b0;
         end else if (uart_read) begin
-            data_to_cpu_r = {24'b0, uart_rx_data};
+            data_to_cpu_r = uart_rx_data_reg;
         end else if (rom_read) begin
             data_to_cpu_r = data_from_rom;
         end else if (vram_read) begin

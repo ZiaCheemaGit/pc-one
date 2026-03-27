@@ -10,7 +10,7 @@ module rom(
     output wire [31:0] data
 );
 
-    parameter WORDS = 4096; 
+    parameter WORDS = 2048; 
 
     reg [31:0] mem [0:WORDS-1];
 

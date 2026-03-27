@@ -10,6 +10,6 @@
 void uart_putc(char c);
 void uart_print(const char *s);
 void uart_println(const char *s);
-char uart_readc(void); 
+char uart_getc(void); 
 
 # endif 

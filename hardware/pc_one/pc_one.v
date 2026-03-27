@@ -32,15 +32,16 @@ module pc_one(
     
     wire [1:0] data_from_vram;
 
-    wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, 
-    uart_tx_busy, uart_rx_busy, byte_op , half_op, unsigned_op, vram_write;
+    wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en,
+    uart_tx_busy, rx_valid, byte_op , half_op, unsigned_op, vram_write;
     
     wire [17:0] vram_add;
     wire [7:0] uart_rx_data;
     MMU MMU_instance(
+        .clk(clk_from_FPGA),
         .uart_tx_busy(uart_tx_busy),
         .uart_rx_data(uart_rx_data),
-        .uart_rx_busy(uart_rx_busy),
+        .uart_rx_valid(rx_valid),
         .addr(mem_add),
         .data_from_rom(rom_data_to_mmu),
         .data_from_ram(ram_data_to_mmu),
@@ -91,7 +92,7 @@ module pc_one(
         .data(rom_data_to_mmu)
     );
 
-    uart_tx uart_instance(
+    uart_tx uart_tx_instance(
         .clk(clk_from_FPGA),
         .rst(rst_from_FPGA),
         .write_en(uart_write_en),
@@ -100,12 +101,12 @@ module pc_one(
         .uart_busy(uart_tx_busy)
     );
 
-    uart_rx uart_rx_instance(
+    uart_rx uart_rx_inst (
         .clk(clk_from_FPGA),
         .rst(rst_from_FPGA),
         .rx(uart_rx_pin_from_FPGA),
         .data(uart_rx_data),
-        .busy(uart_rx_busy)
+        .data_valid(rx_valid)
     );
 
     wire [17:0] vga_addr;

@@ -12,7 +12,6 @@ from python_helper.logging import log_signals_pc_one
 
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
 
-
 @cocotb.test()
 async def test_uart_terminal_display(dut):
 
@@ -44,6 +43,11 @@ async def test_uart_terminal_display(dut):
     dut.rst_from_FPGA.value = 0
 
     print(f"\n===== UART TERMINAL START(CLK_FREQ_HZ = {CLK_FREQ_HZ}, BAUD_RATE = {BAUD_RATE}) =====\n")
+
+    # for _ in range(5000):
+    #     await RisingEdge(dut.clk_from_FPGA)
+    # sender = UARTDriver(dut.uart_rx_pin_from_FPGA, BAUD_CLKS, CLK_PERIOD_NS)
+    # await sender.send_char('A')
 
     # UART terminal (minicom-equivalent)
     terminal = UARTTerminal(
