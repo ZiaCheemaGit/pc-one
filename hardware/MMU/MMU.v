@@ -15,7 +15,6 @@ module MMU(
     output        vram_write,
     output [31:0] data_to_cpu,
     output        uart_write,
-    output        uart_read,
     output [17:0] vram_addr // valid from 0 to 153,599 
 );
 

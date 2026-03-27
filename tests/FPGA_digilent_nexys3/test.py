@@ -7,7 +7,7 @@ from cocotb.triggers import Timer, RisingEdge
 
 sys.path.append(os.path.abspath("../../"))
 from python_helper.converter import *
-from python_helper.uart_terminal import UARTTerminal
+from python_helper.uart_terminal import UARTTerminal, UARTDriver
 from python_helper.logging import log_signals_pc_one
 
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
@@ -34,6 +34,9 @@ async def test_uart_terminal_display(dut):
     # start clock
     cocotb.start_soon(Clock(dut.clk_from_FPGA, CLK_PERIOD_NS, unit="ns").start())
 
+    # idle rx pin
+    dut.uart_rx_pin_from_FPGA.value = 1 
+
     # reset
     dut.rst_from_FPGA.value = 1
     for _ in range(10):
@@ -43,8 +46,8 @@ async def test_uart_terminal_display(dut):
     print(f"\n===== UART TERMINAL START(CLK_FREQ_HZ = {CLK_FREQ_HZ}, BAUD_RATE = {BAUD_RATE}) =====\n")
 
     # UART terminal (minicom-equivalent)
-    term = UARTTerminal(
-        "Hello from pc-one!\r\n",
+    terminal = UARTTerminal(
+        100_000,
         LOGGING_ON,
         logger,
         dut=dut,
@@ -56,4 +59,14 @@ async def test_uart_terminal_display(dut):
     if LOGGING_ON:
         cocotb.start_soon(log_signals_pc_one(logger, dut.pc_one_instance))
 
-    await term.run()
+    buffer = await terminal.run()
+
+    expected_string = "Hey!\r\n"
+
+    if expected_string != buffer:
+            raise Exception(f"Expected = {expected_string}, Received = {buffer}")
+    else:
+        logger.info(f"Expected = {expected_string}, Received = {buffer} UART Test Passed")
+    
+
+

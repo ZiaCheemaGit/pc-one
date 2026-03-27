@@ -32,7 +32,7 @@ module pc_one(
     
     wire [1:0] data_from_vram;
 
-    wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, uart_read, 
+    wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, 
     uart_tx_busy, uart_rx_busy, byte_op , half_op, unsigned_op, vram_write;
     
     wire [17:0] vram_add;
@@ -52,8 +52,7 @@ module pc_one(
         .uart_write(uart_write_en),
         .vram_write(vram_write),
         .data_from_vram(data_from_vram),
-        .vram_addr(vram_add),
-        .uart_read(uart_read)
+        .vram_addr(vram_add)
     );
     
     core core_instance(
@@ -106,8 +105,7 @@ module pc_one(
         .rst(rst_from_FPGA),
         .rx(uart_rx_pin_from_FPGA),
         .data(uart_rx_data),
-        .busy(uart_rx_busy),
-        .data_read(uart_read)
+        .busy(uart_rx_busy)
     );
 
     wire [17:0] vga_addr;

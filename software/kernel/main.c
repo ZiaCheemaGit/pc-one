@@ -4,17 +4,12 @@
 
 int main(void)
 {
-    uart_println("H!");
-
-    uart_println("Sx");
+    uart_println("Hey!");
     
     while (1){
-        char c = uart_readc();
-        uart_print("Received: ");
-        uart_putc(c);
-        uart_putc('\n');
-        uart_println("Delay 3 second");
-        delay_second(3);
+        uart_print("R: ");
+        uart_putc(uart_readc());
+        uart_println("");
     };
 }
 
