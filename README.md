@@ -60,8 +60,9 @@ so I will add them here as I progress
 
 - At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA and booting over UART to skip hassle of FPGA Re-configuration when changes are software only. After that VGA can be completed.
 - For this milestone I decided to implement VGA. It has heavy software dependency, just to show a blank white screen I had to repeat `edit c files --> reconfig FPGA(8 mins per bitgen file) --> test`. Thus I changed milestone02 to Add boot capability over UART.  
-- Learn about BIOS, bootloader, OS , their responsibilities and how these three load and execute. This is required to support booting over UART. 
-- Implement UART rx. 
+- Learn about BIOS, bootloader, OS , their responsibilities and how these three load and execute. This is crucial to support booting over UART. 
+- Implement UART rx. Also, this a good point for a cleanup and optimizations. After uart rx implementation I analyzed ISE console all warnings, how it synthesized design, which parts took longer and after fixing these and doing some memory optimizations I was able to bring `bitgen time` from `8 minutes` to `3 minutes`. Also reduced LUT usage from `5400/9912(total LUTs)` to `3550/9912`. 
+- 
 - TODO
 
 ## Next Milestones:
