@@ -30,8 +30,8 @@ class UARTTerminal:
             await Timer(1, unit="ns")
             count += 1
             if count >= self.threshold:
-                # self.logger.info("tx pin idle for Threshold cycles")
-                # self.stopTerminal = True
+                self.logger.info("tx pin idle for Threshold cycles")
+                self.stopTerminal = True
                 return
 
         # move to middle of start bit
@@ -56,7 +56,7 @@ class UARTTerminal:
 
         printed_chars = 0
         
-        while not self.stopTerminal:
+        while True:# not self.stopTerminal:
             ch = await self.receive_byte()
 
             if ch is not None:

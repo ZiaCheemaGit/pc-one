@@ -7,6 +7,7 @@
 9 = rx is idle, also invalid data
 
 */
+
 module uart_rx(
     input  wire clk,
     input  wire rst,
@@ -26,6 +27,9 @@ module uart_rx(
             data_valid <= 0;
         end else if (rx_falling) begin
             data <= {24'b0, 8'h35};
+            data_valid <= 1;
+        end else begin
+            data <= {24'b0, 8'h39};
             data_valid <= 1;
         end
     end

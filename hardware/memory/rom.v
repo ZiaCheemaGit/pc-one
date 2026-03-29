@@ -10,11 +10,11 @@ module rom(
     output wire [31:0] data
 );
 
-    parameter WORDS = 2048; 
+    parameter length = 32'h00000300;
+    parameter WORDS = length / 4; 
 
     reg [31:0] mem [0:WORDS-1];
 
-    // FIX: missing declaration
     wire [31:0] read_word;
     assign read_word = mem[addr[31:2]];
 

@@ -13,9 +13,9 @@ module ram (
     output reg  [31:0] data_out
 );
 
-    parameter MEM_SIZE = 8192;
+    parameter length = 32'h00000800;
 
-    reg [31:0] mem [0:(MEM_SIZE/4)-1];
+    reg [31:0] mem [0:(length/4)-1];
 
     wire [11:0] word_addr  = data_address[13:2];
     wire [1:0]  byte_offset = data_address[1:0];

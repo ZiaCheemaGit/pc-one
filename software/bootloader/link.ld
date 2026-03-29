@@ -6,8 +6,8 @@ PROVIDE(_ram_base = ORIGIN(RAM));
 /* ================= MEMORY MAP ================= */
 MEMORY
 {
-    ROM (rx)  : ORIGIN = 0x00000000, LENGTH = 4K
-    RAM (rwx) : ORIGIN = 0x00002000, LENGTH = 4K
+    ROM (rx)  : ORIGIN = 0x00000000, LENGTH = 0x00000300
+    RAM (rwx) : ORIGIN = 0x00002000, LENGTH = 0x00002800
 }
 
 /* ================= SECTIONS ================= */
