@@ -25,7 +25,7 @@ void uart_println(const char *s){
 
 char uart_getc(){
     volatile uint32_t *uart_data   = (volatile uint32_t *)UART_DATA_ADDR;
-    char r = (char)(*uart_data & 0xFF);
+    char r = (char)(*uart_data);
     return r;
 }
 

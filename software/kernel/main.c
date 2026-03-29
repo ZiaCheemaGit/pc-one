@@ -1,6 +1,6 @@
-// # include "../include/uart.h"
+# include "../include/uart.h"
 // # include "../include/vga.h"
-// # include "../include/time.h"
+# include "../include/time.h"
 
 // int main(void)
 // {
@@ -28,14 +28,35 @@
 //     };
 // }
 
-# include "../include/uart.h"
 
 int main(void)
 {
-    while(1){
-        uart_putc(uart_getc());
-        uart_putc('\n');
-    }
+    uart_println("Hey!");
+    // uart_putc(uart_getc());
+    // uart_println("");
+    // uart_println("Wait 3 second"); 
+    // delay_second(3);
+    
+    // uart_putc(uart_getc());
+    // uart_println("");
+    // uart_println("Wait 3 second"); 
+    // delay_second(3);
+
+    // uart_putc(uart_getc());
+    // uart_println("");
+    // uart_println("Wait 3 second"); 
+    // delay_second(3);
+
+    // uart_putc(uart_getc());
+    // uart_println("");
+    // uart_println("Wait 3 second"); 
+    // delay_second(3);
+
+    // uart_putc(uart_getc());
+    // uart_println("");
+    // uart_println("Wait 3 second"); 
+    // delay_second(3);
+    // while(1){}
 }
 
 

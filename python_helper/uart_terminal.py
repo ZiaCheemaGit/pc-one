@@ -30,8 +30,8 @@ class UARTTerminal:
             await Timer(1, unit="ns")
             count += 1
             if count >= self.threshold:
-                self.logger.info("tx pin idle for Threshold cycles")
-                self.stopTerminal = True
+                # self.logger.info("tx pin idle for Threshold cycles")
+                # self.stopTerminal = True
                 return
 
         # move to middle of start bit
@@ -54,14 +54,18 @@ class UARTTerminal:
     async def run(self):
         """Continuously receive and display UART output"""
 
+        printed_chars = 0
+        
         while not self.stopTerminal:
             ch = await self.receive_byte()
 
             if ch is not None:
                 c = chr(ch)
                 if c == "\n":
-                    self.logger.critical(f"[UART Terminal] - {self.buffer}")
+                    print_line = self.buffer[printed_chars:]
+                    self.logger.critical(f"[UART Terminal] - {print_line}")
                     self.buffer += c
+                    printed_chars = len(self.buffer)
                 else:
                     self.buffer += c
 
@@ -73,11 +77,12 @@ class UARTDriver:
     """
     Drives UART RX line toward DUT (8N1 format)
     """
-    def __init__(self, rx_signal, baud_clks, clk_period_ns=10):
+
+    def __init__(self, rx_signal, baud_clks, clk_period_ns):
         self.rx = rx_signal
         self.bit_time_ns = baud_clks * clk_period_ns
 
-    async def __send_byte(self, value: int):
+    async def _send_byte(self, value: int):
         """Send one byte over UART"""
 
         # start bit
@@ -93,12 +98,12 @@ class UARTDriver:
         self.rx.value = 1
         await Timer(self.bit_time_ns, unit="ns")
 
-    async def send_char(self, char: chr):
-        await self.__send_byte(ord(char))
+    async def send_char(self, char: str):
+        await self._send_byte(ord(char))
 
     async def send_string(self, string: str):
         for ch in string:
-            await self.send_byte(ord(ch))
+            await self.send_char(ch)
 
 
 

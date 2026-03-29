@@ -33,23 +33,21 @@ async def test_uart_terminal_display(dut):
     # start clock
     cocotb.start_soon(Clock(dut.clk_from_FPGA, CLK_PERIOD_NS, unit="ns").start())
 
-    # idle rx pin
-    dut.uart_rx_pin_from_FPGA.value = 1 
-
     # reset
     dut.rst_from_FPGA.value = 1
     for _ in range(10):
         await RisingEdge(dut.clk_from_FPGA)
     dut.rst_from_FPGA.value = 0
 
+    # idle rx pin
+    dut.uart_rx_pin_from_FPGA.value = 1 
+    for _ in range(1000):
+        await RisingEdge(dut.clk_from_FPGA)
+    dut.uart_rx_pin_from_FPGA.value = 0
+    await RisingEdge(dut.clk_from_FPGA)
+    dut.uart_rx_pin_from_FPGA.value = 1
+
     print(f"\n===== UART TERMINAL START(CLK_FREQ_HZ = {CLK_FREQ_HZ}, BAUD_RATE = {BAUD_RATE}) =====\n")
-
-    # for _ in range(5000):
-    #     await RisingEdge(dut.clk_from_FPGA)
-    # sender = UARTDriver(dut.uart_rx_pin_from_FPGA, BAUD_CLKS, CLK_PERIOD_NS)
-    # await sender.send_char('A')
-
-    # UART terminal (minicom-equivalent)
     terminal = UARTTerminal(
         100_000,
         LOGGING_ON,

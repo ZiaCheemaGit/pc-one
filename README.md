@@ -61,7 +61,7 @@ so I will add them here as I progress
 - At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA and booting over UART to skip hassle of FPGA Re-configuration when changes are software only. After that VGA can be completed.
 - For this milestone I decided to implement VGA. It has heavy software dependency, just to show a blank white screen I had to repeat `edit c files --> reconfig FPGA(8 mins per bitgen file) --> test`. Thus I changed milestone02 to Add boot capability over UART.  
 - Learn about BIOS, bootloader, OS , their responsibilities and how these three load and execute. This is required to support booting over UART. 
--
+- Implement UART rx. 
 - TODO
 
 ## Next Milestones:
