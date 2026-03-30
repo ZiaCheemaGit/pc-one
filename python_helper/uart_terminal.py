@@ -56,7 +56,7 @@ class UARTTerminal:
 
         printed_chars = 0
         
-        while True:# not self.stopTerminal:
+        while not self.stopTerminal:
             ch = await self.receive_byte()
 
             if ch is not None:

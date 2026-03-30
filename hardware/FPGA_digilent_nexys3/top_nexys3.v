@@ -5,7 +5,7 @@ module top_nexys3(
     input  rst_from_FPGA,
     output rst_on,
     output uart_tx_pin_for_FPGA,
-    output uart_rx_pin_from_FPGA,
+    input uart_rx_pin_from_FPGA,
     output vga_red_for_FPGA, 
     output vga_green_for_FPGA,
     output vga_blue_for_FPGA,

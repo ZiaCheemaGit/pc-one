@@ -40,14 +40,6 @@ async def test_uart_terminal_display(dut):
     dut.rst_from_FPGA.value = 0
     await RisingEdge(dut.clk_from_FPGA)
 
-    # idle rx pin
-    # dut.uart_rx_pin_from_FPGA.value = 1 
-    # for _ in range(1000):
-    #     await RisingEdge(dut.clk_from_FPGA)
-    # dut.uart_rx_pin_from_FPGA.value = 0
-    # await RisingEdge(dut.clk_from_FPGA)
-    # dut.uart_rx_pin_from_FPGA.value = 1
-
     print(f"\n===== UART TERMINAL START(CLK_FREQ_HZ = {CLK_FREQ_HZ}, BAUD_RATE = {BAUD_RATE}) =====\n")
     terminal = UARTTerminal(
         100_000,
