@@ -16,8 +16,7 @@ of time to uncover this completely and also did to an extent. I am making this p
 - facilitate any person who wants to understand computer as a complete system
 - build a reference that I wish existed when I started learning
 
-It is not about performance or production readiness.
-It is just about clarity and completeness.The goal is to make a computer understandable end-to-end.
+The goal is to make a computer understandable end-to-end. 
 
 Atleast for now the aim is to make a complete PC from on off electrical signals 
 upto to an OS running applications. 
@@ -61,12 +60,15 @@ so I will add them here as I progress
 - At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA and booting over UART to skip hassle of FPGA Re-configuration when changes are software only. After that VGA can be completed.
 - For this milestone I decided to implement VGA. It has heavy software dependency, just to show a blank white screen I had to repeat `edit c files --> reconfig FPGA(8 mins per bitgen file) --> test`. Thus I changed milestone02 to Add boot capability over UART.  
 - Learn about BIOS, bootloader, OS , their responsibilities and how these three load and execute. This is crucial to support booting over UART. 
-- Implement UART rx. Also, this a good point for a cleanup and optimizations. After uart rx implementation I analyzed ISE console all warnings, how it synthesized design, which parts took longer and after fixing these and doing some memory optimizations I was able to bring `bitgen time` from `8 minutes` to `3 minutes`. Also reduced LUT usage from `5400/9912(total LUTs)` to `3550/9912`. 
+- Implement UART rx. Also, this a good point for a cleanup and optimizations. After uart rx implementation I analyzed ISE console all warnings, how it synthesized design, which parts took longer and after fixing these and doing some memory optimizations I was able to bring `bitgen time` from `8 minutes` to `3 minutes`. Also reduced LUT usage from `5400/9912(total LUTs)` to `3550/9912`. Currently ram read is combinational rather than synchronus to support data read in same cycle, when cpu requests data becasue cpu is single cycle. Thus, this ram maps to memory as LUTs. This ram, if made synchronus, will map to BRAM. This can further decrease LUT usage.   
+- Another very important thing is program(i.e. bootloader) loaded via UART will be downloaded into ram. An asynchronus single port ram cannot support instruction fetch and write back in same cycle. This is another very strong reason for cpu to be made pipelined. Cpu implementation LUT usage is `2300/3550(total used LUTs)`. Before pipelining, I will try to decrease this as well as we have very limited resources. 
 - 
 - TODO
 
 ## Next Milestones:
 This is what is currently being tried to be done.
+- pipeline cpu
+- Make ram synchronus 
 - Add DMA
 - implement cpu traps
 - Add VGA

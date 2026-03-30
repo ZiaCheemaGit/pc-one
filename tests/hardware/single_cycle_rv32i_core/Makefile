@@ -7,7 +7,7 @@ SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
 # single_cycle_rv32i_core files
-VERILOG_SOURCES += $(PWD)/../../../hardware/single_cycle_rv32i_core/core.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/single_cycle_rv32i_core/single_cycle_rv32i_core.v
 VERILOG_SOURCES += $(PWD)/../../../hardware/single_cycle_rv32i_core/adder32.v
 VERILOG_SOURCES += $(PWD)/../../../hardware/single_cycle_rv32i_core/alu_control.v
 VERILOG_SOURCES += $(PWD)/../../../hardware/single_cycle_rv32i_core/control_unit.v

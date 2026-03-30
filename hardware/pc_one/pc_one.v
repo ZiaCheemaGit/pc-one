@@ -56,7 +56,7 @@ module pc_one(
         .uart_read(uart_read)
     );
     
-    core core_instance(
+    single_cycle_rv32i_core core_instance(
         .clk(clk_from_FPGA),
         .rst(rst_from_FPGA),
         .instruction_address(instr_add),
