@@ -20,7 +20,7 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/register_file.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/sign_ext_12_to_32.v
 
 # memories
-VERILOG_SOURCES += $(PWD)/../../hardware/memory/rom.v
+VERILOG_SOURCES += $(PWD)/../../hardware/memory/boot_rom.v
 VERILOG_SOURCES += $(PWD)/../../hardware/memory/ram.v
 
 # MMU

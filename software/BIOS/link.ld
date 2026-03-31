@@ -1,19 +1,21 @@
+/* Architecture */
 OUTPUT_ARCH(riscv)
+
+/* Entry point */
 ENTRY(_start)
 
+/* Universal Variables */
 PROVIDE(_ram_base = ORIGIN(RAM));
+PROVIDE(_stack_top = ORIGIN(RAM) + LENGTH(RAM));
 
-/* ================= MEMORY MAP ================= */
 MEMORY
 {
-    ROM (rx)  : ORIGIN = 0x00000000, LENGTH = 0x00000300
+    ROM (rx)  : ORIGIN = 0x00000000, LENGTH = 0x0000030C
     RAM (rwx) : ORIGIN = 0x00002000, LENGTH = 0x00002800
 }
 
-/* ================= SECTIONS ================= */
 SECTIONS
 {
-    /* ---------- CODE & CONST DATA IN ROM ---------- */
     .text :
     {
         *(.text.init)
@@ -22,7 +24,6 @@ SECTIONS
         *(.srodata*)
     } > ROM
 
-    /* ---------- INITIALIZED DATA (RUN IN RAM, LOAD FROM ROM) ---------- */
     .data : AT (LOADADDR(.text) + SIZEOF(.text))
     {
         _sdata = .;
@@ -33,7 +34,6 @@ SECTIONS
 
     _sidata = LOADADDR(.data);
 
-    /* ---------- ZERO-INIT DATA IN RAM ---------- */
     .bss (NOLOAD) :
     {
         _sbss = .;
@@ -42,7 +42,5 @@ SECTIONS
         *(COMMON)
         _ebss = .;
     } > RAM
-
-    /* ---------- STACK ---------- */
-    PROVIDE(_stack_top = ORIGIN(RAM) + LENGTH(RAM));
 }
+

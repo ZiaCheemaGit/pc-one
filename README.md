@@ -61,14 +61,14 @@ so I will add them here as I progress
 - For this milestone I decided to implement VGA. It has heavy software dependency, just to show a blank white screen I had to repeat `edit c files --> reconfig FPGA(8 mins per bitgen file) --> test`. Thus I changed milestone02 to Add boot capability over UART.  
 - Learn about BIOS, bootloader, OS , their responsibilities and how these three load and execute. This is crucial to support booting over UART. See this [video](https://youtu.be/XpFsMB6FoOs?si=iKalRxdDKPQcJu4N)
 - Implement UART rx. Also, this a good point for a cleanup and optimizations. After uart rx implementation I analyzed ISE console all warnings, how it synthesized design, which parts took longer and after fixing these and doing some memory optimizations I was able to bring `bitgen time` from `8 minutes` to `3 minutes`. Also reduced LUT usage from `5400/9112(total LUTs)` to `3550/9112`. Currently ram read is combinational rather than synchronus to support data read in same cycle, when cpu requests data becasue cpu is single cycle. Thus, this ram maps to memory as LUTs. This ram, if made synchronus, will map to BRAM. This can further decrease LUT usage.   
-- Another very important thing is program(i.e. bootloader) loaded via UART will be downloaded into ram and then execute that. An asynchronus single port ram cannot support instruction fetch and write back in same cycle. This is another very strong reason for cpu to be made pipelined. Cpu implementation LUT usage is `2300/3550(total used LUTs)`. Before pipelining, I will try to decrease this as well as we have very limited resources. 
+- Another very important thing is program(i.e. bootloader) loaded via UART will be downloaded into ram and then execute that. An asynchronus single port ram cannot support instruction fetch and write back in same cycle. This is another very strong reason for cpu to be made pipelined. Cpu implementation LUT usage is `2300/3550(total used LUTs)`. Before pipelining, I will try to decrease this as well, because we have very low resources. 
 - 
 - TODO
 
 ## Next Milestones:
 This is what is currently being tried to be done.
 - pipeline cpu
-- Make ram synchronus 
+- Make boot_rom and general ram synchronus 
 - Add DMA
 - implement cpu traps
 - Add VGA

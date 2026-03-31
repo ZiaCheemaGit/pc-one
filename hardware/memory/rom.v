@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module rom(
+module boot_rom(
     input wire byte_op,
     input wire half_op,
     input wire unsigned_op, 
@@ -10,7 +10,7 @@ module rom(
     output wire [31:0] data
 );
 
-    parameter length = 32'h00000300;
+    parameter length = 32'h0000030C;
     parameter WORDS = length / 4; 
 
     reg [31:0] mem [0:WORDS-1];
@@ -61,7 +61,6 @@ module rom(
 
     assign data = data_reg;
 
-    // instruction fetch path (unchanged)
     wire [31:0] word_index;
     assign word_index = pc[31:2];
 
@@ -79,7 +78,7 @@ module rom(
         end
     `else
         initial begin
-            $readmemh("D:/git-clones/pc-one/software/build/rom_image.hex", mem);
+            $readmemh("D:/git-clones/pc-one/software/build/BIOS/bios.hex", mem);
         end
     `endif
 

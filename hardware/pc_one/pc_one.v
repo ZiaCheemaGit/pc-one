@@ -83,7 +83,7 @@ module pc_one(
         .data_out(ram_data_to_mmu)
     );
 
-    rom rom_instance(
+    boot_rom boot_rom_instance(
         .pc(instr_add),       
         .instruction(instruction),
         .byte_op(byte_op),

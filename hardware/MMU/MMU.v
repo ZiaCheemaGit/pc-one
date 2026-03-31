@@ -20,13 +20,13 @@ module MMU(
     output [17:0] vram_addr // valid from 0 to 153,599 
 );
 
-    wire is_rom = (addr < 32'h00000300);
+    wire is_boot_rom = (addr < 32'h0000030C);
     wire is_ram = (addr >= 32'h00002000) && (addr <= 32'h00002800);
     wire is_uart_data = (addr == 32'h00004000);
     wire is_uart_tx_status = (addr == 32'h00004004);
     wire is_vram = (addr >= 32'h0000400C) && (addr <= 32'h0002980B);
 
-    wire rom_read = mem_read_cpu && is_rom;
+    wire boot_rom_read = mem_read_cpu && is_boot_rom;
     assign ram_read = mem_read_cpu && is_ram;
     assign ram_write = mem_write_cpu && is_ram;
     assign vram_read = mem_read_cpu && is_vram;
@@ -50,7 +50,7 @@ module MMU(
             data_to_cpu_r = {31'b0, uart_tx_busy};
         end else if (uart_read) begin
             data_to_cpu_r = uart_rx_data;
-        end else if (rom_read) begin
+        end else if (boot_rom_read) begin
             data_to_cpu_r = data_from_rom;
         end else if (vram_read) begin
             data_to_cpu_r = {30'b0, data_from_vram};

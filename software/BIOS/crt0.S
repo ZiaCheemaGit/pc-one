@@ -32,9 +32,9 @@ zero_bss:
 
 zero_bss_done:
 
-    /* 4. Call main */
-    call main
+    /* 4. Call BIOS */
+    call bios
 
-/* 5. If main returns, halt */
+/* 5. If BIOS returns, halt */
 halt:
     j halt
