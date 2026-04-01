@@ -12,7 +12,6 @@ ecall, ebreak
 sret, mret
 wfi, sfence.vma 
 
-single cycle rv32i core
 
 pc_mux inputs 
 pc + 4
@@ -31,11 +30,10 @@ module single_cycle_rv32i_core(
     output mem_read,
     output byte_op,
     output half_op,
-    output unsigned_op, 
     output [31:0] mem_address,
     input [31:0] mem_data_from_mem,
     output [31:0] mem_data_to_mem
-    );
+);
     
     wire [31:0] pc_in_add, pc_out_add;
     pc pc_instance(
@@ -58,22 +56,32 @@ module single_cycle_rv32i_core(
         .s_type_immediate(s_type_immediate)
     );
     
-    wire func3, mem_read_control, mem_write_control, reg_write_control;
+    wire func3, reg_write_control;
     wire [1:0] alu_op_control, pc_src, alu_src_control;
     wire [2:0] mem_to_reg_control;
     control_unit control_unit_instance(
         .opcode(instruction[6:0]),
-        .func3(instruction[14:12]),
-        .byte_op(byte_op),
-        .half_op(half_op),
-        .unsigned_op(unsigned_op), 
+        .func3(instruction[14:12]), 
         .mem_read(mem_read), 
         .mem_write(mem_write), 
         .alu_src(alu_src_control), 
         .reg_write(reg_write_control),
         .alu_op(alu_op_control), 
         .mem_to_reg(mem_to_reg_control),
-        .pc_src(pc_src)
+        .pc_src(pc_src),
+        .byte_op(byte_op),
+        .half_op(half_op),
+        .unsigned_op(unsigned_op)
+    );
+
+    wire [31:0] load_op_data;
+    load_op load_op_instance(
+        .byte_op(byte_op),
+        .half_op(half_op),
+        .unsigned_op(unsigned_op),
+        .byte_offset(mem_address[1:0]),
+        .data_from_mem(mem_data_from_mem),
+        .op_data(load_op_data)
     );
     
     wire [3:0] alu_control_unit;
@@ -171,7 +179,7 @@ module single_cycle_rv32i_core(
        
     mux_5x1 reg_write_mux(
         .in0(alu_out),
-        .in1(mem_data_from_mem),
+        .in1(load_op_data),
         .in2(pc_plus_4), 
         .in3(u_type_immediate), 
         .in4(pc_plus_u_type_immediate),
@@ -180,3 +188,5 @@ module single_cycle_rv32i_core(
     );
            
 endmodule
+
+

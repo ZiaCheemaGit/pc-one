@@ -33,7 +33,7 @@ module pc_one(
     wire [1:0] data_from_vram;
 
     wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, uart_read,
-    uart_tx_busy, rx_valid, byte_op , half_op, unsigned_op, vram_write;
+    uart_tx_busy, rx_valid, byte_op , half_op, vram_write;
     
     wire [17:0] vram_add;
     MMU MMU_instance(
@@ -67,8 +67,7 @@ module pc_one(
         .mem_data_from_mem(mmu_data_to_cpu),
         .mem_data_to_mem(data_from_cpu),
         .byte_op(byte_op),
-        .half_op(half_op),
-        .unsigned_op(unsigned_op)
+        .half_op(half_op)
     );
     
     ram ram_instance(
@@ -78,16 +77,14 @@ module pc_one(
         .mem_write(mmu_mem_write),
         .byte_op(byte_op),
         .half_op(half_op),
-        .unsigned_op(unsigned_op),
         .data_in(data_from_cpu),
         .data_out(ram_data_to_mmu)
     );
 
     boot_rom boot_rom_instance(
+        .clk(clk_from_FPGA),
         .pc(instr_add),       
         .instruction(instruction),
-        .byte_op(byte_op),
-        .half_op(half_op),
         .addr(mem_add),
         .data(rom_data_to_mmu)
     );

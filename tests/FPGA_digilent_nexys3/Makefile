@@ -18,6 +18,7 @@ VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/pc.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/pc_src_control.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/register_file.v
 VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/sign_ext_12_to_32.v
+VERILOG_SOURCES += $(PWD)/../../hardware/single_cycle_rv32i_core/load_op.v
 
 # memories
 VERILOG_SOURCES += $(PWD)/../../hardware/memory/boot_rom.v
@@ -42,7 +43,7 @@ VERILOG_SOURCES += $(PWD)/../../hardware/FPGA_digilent_nexys3/top_nexys3.v
 
 
 # Program file (passed from terminal)
-PROGRAM_FILE ?= ../../software/build/rom_image.hex
+PROGRAM_FILE ?= ../../software/build/BIOS/bios.hex
 
 ifndef PROGRAM_FILE
 $(error PROGRAM_FILE is not set. Use: make PROGRAM_FILE=path_to_hex_file)

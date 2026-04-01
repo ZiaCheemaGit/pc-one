@@ -8,7 +8,7 @@ void loadBootLoader(){
 }
 
 int bios(){
-    uart_println("Hello from pc-one!");
+    uart_println("Hey!");
     
     uart_println("Display plain Red on VGA Screen after 3 seconds");
     delay_second(3);
