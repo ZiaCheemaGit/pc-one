@@ -60,15 +60,14 @@ so I will add them here as I progress
 - At this point I am a bit lost and confused. Can't decide between `cpu traps` and `VGA` or maybe I should entirely do something else. Here is some [advice](https://forum.osdev.org/viewtopic.php?t=58078) I got from OSDev Community which is actually worth alot because from there I got introduced to concept of DMA and booting over UART to skip hassle of FPGA Re-configuration when changes are software only. After that VGA can be completed.
 - For this milestone I decided to implement VGA. It has heavy software dependency, just to show a blank white screen I had to repeat `edit c files --> reconfig FPGA(8 mins per bitgen file) --> test`. Thus I changed milestone02 to Add boot capability over UART.  
 - Learn about BIOS, bootloader, OS , their responsibilities and how these three load and execute. This is crucial to support booting over UART. See this [video](https://youtu.be/XpFsMB6FoOs?si=iKalRxdDKPQcJu4N)
-- Implement UART rx. Also, this a good point for a cleanup and optimizations. After uart rx implementation I analyzed ISE console all warnings, how it synthesized design, which parts took longer and after fixing these and doing some memory optimizations I was able to bring `bitgen time` from `8 minutes` to `3 minutes`. Also reduced LUT usage from `5400/9112(total LUTs)` to `3550/9112`. Currently ram read is combinational rather than synchronus to support data read in same cycle, when cpu requests data becasue cpu is single cycle. Thus, this ram maps to memory as LUTs. This ram, if made synchronus, will map to BRAM. This can further decrease LUT usage.   
-- Another very important thing is program(i.e. bootloader) loaded via UART will be downloaded into ram and then execute that. An asynchronus single port ram cannot support instruction fetch and write back in same cycle. This is another very strong reason for cpu to be made pipelined. Cpu implementation LUT usage is `2300/3550(total used LUTs)`. Before pipelining, I will try to decrease this as well, because we have very low resources. 
-- 
-- TODO
+- Implement UART rx. Also, this a good point for a cleanup and optimizations. After uart rx implementation I analyzed ISE console all warnings, how it synthesized design, which parts took longer and after fixing these and doing some memory optimizations I was able to bring `bitgen time` from `8 minutes` to `3 minutes`. Also reduced LUT usage from `5400/9112(total LUTs)` to `3550/9112`. Currently ram read is combinational rather than synchronus to support data read in same cycle, when cpu requests data becasue cpu is single cycle. Thus, this ram maps to memory as LUTs. This ram, if made synchronus, will map to BRAM. This can further decrease LUT usage. But then CPU must be pipelined as data will be available one cycle after it is requested.
+- Another very important thing is program(i.e. bootloader) loaded via UART will be downloaded into ram and then execute that. UART bootloader aside, In future any program will end up loading in ram for execution. A single port ram cannot support instruction-fetch and data-write in same cycle. This is another very strong reason for cpu to be made pipelined.  
+- Now understand [pipelining](https://en.wikipedia.org/wiki/Instruction_pipelining) concept and what problems it solve. How it solve synchronus read, increase maximum frequency at which CPU can run e.t.c. For a high level view see this [video](https://youtu.be/1U4v_2J0Qwk?si=WOSo4rIQH2Y1EOng). After that you can see this [video](https://youtu.be/iL37v8Nlqvk?si=XeIj54lR8vLJZEaH) for a deeper insight.
+- Single cycle RV32I occupied `2300 LUTs`.  
 
 ## Next Milestones:
 This is what is currently being tried to be done.
 - pipeline cpu
-- Make boot_rom and general ram synchronus 
 - Add DMA
 - implement cpu traps
 - Add VGA
@@ -90,4 +89,101 @@ these one can dive into source code.
 This is definitely a huge project. Pull requests, ideas, and corrections are welcome from anyone who shares the vision.
 
 
-
+```text
+.
+|-- FPGA
+|   |-- digilent_nexys3
+|   |   |-- README.md
+|   |   |-- demo_lab.pdf
+|   |   |-- nexys3_refrence_manual.pdf
+|   |   `-- top_nexys3.ucf
+|   `-- README.md
+|-- __pycache__
+|   `-- noxfile.cpython-312.pyc
+|-- hardware
+|   |-- FPGA_digilent_nexys3
+|   |   |-- cellular_ram_controller.v
+|   |   `-- top_nexys3.v
+|   |-- MMU
+|   |   |-- MMU.v
+|   |   `-- README.md
+|   |-- UART
+|   |   |-- README.md
+|   |   |-- uart_rx.v
+|   |   `-- uart_tx.v
+|   |-- VGA
+|   |   |-- pattern.py
+|   |   |-- vga_controller.v
+|   |   `-- vram.v
+|   |-- memories
+|   |   |-- README.md
+|   |   |-- boot_rom.v
+|   |   `-- ram.v
+|   |-- pc_one
+|   |   |-- README.md
+|   |   `-- pc_one.v
+|   |-- processors
+|   |   |-- five_stage_pipelined_rv32i_core
+|   |   |-- lib
+|   |   |-- single_cycle_rv32i_core
+|   |   `-- README.md
+|   `-- README.md
+|-- images
+|   |-- FPGA_digilent_nexys3
+|   |   `-- config_table.png
+|   |-- hardware
+|   |   |-- MMU.png
+|   |   `-- Makefile
+|   |-- youtube
+|   |   `-- M1.png
+|   `-- README.md
+|-- python_helper
+|   |-- __pycache__
+|   |   |-- __init__.cpython-312-pytest-9.0.2.pyc
+|   |   |-- converter.cpython-312-pytest-9.0.2.pyc
+|   |   |-- instructions.cpython-312-pytest-9.0.2.pyc
+|   |   |-- logging.cpython-312-pytest-9.0.2.pyc
+|   |   `-- uart_terminal.cpython-312-pytest-9.0.2.pyc
+|   |-- README.md
+|   |-- __init__.py
+|   |-- bin2hex32.py
+|   |-- converter.py
+|   |-- instructions.py
+|   |-- logging.py
+|   |-- uart_terminal.py
+|   `-- vga.py
+|-- software
+|   |-- BIOS
+|   |   |-- bios.c
+|   |   |-- crt0.S
+|   |   `-- link.ld
+|   |-- bootloader
+|   |-- build
+|   |   `-- BIOS
+|   |-- drivers
+|   |   |-- uart.c
+|   |   `-- vga.c
+|   |-- include
+|   |   |-- bios.h
+|   |   |-- tests.h
+|   |   |-- time.h
+|   |   |-- uart.h
+|   |   `-- vga.h
+|   |-- kernel
+|   |   `-- main.c
+|   |-- lib
+|   |   `-- time.c
+|   |-- tests
+|   |   `-- test_1.c
+|   |-- Makefile
+|   `-- README.md
+|-- tests
+|   |-- hardware
+|   |   |-- FPGA_digilent_nexys3
+|   |   |-- pc_one
+|   |   `-- processors
+|   `-- README.md
+|-- LICENSE
+|-- README.md
+`-- noxfile.py
+```
