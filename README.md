@@ -82,13 +82,7 @@ In all directories and sub directories there is a `README.md`. These readme file
 help anyone at the beginning to get a fair amount of clarity. After getting an overview through 
 these one can dive into source code.
 
----
-
-# Contributing
-
-This is definitely a huge project. Pull requests, ideas, and corrections are welcome from anyone who shares the vision.
-
-
+# Project Structure
 ```text
 .
 |-- FPGA
@@ -187,3 +181,12 @@ This is definitely a huge project. Pull requests, ideas, and corrections are wel
 |-- README.md
 `-- noxfile.py
 ```
+
+---
+
+# Contributing
+
+This is definitely a huge project. Pull requests, ideas, and corrections are welcome from anyone who shares the vision.
+
+
+
