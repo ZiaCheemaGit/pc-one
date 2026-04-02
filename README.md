@@ -81,105 +81,218 @@ git clone https://github.com/ZiaCheemaGit/pc-one.git
 In all directories and sub directories there is a `README.md`. These readme files hopefully will 
 help anyone at the beginning to get a fair amount of clarity. After getting an overview through 
 these one can dive into source code.
+---
 
 # Project Structure
 ```text
 .
-|-- FPGA
-|   |-- digilent_nexys3
-|   |   |-- README.md
-|   |   |-- demo_lab.pdf
-|   |   |-- nexys3_refrence_manual.pdf
-|   |   `-- top_nexys3.ucf
-|   `-- README.md
-|-- __pycache__
-|   `-- noxfile.cpython-312.pyc
-|-- hardware
-|   |-- FPGA_digilent_nexys3
-|   |   |-- cellular_ram_controller.v
-|   |   `-- top_nexys3.v
-|   |-- MMU
-|   |   |-- MMU.v
-|   |   `-- README.md
-|   |-- UART
-|   |   |-- README.md
-|   |   |-- uart_rx.v
-|   |   `-- uart_tx.v
-|   |-- VGA
-|   |   |-- pattern.py
-|   |   |-- vga_controller.v
-|   |   `-- vram.v
-|   |-- memories
-|   |   |-- README.md
-|   |   |-- boot_rom.v
-|   |   `-- ram.v
-|   |-- pc_one
-|   |   |-- README.md
-|   |   `-- pc_one.v
-|   |-- processors
-|   |   |-- five_stage_pipelined_rv32i_core
-|   |   |-- lib
-|   |   |-- single_cycle_rv32i_core
-|   |   `-- README.md
-|   `-- README.md
-|-- images
-|   |-- FPGA_digilent_nexys3
-|   |   `-- config_table.png
-|   |-- hardware
-|   |   |-- MMU.png
-|   |   `-- Makefile
-|   |-- youtube
-|   |   `-- M1.png
-|   `-- README.md
-|-- python_helper
-|   |-- __pycache__
-|   |   |-- __init__.cpython-312-pytest-9.0.2.pyc
-|   |   |-- converter.cpython-312-pytest-9.0.2.pyc
-|   |   |-- instructions.cpython-312-pytest-9.0.2.pyc
-|   |   |-- logging.cpython-312-pytest-9.0.2.pyc
-|   |   `-- uart_terminal.cpython-312-pytest-9.0.2.pyc
-|   |-- README.md
-|   |-- __init__.py
-|   |-- bin2hex32.py
-|   |-- converter.py
-|   |-- instructions.py
-|   |-- logging.py
-|   |-- uart_terminal.py
-|   `-- vga.py
-|-- software
-|   |-- BIOS
-|   |   |-- bios.c
-|   |   |-- crt0.S
-|   |   `-- link.ld
-|   |-- bootloader
-|   |-- build
-|   |   `-- BIOS
-|   |-- drivers
-|   |   |-- uart.c
-|   |   `-- vga.c
-|   |-- include
-|   |   |-- bios.h
-|   |   |-- tests.h
-|   |   |-- time.h
-|   |   |-- uart.h
-|   |   `-- vga.h
-|   |-- kernel
-|   |   `-- main.c
-|   |-- lib
-|   |   `-- time.c
-|   |-- tests
-|   |   `-- test_1.c
-|   |-- Makefile
-|   `-- README.md
-|-- tests
-|   |-- hardware
-|   |   |-- FPGA_digilent_nexys3
-|   |   |-- pc_one
-|   |   `-- processors
-|   `-- README.md
-|-- LICENSE
-|-- README.md
-`-- noxfile.py
+├── FPGA
+│   ├── README.md
+│   └── digilent_nexys3
+│       ├── README.md
+│       ├── demo_lab.pdf
+│       ├── nexys3_refrence_manual.pdf
+│       └── top_nexys3.ucf
+├── LICENSE
+├── README.md
+├── __pycache__
+│   └── noxfile.cpython-312.pyc
+├── hardware
+│   ├── FPGA_digilent_nexys3
+│   │   ├── cellular_ram_controller.v
+│   │   └── top_nexys3.v
+│   ├── MMU
+│   │   ├── MMU.v
+│   │   └── README.md
+│   ├── README.md
+│   ├── UART
+│   │   ├── README.md
+│   │   ├── uart_rx.v
+│   │   └── uart_tx.v
+│   ├── VGA
+│   │   ├── pattern.py
+│   │   ├── vga_controller.v
+│   │   └── vram.v
+│   ├── memories
+│   │   ├── README.md
+│   │   ├── boot_rom.v
+│   │   └── ram.v
+│   ├── pc_one
+│   │   ├── README.md
+│   │   └── pc_one.v
+│   └── processors
+│       ├── README.md
+│       ├── five_stage_pipelined_rv32i_core
+│       │   ├── README.md
+│       │   └── five_stage_pipelined_rv32i_core.v
+│       ├── lib
+│       │   ├── adder32.v
+│       │   ├── alu_control.v
+│       │   ├── control_unit.v
+│       │   ├── load_op.v
+│       │   ├── main_alu.v
+│       │   ├── mux_4X1.v
+│       │   ├── mux_5X1.v
+│       │   ├── pc.v
+│       │   ├── pc_src_control.v
+│       │   ├── register_file.v
+│       │   └── sign_ext_12_to_32.v
+│       └── single_cycle_rv32i_core
+│           ├── README.md
+│           └── single_cycle_rv32i_core.v
+├── images
+│   ├── FPGA_digilent_nexys3
+│   │   └── config_table.png
+│   ├── README.md
+│   ├── hardware
+│   │   ├── MMU.png
+│   │   └── Makefile
+│   └── youtube
+│       └── M1.png
+├── noxfile.py
+├── python_helper
+│   ├── README.md
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312-pytest-9.0.2.pyc
+│   │   ├── converter.cpython-312-pytest-9.0.2.pyc
+│   │   ├── instructions.cpython-312-pytest-9.0.2.pyc
+│   │   ├── logging.cpython-312-pytest-9.0.2.pyc
+│   │   └── uart_terminal.cpython-312-pytest-9.0.2.pyc
+│   ├── bin2hex32.py
+│   ├── converter.py
+│   ├── instructions.py
+│   ├── logging.py
+│   ├── uart_terminal.py
+│   └── vga.py
+├── software
+│   ├── BIOS
+│   │   ├── bios.c
+│   │   ├── crt0.S
+│   │   └── link.ld
+│   ├── Makefile
+│   ├── README.md
+│   ├── bootloader
+│   ├── build
+│   │   └── BIOS
+│   │       ├── bios.bin
+│   │       ├── bios.dump
+│   │       ├── bios.elf
+│   │       └── bios.hex
+│   ├── drivers
+│   │   ├── uart.c
+│   │   └── vga.c
+│   ├── include
+│   │   ├── bios.h
+│   │   ├── tests.h
+│   │   ├── time.h
+│   │   ├── uart.h
+│   │   └── vga.h
+│   ├── kernel
+│   │   └── main.c
+│   ├── lib
+│   │   └── time.c
+│   └── tests
+│       └── test_1.c
+└── tests
+    ├── README.md
+    ├── hardware
+    │   ├── FPGA_digilent_nexys3
+    │   │   ├── Makefile
+    │   │   ├── README.md
+    │   │   ├── __pycache__
+    │   │   │   └── test.cpython-312-pytest-9.0.2.pyc
+    │   │   ├── build.log
+    │   │   ├── results.xml
+    │   │   ├── sim_build
+    │   │   │   ├── cmds.f
+    │   │   │   └── sim.vvp
+    │   │   ├── simulation_uart_terminal_display.log
+    │   │   └── test.py
+    │   ├── pc_one
+    │   │   ├── Makefile
+    │   │   ├── README.md
+    │   │   ├── __pycache__
+    │   │   │   └── test.cpython-312-pytest-9.0.2.pyc
+    │   │   ├── results.xml
+    │   │   ├── sim_build
+    │   │   │   ├── cmds.f
+    │   │   │   └── sim.vvp
+    │   │   ├── simulation_test_basic_asm.log
+    │   │   ├── simulation_test_load_asm.log
+    │   │   ├── simulation_test_math_c.log
+    │   │   ├── test.py
+    │   │   └── test_cases
+    │   │       ├── Makefile
+    │   │       ├── asm_tests
+    │   │       │   ├── test_basic_asm.s
+    │   │       │   └── test_load_asm.s
+    │   │       ├── c-cpp_tests
+    │   │       │   └── test_math_c.c
+    │   │       └── generated_hex
+    │   │           ├── asm_tests_test_basic_asm
+    │   │           │   ├── test_basic_asm.bin
+    │   │           │   ├── test_basic_asm.dump
+    │   │           │   ├── test_basic_asm.elf
+    │   │           │   └── test_basic_asm.hex
+    │   │           ├── asm_tests_test_load_asm
+    │   │           │   ├── test_load_asm.bin
+    │   │           │   ├── test_load_asm.dump
+    │   │           │   ├── test_load_asm.elf
+    │   │           │   └── test_load_asm.hex
+    │   │           └── c-cpp_tests_test_math_c
+    │   │               ├── test_math_c.bin
+    │   │               ├── test_math_c.dump
+    │   │               ├── test_math_c.elf
+    │   │               └── test_math_c.hex
+    │   └── processors
+    │       ├── five_stage_pipelined_rv32i_core
+    │       │   ├── Makefile
+    │       │   ├── __pycache__
+    │       │   │   └── test.cpython-312-pytest-9.0.2.pyc
+    │       │   ├── results.xml
+    │       │   ├── sim_build
+    │       │   │   ├── cmds.f
+    │       │   │   └── sim.vvp
+    │       │   └── test.py
+    │       └── single_cycle_rv32i_core
+    │           ├── Makefile
+    │           ├── __pycache__
+    │           │   └── test_core.cpython-312-pytest-9.0.2.pyc
+    │           ├── results.xml
+    │           ├── sim_build
+    │           │   ├── cmds.f
+    │           │   └── sim.vvp
+    │           └── test_core.py
+    └── software
+        ├── BIOS
+        │   ├── bios.c
+        │   ├── crt0.S
+        │   └── link.ld
+        ├── Makefile
+        ├── README.md
+        ├── bootloader
+        ├── build
+        │   └── BIOS
+        │       ├── bios.bin
+        │       ├── bios.dump
+        │       ├── bios.elf
+        │       └── bios.hex
+        ├── drivers
+        │   ├── uart.c
+        │   └── vga.c
+        ├── include
+        │   ├── bios.h
+        │   ├── tests.h
+        │   ├── time.h
+        │   ├── uart.h
+        │   └── vga.h
+        ├── kernel
+        │   └── main.c
+        ├── lib
+        │   └── time.c
+        └── tests
+            └── test_1.c
 ```
 
 ---
