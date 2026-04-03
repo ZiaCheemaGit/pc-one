@@ -6,8 +6,8 @@ This is the top level module for this project
 Its inputs/outputs are connected directly to FPGA ports
 
 MMU
-ROM = 0x00000000 --> 0x00001FFF
-RAM = 0x00002000 --> 0x00003FFF
+ROM = 0x00000000 
+RAM = 0x00002000 
 UART =  00004000
 UART_STATUS = 0x00004004
 

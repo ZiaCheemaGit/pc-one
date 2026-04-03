@@ -14,7 +14,7 @@ module ram (
     parameter length = 32'h00000800;
     reg [31:0] mem [0:(length/4)-1];
 
-    wire [13:0] word_addr = data_address[15:2];
+    wire [9:0] word_addr = data_address[11:2];
     wire [1:0] byte_offset = data_address[1:0];
 
     reg [3:0] we;

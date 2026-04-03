@@ -5,7 +5,7 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, RisingEdge
 
-sys.path.append(os.path.abspath("../../"))
+sys.path.append(os.path.abspath("../../../"))
 from python_helper.converter import *
 from python_helper.uart_terminal import UARTTerminal, UARTDriver
 from python_helper.logging import log_signals_pc_one

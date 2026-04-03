@@ -6,79 +6,12 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 
-sys.path.append(os.path.abspath("../../"))
+sys.path.append(os.path.abspath("../../../"))
 from python_helper.converter import *
-
+from python_helper.logging import log_signals_pc_one_sync
 
 TEST_REGISTRY = {}
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
-
-
-def log_signals(logger, dut):
-        # PC
-        try: 
-            logger.critical(f"PC = {dut.instr_add.value.to_unsigned()}")
-            logger.critical(f"PC = 0x{dut.instr_add.value.to_unsigned():08x}")
-        except Exception:
-            logger.critical(f"PC = {dut.instr_add.value}")
-
-        # Instruction 
-        try: 
-            logger.info(f"instruction = {binary_to_assembly((dut.instruction.value.to_unsigned()))}")
-        except Exception:
-            logger.info(f"instruction = {dut.instruction.value}")
-
-        # reg_write_control
-        try: 
-            logger.info(f"reg_write_control = {dut.core_instance.reg_file_instance.reg_write_control.value.to_unsigned()}")
-        except Exception:
-            logger.info(f"reg_write_control = {dut.core_instance.reg_file_instance.reg_write_control.value}")   
-
-        # reg_write_data
-        try: 
-            logger.info(f"reg_write_data = {dut.core_instance.reg_file_instance.reg_write_data.value.to_unsigned()} or " + 
-                        f"0x{dut.core_instance.reg_file_instance.reg_write_data.value.to_unsigned():08x}")
-        except Exception:
-            logger.info(f"reg_write_data = {dut.core_instance.reg_file_instance.reg_write_data.value}")   
-
-        # dest_reg
-        try: 
-            logger.info(f"dest_reg = {dut.core_instance.reg_file_instance.dest_reg.value.to_unsigned()}")
-        except Exception:
-            logger.info(f"dest_reg = {dut.core_instance.reg_file_instance.dest_reg.value}")   
-
-        # mem_write
-        try: 
-            logger.info(f"mem_write = {dut.ram_instance.mem_write.value.to_unsigned()}")
-        except Exception:
-            logger.info(f"mem_write = {dut.ram_instance.mem_write.value}")
-
-        # data_in
-        try: 
-            logger.info(f"data_in ram = {dut.ram_instance.data_in.value.to_unsigned()} or " +
-                        f"0x{dut.ram_instance.data_in.value.to_unsigned():08x}")
-        except Exception:
-            logger.info(f"data_in ram = {dut.ram_instance.data_in.value}")
-
-        # mem_read
-        try: 
-            logger.info(f"mem_read = {dut.ram_instance.mem_read.value.to_unsigned()}")
-        except Exception:
-            logger.info(f"mem_read = {dut.ram_instance.mem_read.value}")
-
-        # data_out
-        try: 
-            logger.info(f"data_out of ram = {dut.ram_instance.data_out.value.to_unsigned()} or " + 
-                        f"0x{dut.ram_instance.data_out.value.to_unsigned():08x}")
-        except Exception:
-            logger.info(f"data_out of ram = {dut.ram_instance.data_out.value}")
-
-        # data_address
-        try: 
-            logger.info(f"data_address = {dut.ram_instance.data_address.value.to_unsigned()} or " + 
-                        f"0x{dut.ram_instance.data_address.value.to_unsigned():08x}")
-        except Exception:
-            logger.info(f"data_address = {dut.ram_instance.data_address.value}")
 
 
 def program_test(name):
@@ -129,82 +62,25 @@ async def test_basic_asm(dut):
 
     for i in range(threshold_clk_cycles):
         if LOGGING_ON:
-            log_signals(logger, dut)
+            log_signals_pc_one_sync(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA)
 
-        if dut.rom_instance.pc.value.to_unsigned() == 0x12c:
+        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x130:
             logger.critical("Test ended control reached at label HALT")
             await RisingEdge(dut.clk_from_FPGA)
 
-            address = 0x2104
-            word_index = address >> 2
-            cell_2104 = int(dut.ram_instance.mem[word_index].value)
-            
             PASS = 0xCAFEBBAE
-            FAIL = 0xDEADBEEF
-            assert cell_2104 == PASS, f"Expected PASS, got 0x{cell_2104:08x}"
+            result = int(dut.core_instance.reg_file_instance.registers[1].value)
+            assert result == PASS, f"Expected PASS, got 0x{result:08x}"
             logger.info("Test Passed")
-            logger.info(f"ram[0x104] = 0x{cell_2104: 02x}")
+            logger.info(f"result = 0x{result:08x}")
             logger.info("Value is Correctly set by label PASS")
             
             return
         
         elif i >= (threshold_clk_cycles - 1) and dut.instr_add.value.to_unsigned() != 0xe0:
             assert False, "TIMEOUT: PC never reached label HALT)"
-
-    
-@program_test("test_math_c")
-async def test_math_c(dut):
-    
-    test_name = "test_math_c"
-    logger = logging.getLogger(test_name)
-    file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-    logger.setLevel(logging.INFO)
-
-    # run clock concurrently
-    cocotb.start_soon(Clock(dut.clk_from_FPGA, 1, unit="ns").start()) 
-
-    # reset cpu 
-    dut.rst_from_FPGA.value = 1
-    await RisingEdge(dut.clk_from_FPGA)
-    await RisingEdge(dut.clk_from_FPGA)
-    dut.rst_from_FPGA.value = 0
-    await RisingEdge(dut.clk_from_FPGA)
-
-    logger.info("Reset released. CPU starting execution.")
-    
-    threshold_clk_cycles = 2000
-
-    for _ in range(threshold_clk_cycles):
-
-        if LOGGING_ON:
-            log_signals(logger, dut)
-
-        await RisingEdge(dut.clk_from_FPGA)
-        
-        address = 0x2000
-        
-        if dut.rom_instance.pc.value.to_unsigned() == 0x58:
-            logger.critical("Test ended PC reached 0x58")
-            word_index = address >> 2
-            cell_3 = int(dut.ram_instance.mem[word_index].value)
-
-            result =f"{cell_3:08x}"
-
-            assert "fffffeee" == result
-
-            logger.critical("Test passed")
-            logger.info(f"ram[0x{address}] = {result}")
-            logger.info("Test Passed")
-            logger.info("g3 variable value is correctly calculated")
-            
-            return
-        
-    raise Exception("Threshold cyles passed\nPC never reached end")
 
 
 @program_test("test_load_asm")
@@ -234,11 +110,11 @@ async def test_load_asm(dut):
 
     for _ in range(threshold_clk_cycles):
         if LOGGING_ON:
-            log_signals(logger, dut)
+            log_signals_pc_one_sync(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA)
         
-        if dut.rom_instance.pc.value.to_unsigned() == 0x88:
+        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x88:
             await RisingEdge(dut.clk_from_FPGA)
             await RisingEdge(dut.clk_from_FPGA)
             logger.critical("Test Ended")
@@ -260,6 +136,57 @@ async def test_load_asm(dut):
     
     if not test_ended:
         assert False, "Test Ended Abnormally"
+
+
+@program_test("test_math_c")
+async def test_math_c(dut):
+    
+    test_name = "test_math_c"
+    logger = logging.getLogger(test_name)
+    file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    logger.setLevel(logging.INFO)
+
+    # run clock concurrently
+    cocotb.start_soon(Clock(dut.clk_from_FPGA, 1, unit="ns").start()) 
+
+    # reset cpu 
+    dut.rst_from_FPGA.value = 1
+    await RisingEdge(dut.clk_from_FPGA)
+    await RisingEdge(dut.clk_from_FPGA)
+    dut.rst_from_FPGA.value = 0
+    await RisingEdge(dut.clk_from_FPGA)
+
+    logger.info("Reset released. CPU starting execution.")
+    
+    threshold_clk_cycles = 2000
+
+    for _ in range(threshold_clk_cycles):
+
+        if LOGGING_ON:
+            log_signals_pc_one_sync(logger, dut)
+
+        await RisingEdge(dut.clk_from_FPGA)
+        
+        address = 0x0
+        
+        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x58:
+            logger.critical("Test ended PC reached 0x58")
+            word_index = address >> 2
+            result = dut.ram_instance.mem[word_index].value.to_unsigned()
+
+            assert 0xfffffeee == result
+
+            logger.critical("Test passed")
+            logger.info(f"ram[0x{address}] = {result}")
+            logger.info("Test Passed")
+            logger.info("g3 variable value is correctly calculated")
+            
+            return
+        
+    raise Exception("Threshold cyles passed\nPC never reached end")
 
 
 

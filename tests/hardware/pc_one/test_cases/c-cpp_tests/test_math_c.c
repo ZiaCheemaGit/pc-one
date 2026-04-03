@@ -32,7 +32,7 @@ int recurse(int x) {
     return x + recurse(x - 1);
 }
 
-int main() {
+int bios() {
     int local1 = 50;
     int local2 = -20;
     int arr[5] = {1, 2, 3, 4, 5};

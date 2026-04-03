@@ -8,19 +8,17 @@ void loadBootLoader(){
 }
 
 int bios(){
-    uart_println("Hey!");
-    
-    uart_println("Display plain Red on VGA Screen after 3 seconds");
-    delay_second(3);
-    display_plain_color(RED_COLOR);
-    uart_println("Red color Done");
+    uart_println("Hello from PC-ONE!");
 
-    uart_println("Display plain CYAN on VGA Screen after 3 seconds");
-    delay_second(3);
-    display_plain_color(CYAN_COLOR);
-    uart_println("CYAN color Done");
+    int max = 10;
+    int min = 5;
+    int threshold = max - min;
+    uart_print("Threshold: ");
+    char s[10];
+    int_to_string(threshold, s);
+    uart_println(s);
 
-    for (int i = 0; i < 50; i++){
+    for (int i = 0; i < 4; i++){
         uart_println("Wait 3 second"); 
         delay_second(3);
         

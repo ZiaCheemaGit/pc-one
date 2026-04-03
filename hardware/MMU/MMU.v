@@ -20,11 +20,11 @@ module MMU(
     output [17:0] vram_addr // valid from 0 to 153,599 
 );
 
-    wire is_boot_rom = (addr < 32'h0000030C);
-    wire is_ram = (addr >= 32'h00002000) && (addr <= 32'h00002800);
-    wire is_uart_data = (addr == 32'h00004000);
-    wire is_uart_tx_status = (addr == 32'h00004004);
-    wire is_vram = (addr >= 32'h0000400C) && (addr <= 32'h0002980B);
+    wire is_boot_rom = (addr >= 32'h0) && (addr < 32'h424);
+    wire is_ram = (addr >= 32'h2000) && (addr <= 32'h2800);
+    wire is_uart_data = (addr == 32'h4000);
+    wire is_uart_tx_status = (addr == 32'h4004);
+    wire is_vram = (addr >= 32'h400C) && (addr <= 32'h2980B);
 
     wire boot_rom_read = mem_read_cpu && is_boot_rom;
     assign ram_read = mem_read_cpu && is_ram;

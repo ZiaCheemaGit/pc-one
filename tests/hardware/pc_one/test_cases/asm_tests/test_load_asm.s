@@ -1,6 +1,6 @@
-.globl main
+.globl bios
 
-main:
+bios:
     # Base address
     li x1, 0x2000
 

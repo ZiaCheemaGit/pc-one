@@ -1,11 +1,12 @@
-# ram[0x104] == 0xCAFEBBAE TEST PASSES
-# ram[0x104] == 0xDEADCEEF BUG in CPU (some instruction failed)
-# ram[0x104] == 0xXXXXXXXX BUG in memory system / store path
+# When test ends
+# reg x1 == 0xCAFEBBAE TEST PASSES
+# reg x1 == 0xDEADCEEF BUG in CPU (some instruction failed)
+# reg x1 == 0xXXXXXXXX BUG in memory system / store path
 
     .section .text
-    .globl main
+    .globl bios
 
-main:
+bios:
     # Setup base address for memory test
     .extern _ram_base
     la    x1, _ram_base
@@ -88,16 +89,18 @@ FAIL:
     lui   x27, 0xDEADC
     addi  x27, x27, -0x411    # -1041 (0xEEF signed)
     sw    x27, 4(x1)
-    j HALT
+    j CHECK
 
 PASS:
     lui   x27, 0xCAFEC        # upper = (0xCAFEBABE + 0x800) >> 12
     addi  x27, x27, -0x452    # -1106 (0xBAE signed)
     sw    x27, 4(x1)
     lw    x28, 4(x1)
-    beq   x27, x28, HALT
+    beq   x27, x28, CHECK
+
+CHECK:
+    lw x1, 4(x1)               # x1 = final result
 
 HALT:
     j HALT
-
 

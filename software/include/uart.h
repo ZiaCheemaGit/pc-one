@@ -11,5 +11,6 @@ void uart_putc(char c);
 void uart_print(const char *s);
 void uart_println(const char *s);
 char uart_getc(void); 
+void int_to_string(int n, char *s);
 
 # endif 

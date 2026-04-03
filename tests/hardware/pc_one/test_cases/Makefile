@@ -9,7 +9,7 @@ CPP_DIR := c-cpp_tests
 OUT_DIR := generated_hex
 
 # Find sources
-ASM_SRCS := $(wildcard $(ASM_DIR)/*.s)
+ASM_SRCS := $(wildcard $(ASM_DIR)/*.S)
 C_SRCS   := $(wildcard $(CPP_DIR)/*.c)
 CPP_SRCS := $(wildcard $(CPP_DIR)/*.cpp)
 
@@ -18,8 +18,8 @@ SRCS := $(ASM_SRCS) $(C_SRCS) $(CPP_SRCS)
 # Flags
 ARCH_FLAGS    := -march=rv32i -mabi=ilp32
 COMMON_FLAGS  := -ffreestanding -nostdlib
-LINKER_SCRIPT := ../../../software/bootloader/link.ld
-CRT0          := ../../../software/bootloader/crt0.S
+LINKER_SCRIPT := ../../../software/BIOS/link.ld
+CRT0          := ../../../software/BIOS/crt0.S
 
 define OUTDIR
 $(OUT_DIR)/$(subst /,_,$(basename $(1)))
@@ -55,7 +55,7 @@ $(call HEXFILE,$(1)):
 	$(OBJCOPY) -O binary \
 		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).elf \
 		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).bin
-	python3 ../../../python_helper/bin2hex32.py \
+	python3 ../../../../python_helper/bin2hex32.py \
 		$(call OUTDIR,$(1))/$(notdir $(basename $(1))).bin > $$@
 endef
 

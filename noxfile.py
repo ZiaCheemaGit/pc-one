@@ -23,7 +23,7 @@ def test_pc_one(session: nox.Session) -> None:
 
     install_deps(session)
 
-    session.chdir("tests/pc_one/")
+    session.chdir("tests/hardware/pc_one/")
 
     # Generate hex files and collect each files path
     session.chdir("test_cases/")
@@ -48,7 +48,7 @@ def test_nexys3(session: nox.Session) -> None:
     session.run("make", external=True)
     
     # run test
-    session.chdir("../tests/FPGA_digilent_nexys3/")
+    session.chdir("../tests/hardware/FPGA_digilent_nexys3_BIOS_test/")
     session.run("make", external=True)
 
     
