@@ -8,10 +8,10 @@ void loadBootLoader(){
 }
 
 int bios(){
-    uart_println("Hello from PC-ONE!");
+    uart_println("Hey!");
 
-    int max = 10;
-    int min = 5;
+    int max = 100;
+    int min = 36;
     int threshold = max - min;
     uart_print("Threshold: ");
     char s[10];

@@ -4,15 +4,16 @@ OUTPUT_ARCH(riscv)
 /* Entry point */
 ENTRY(_start)
 
-/* Universal Variables */
-PROVIDE(_ram_base = ORIGIN(RAM));
-PROVIDE(_stack_top = ORIGIN(RAM) + LENGTH(RAM));
 
 MEMORY
 {
     ROM (rx)  : ORIGIN = 0x0, LENGTH = 0x500
-    RAM (rwx) : ORIGIN = 0x2000, LENGTH = 0x2800
+    RAM (rwx) : ORIGIN = 0x2000, LENGTH = 0x800
 }
+
+/* Universal Variables */
+PROVIDE(_ram_base = ORIGIN(RAM));
+_stack_top = ORIGIN(RAM) + LENGTH(RAM);
 
 SECTIONS
 {

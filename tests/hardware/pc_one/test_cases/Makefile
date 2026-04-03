@@ -10,16 +10,16 @@ OUT_DIR := generated_hex
 
 # Find sources
 ASM_SRCS := $(wildcard $(ASM_DIR)/*)
-C_SRCS   := $(wildcard $(CPP_DIR)/*.c)
-CPP_SRCS := $(wildcard $(CPP_DIR)/*.cpp)
+C_SRCS   := $(wildcard $(CPP_DIR)/*)
+CPP_SRCS := $(wildcard $(CPP_DIR)/*)
 
 SRCS := $(ASM_SRCS) $(C_SRCS) $(CPP_SRCS)
 
 # Flags
 ARCH_FLAGS    := -march=rv32i -mabi=ilp32
 COMMON_FLAGS  := -ffreestanding -nostdlib
-LINKER_SCRIPT := ../../../software/BIOS/link.ld
-CRT0          := ../../../software/BIOS/crt0.S
+LINKER_SCRIPT := ../../../../software/BIOS/link.ld
+CRT0          := ../../../../software/BIOS/crt0.S
 
 define OUTDIR
 $(OUT_DIR)/$(subst /,_,$(basename $(1)))

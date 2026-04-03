@@ -1,5 +1,5 @@
 /*
-ram[0x2000] == 0xFFFFFEEE TEST PASSES
+ram[0x0] == 0xFFFFFEEE TEST PASSES
 */
 
 #define G3_ADDR 0x2000
@@ -46,5 +46,3 @@ int bios() {
     *g3_addr = g3;
     return 0;
 }
-
-
