@@ -11,7 +11,7 @@ module ram (
     output reg  [31:0] data_out
 );
 
-    parameter length = 32'h00000800;
+    parameter length = 32'h800;
     reg [31:0] mem [0:(length/4)-1];
 
     wire [9:0] word_addr = data_address[11:2];

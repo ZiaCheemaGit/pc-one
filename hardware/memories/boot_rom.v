@@ -8,7 +8,7 @@ module boot_rom(
     output reg [31:0] data
 );
 
-    parameter length = 32'h00000500;
+    parameter length = 32'h500;
     parameter WORDS = length / 4; 
 
     reg [31:0] mem [0:WORDS-1];
