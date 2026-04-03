@@ -9,7 +9,7 @@ void loadBootLoader(){
 
 int bios(){
     uart_println("Hello from PC-ONE!");
-    
+    delay_second(1);
     for (int i = 0; i < 2; i++){
         uart_println("Wait 3 second"); 
         delay_second(3);
