@@ -56,7 +56,7 @@ async def test_uart_terminal_display(dut):
 
     buffer = await terminal.run()
 
-    expected_string = "Hey!\r\n"
+    expected_string = "Hello from PC-ONE!\r\n"
 
     if expected_string != buffer:
             raise Exception(f"Expected = {expected_string}, Received = {buffer}")

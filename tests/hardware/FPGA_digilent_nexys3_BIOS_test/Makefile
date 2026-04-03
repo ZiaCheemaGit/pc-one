@@ -35,7 +35,7 @@ VERILOG_SOURCES += $(PWD)/../../../hardware/FPGA_digilent_nexys3/top_nexys3.v
 
 
 # Program file (passed from terminal)
-PROGRAM_FILE ?= ../../software/build/BIOS/bios.hex
+PROGRAM_FILE ?= ../../../software/build/BIOS/bios.hex
 
 ifndef PROGRAM_FILE
 $(error PROGRAM_FILE is not set. Use: make PROGRAM_FILE=path_to_hex_file)

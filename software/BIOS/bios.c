@@ -8,17 +8,9 @@ void loadBootLoader(){
 }
 
 int bios(){
-    uart_println("Hey!");
-
-    int max = 100;
-    int min = 36;
-    int threshold = max - min;
-    uart_print("Threshold: ");
-    char s[10];
-    int_to_string(threshold, s);
-    uart_println(s);
-
-    for (int i = 0; i < 4; i++){
+    uart_println("Hello from PC-ONE!");
+    
+    for (int i = 0; i < 2; i++){
         uart_println("Wait 3 second"); 
         delay_second(3);
         
@@ -28,6 +20,15 @@ int bios(){
         uart_putc(c);
         uart_println("");
     }
+
+    int max = 100;
+    int min = 36;
+    int threshold = max - min;
+    uart_print("Threshold: ");
+    char s[10];
+    int_to_string(threshold, s);
+    uart_println(s);
+
 
     while(1){}
 
