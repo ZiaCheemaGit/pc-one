@@ -18,13 +18,14 @@ of time to uncover this completely and also did to an extent. I am making this p
 
 The goal is to make a computer understandable end-to-end. 
 
-Atleast for now the aim is to make a complete PC from on off electrical signals 
+Atleast for now the aim is to make a complete PC starting from on off electrical signals 
 upto to an OS running applications. 
 
 At the end(if that ever happens) we will have a project in which 
-there will be verilog which can be directly dumped on an FPGA.Connect a mouse,
-a keyboard and a vga display to the FPGA and PC will be alive. The OS will be linux inspired
-but very small. Just a terminal runnning simple programs.
+there will be a complete end to end design which can be directly dumped on an FPGA. For this project I am using Digilent Nexys3
+but you can use any FPGA. 
+Connect a mouse, a keyboard and a vga display to the FPGA and PC will be alive. The OS will be linux inspired
+but very small. Just a terminal.
 
 ---
 

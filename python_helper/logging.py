@@ -94,11 +94,11 @@ async def log_signals_pc_one(logger, dut):
         except Exception:
             logger.info(f"MMU uart_tx_busy = {dut.MMU_instance.uart_tx_busy.value}")
 
-        # MMU uart_rx_busy
+        # MMU uart_rx_valid
         try: 
-            logger.info(f"MMU uart_rx_busy = {dut.MMU_instance.uart_rx_busy}")
+            logger.info(f"MMU uart_rx_valid = {dut.MMU_instance.uart_rx_valid}")
         except Exception:
-            logger.info(f"MMU uart_rx_busy = {dut.MMU_instance.uart_rx_busy.value.to_unsigned()}")
+            logger.info(f"MMU uart_rx_valid = {dut.MMU_instance.uart_rx_valid.value.to_unsigned()}")
 
 
 
