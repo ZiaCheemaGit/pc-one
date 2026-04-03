@@ -6,6 +6,7 @@
     .section .text
     .globl bios
 
+
 bios:
     # Setup base address for memory test
     .extern _ram_base

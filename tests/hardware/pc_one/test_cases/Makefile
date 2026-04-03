@@ -9,7 +9,7 @@ CPP_DIR := c-cpp_tests
 OUT_DIR := generated_hex
 
 # Find sources
-ASM_SRCS := $(wildcard $(ASM_DIR)/*.S)
+ASM_SRCS := $(wildcard $(ASM_DIR)/*)
 C_SRCS   := $(wildcard $(CPP_DIR)/*.c)
 CPP_SRCS := $(wildcard $(CPP_DIR)/*.cpp)
 
