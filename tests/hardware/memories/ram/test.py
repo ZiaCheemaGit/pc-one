@@ -30,27 +30,27 @@ async def test_ram(dut):
     data_out = 0
 
     # store 
-    dut.data_address.value = 0x00000100
+    dut.data_address.value = 0x27f7
     dut.mem_read.value = 0
     dut.mem_write.value = 1
-    dut.byte_op.value = 0
+    dut.byte_op.value = 1
     dut.half_op.value = 0
-    dut.data_in.value = 0xAABBCCDD
+    dut.data_in.value = 0x36
     await RisingEdge(dut.clk)
     data_out = dut.data_out.value.to_unsigned()
-    logger.info(f"data_out = {data_out:08x}")
+    logger.info(f"data_out = 0x{data_out:08x}")
 
     # load
-    dut.data_address.value = 0x00000100
+    dut.data_address.value = 0x27f7
     dut.mem_read.value = 1
     dut.mem_write.value = 0
-    dut.byte_op.value = 0
+    dut.byte_op.value = 1
     dut.half_op.value = 0
     dut.data_in.value = 0
     await RisingEdge(dut.clk)
-    data_out = dut.data_out.value.to_unsigned()
-    logger.info(f"data_out = {data_out:08x}")
+    data_out = dut.data_out.value
+    logger.info(f"data_out = {data_out}")
 
-    assert data_out == 0xAABBCCDD
+    assert data_out == 0x36
     logger.critical(f"Test Passed - read data = expected value {data_out:08x}")
 
