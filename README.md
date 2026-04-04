@@ -64,7 +64,9 @@ so I will add them here as I progress
 - Implement UART rx. Also, this a good point for a cleanup and optimizations. After uart rx implementation I analyzed ISE console all warnings, how it synthesized design, which parts took longer and after fixing these and doing some memory optimizations I was able to bring `bitgen time` from `8 minutes` to `3 minutes`. Also reduced LUT usage from `5400/9112(total LUTs)` to `3550/9112`. Currently ram read is combinational rather than synchronus to support data read in same cycle, when cpu requests data becasue cpu is single cycle. Thus, this ram maps to memory as LUTs. This ram, if made synchronus, will map to BRAM. This can further decrease LUT usage. But then CPU must be pipelined as data will be available one cycle after it is requested.
 - Another very important thing is program(i.e. bootloader) loaded via UART will be downloaded into ram and then execute that. UART bootloader aside, In future any program will end up loading in ram for execution. A single port ram cannot support instruction-fetch and data-write in same cycle. This is another very strong reason for cpu to be made pipelined.  
 - Now understand [pipelining](https://en.wikipedia.org/wiki/Instruction_pipelining) concept and what problems it solve. How it solve synchronus read, increase maximum frequency at which CPU can run e.t.c. For a high level view see this [video](https://youtu.be/1U4v_2J0Qwk?si=WOSo4rIQH2Y1EOng). After that you can see this [video](https://youtu.be/iL37v8Nlqvk?si=XeIj54lR8vLJZEaH) for a deeper insight.
-- Single cycle RV32I occupied `2300 LUTs`.  
+- Single cycle RV32I occupied `2300 LUTs`.
+-
+- TODO  
 
 ## Next Milestones:
 This is what is currently being tried to be done.
