@@ -51,4 +51,13 @@ def test_nexys3(session: nox.Session) -> None:
     session.chdir("../tests/hardware/FPGA_digilent_nexys3_BIOS_test/")
     session.run("make", external=True)
 
+@nox.session
+def test_ram(session: nox.Session) -> None:
+
+    install_deps(session)
+    
+    # run test
+    session.chdir("../tests/hardware/memories/ram/")
+    session.run("make", external=True)
+
     

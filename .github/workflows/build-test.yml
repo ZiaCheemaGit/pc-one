@@ -19,7 +19,7 @@ on:
 
 jobs:  
   test_pc_one:
-    name: test pc-one(full system)
+    name: hardware | pc-one | full system tests
     runs-on: ubuntu-latest
 
     steps:
@@ -34,6 +34,39 @@ jobs:
 
       - name: Test pc-one
         run: nox -s test_pc_one
+  
+  test_FPGA:
+    name: hardware | FPGA | BIOS test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt install -y  make gcc-riscv64-unknown-elf iverilog python3 python3-pip
+
+      - name: Install nox
+        run: pip install nox
       
       - name: FPGA | digilent_nexys3
         run: nox -s test_nexys3
+
+  test_memories:
+    name: hardware | memories | unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt install -y make iverilog python3 python3-pip
+
+      - name: Install nox
+        run: pip install nox
+
+      - name: Test RAM
+        run: nox -s test_ram
+
+        
