@@ -57,7 +57,6 @@ def test_ram(session: nox.Session) -> None:
     install_deps(session)
     
     # run test
-    session.chdir("../tests/hardware/memories/ram/")
+    session.chdir("tests/hardware/memories/ram/")
     session.run("make", external=True)
 
-    
