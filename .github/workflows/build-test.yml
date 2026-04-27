@@ -19,15 +19,14 @@ on:
 
 jobs:  
   test_pc_one:
-    name: hardware | pc-one | full system tests
+    name: system tests | hardware | pc-one
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Install system dependencies
-        run: |
-          sudo apt install -y  make gcc-riscv64-unknown-elf iverilog python3 python3-pip
+        run: sudo apt install -y  make gcc-riscv64-unknown-elf iverilog python3 python3-pip
 
       - name: Install nox
         run: pip install nox
@@ -36,15 +35,14 @@ jobs:
         run: nox -s test_pc_one
   
   test_FPGA:
-    name: hardware | FPGA | BIOS test
+    name: system tests | hardware | FPGA | BIOS test
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Install system dependencies
-        run: |
-          sudo apt install -y  make gcc-riscv64-unknown-elf iverilog python3 python3-pip
+        run: sudo apt install -y  make gcc-riscv64-unknown-elf iverilog python3 python3-pip
 
       - name: Install nox
         run: pip install nox
@@ -53,15 +51,14 @@ jobs:
         run: nox -s test_nexys3
 
   test_memories:
-    name: hardware | memories | unit tests
+    name: unit tests| hardware | memories 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Install system dependencies
-        run: |
-          sudo apt install -y make iverilog python3 python3-pip
+        run: sudo apt install -y make iverilog python3 python3-pip
 
       - name: Install nox
         run: pip install nox
