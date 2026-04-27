@@ -29,6 +29,12 @@ but very small. Just a terminal.
 
 ---
 
+# NOTE
+This branch is an educational focused contribution. It isn't an industry standard nor the most performance or silicon optimized solution. 
+The default branch [`industry`](https://github.com/ZiaCheemaGit/pc-one/tree/industry) is the one you want if you want an industry viable solution. 
+
+---
+
 # Status
 
 This project is under development and below is current progress
