@@ -1,6 +1,8 @@
 ![CI](https://github.com/ZiaCheemaGit/pc-one/actions/workflows/build-test.yml/badge.svg)
 ![License](https://img.shields.io/github/license/ZiaCheemaGit/pc-one?style=for-the-badge)
 
+*This project is under development. Regardless feel free to contribute*
+
 # PC-ONE
 
 pc-one is an attempt to place the entire PC stack in one repository —  
@@ -22,13 +24,16 @@ Atleast for now the aim is to make a complete PC starting from on off electrical
 upto to an OS running applications. 
 
 At the end(if that ever happens) we will have a project in which 
-there will be a complete end to end design which can be directly dumped on an FPGA. For this project I am using Digilent Nexys3
-but you can use any FPGA. Connect a mouse, a keyboard and a vga display to the FPGA and PC will be alive. It will boot linux but the custom written OS will be very small, just a terminal. 
+there will be a complete end to end design which can be directly dumped on an FPGA. For this project currently I am using Digilent Nexys3
+but you can use any FPGA. Even, I myself will switch to another board. You just need a constraint file to port any project from one FPGA 
+board to another one . Connect a mouse, a keyboard and a vga display to the FPGA and PC will be alive. The custom written OS will be linux 
+inspired but obviously very small in comparison. That OS will be tailored to pc-one only and focus on getting max performance out of 
+the custom made system.
 
-Hopefully pc-one will support 
+PC-One will support 
 - USB Booting
 - Linux Support
-- Internet Connectivity via ethernet
+- Internet Connectivity
 - VGA Display
 - USB Hub Support 
 
