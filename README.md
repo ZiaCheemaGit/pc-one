@@ -30,7 +30,7 @@ but very small. Just a terminal.
 ---
 
 # NOTE
-This branch is an education focused contribution. It isn't an industry standard nor the most performance or silicon optimized solution. 
+This project is an education focused contribution. It isn't an industry standard nor the most performance or silicon optimized solution. 
 I might create a new fork or a new branch. However if I do any thing on this in future I will add the link to it here. 
 
 ---
