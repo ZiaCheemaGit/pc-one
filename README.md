@@ -23,15 +23,14 @@ upto to an OS running applications.
 
 At the end(if that ever happens) we will have a project in which 
 there will be a complete end to end design which can be directly dumped on an FPGA. For this project I am using Digilent Nexys3
-but you can use any FPGA. 
-Connect a mouse, a keyboard and a vga display to the FPGA and PC will be alive. The OS will be linux inspired
-but very small. Just a terminal.
+but you can use any FPGA. Connect a mouse, a keyboard and a vga display to the FPGA and PC will be alive. It will boot linux but the custom written OS will be very small, just a terminal. 
 
----
-
-# NOTE
-This project is an education focused contribution. It isn't an industry standard nor the most performance or silicon optimized solution. 
-I might create a new fork or a new branch. However if I do any thing on this in future I will add the link to it here. 
+Hopefully pc-one will support 
+- USB Booting
+- Linux Support
+- Internet Connectivity via ethernet
+- VGA Display
+- USB Hub Support 
 
 ---
 
