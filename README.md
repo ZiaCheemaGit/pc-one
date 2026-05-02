@@ -23,19 +23,22 @@ The goal is to make a computer understandable end-to-end.
 Atleast for now the aim is to make a complete PC starting from on off electrical signals 
 upto to an OS running applications. 
 
-At the end(if that ever happens) we will have a project in which 
-there will be a complete end to end design which can be directly dumped on an FPGA. For this project currently I am using Digilent Nexys3
+We will have a project in which 
+there will be a complete end to end design which could be directly dumped on an FPGA. For this project currently I am using Digilent Nexys3
 but you can use any FPGA. Even, I myself will switch to another board. You just need a constraint file to port any project from one FPGA 
 board to another one . Connect a mouse, a keyboard and a vga display to the FPGA and PC will be alive. The custom written OS will be linux 
 inspired but obviously very small in comparison. That OS will be tailored to pc-one only and focus on getting max performance out of 
 the custom made system.
 
-PC-One will support 
+PC-One Features
 - USB Booting
 - Linux Support
 - Internet Connectivity
 - VGA Display
 - USB Hub Support 
+
+After FPGA phase, I will move towards GDS and possibly get a tape out the pc-one as 
+a [SBC(Single Board Computer)](https://en.wikipedia.org/wiki/Single-board_computer).   
 
 ---
 
