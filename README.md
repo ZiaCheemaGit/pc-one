@@ -23,10 +23,11 @@ The goal is to make a computer understandable end-to-end.
 Atleast for now the aim is to make a complete PC starting from on off electrical signals 
 upto to an OS running applications. 
 
-We will have a project in which 
+When this project will be completed, we will have a project in which 
 there will be a complete end to end design which could be directly dumped on an FPGA. For this project currently I am using Digilent Nexys3
-but you can use any FPGA. Even, I myself will switch to another board because Nexys3 is a very small FPGA for this project. You just need a constraint file to port any project from one FPGA 
-board to another one . Connect a mouse, a keyboard and a vga display to the FPGA and PC will be alive. The custom written OS will be linux 
+but you can use any FPGA. Even, I myself will switch to another board because Nexys3 is a very small FPGA for this project. 
+You just need a constraint file to port any project from one FPGA board to another one . After programming the FPGA, connect a mouse, 
+a keyboard and a vga display to the FPGA and PC will be alive. The custom written OS will be linux 
 inspired but obviously very small in comparison. That OS will be tailored to pc-one only and focus on getting max performance out of 
 the custom made system.
 
