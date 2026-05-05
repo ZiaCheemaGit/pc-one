@@ -31,7 +31,7 @@ inspired but obviously very small in comparison. That OS will be tailored to pc-
 the custom made system.
 
 PC-One Features
-- USB Booting
+- Booting over I/O (USB, UART e.t.c)
 - Linux Support
 - Internet Connectivity
 - VGA Display
