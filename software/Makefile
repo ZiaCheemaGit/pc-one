@@ -1,6 +1,6 @@
 # Build Output
-BUILD_DIR_BIOS = build/BIOS
 BUILD_ROOT = build
+BUILD_DIR_BIOS = $(BUILD_ROOT)/BIOS
 
 # Toolchain
 CC      = riscv64-unknown-elf-gcc
