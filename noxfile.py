@@ -1,17 +1,6 @@
 import nox
 from pathlib import Path
 
-all_python_deps = [
-    "cocotb", 
-    "pytest"
-]
-
-
-def install_deps(session: nox.Session) -> None:
-    session.log("Installing all python dependencies for tests")
-    session.install(*all_python_deps)
-
-
 def collect_all_hex_files():
     base = Path("generated_hex")
     hex_files = sorted(base.rglob("*.hex"))
@@ -20,8 +9,6 @@ def collect_all_hex_files():
 
 @nox.session
 def test_pc_one(session: nox.Session) -> None:
-
-    install_deps(session)
 
     session.chdir("tests/hardware/pc_one/")
 
@@ -41,8 +28,6 @@ def test_pc_one(session: nox.Session) -> None:
 @nox.session
 def test_nexys3(session: nox.Session) -> None:
 
-    install_deps(session)
-
     # Build rom image hex file
     session.chdir("software/")
     session.run("make", external=True)
@@ -53,8 +38,6 @@ def test_nexys3(session: nox.Session) -> None:
 
 @nox.session
 def test_ram(session: nox.Session) -> None:
-
-    install_deps(session)
     
     # run test
     session.chdir("tests/hardware/memories/ram/")

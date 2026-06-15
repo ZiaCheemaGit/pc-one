@@ -31,14 +31,14 @@ async def test_uart_terminal_display(dut):
     logger.setLevel(logging.INFO)
 
     # start clock
-    cocotb.start_soon(Clock(dut.clk_from_FPGA, CLK_PERIOD_NS, unit="ns").start())
+    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, CLK_PERIOD_NS, unit="ns").start())
 
     # reset
     dut.rst_from_FPGA.value = 1
     for _ in range(10):
-        await RisingEdge(dut.clk_from_FPGA)
+        await RisingEdge(dut.clk_from_FPGA_100MHz)
     dut.rst_from_FPGA.value = 0
-    await RisingEdge(dut.clk_from_FPGA)
+    await RisingEdge(dut.clk_from_FPGA_100MHz)
 
     print(f"\n===== UART TERMINAL START(CLK_FREQ_HZ = {CLK_FREQ_HZ}, BAUD_RATE = {BAUD_RATE}) =====\n")
     terminal = UARTTerminal(

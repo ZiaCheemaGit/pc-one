@@ -31,7 +31,7 @@ VERILOG_SOURCES += $(PWD)/../../../hardware/VGA/vram.v
 VERILOG_SOURCES += $(PWD)/../../../hardware/pc_one/pc_one.v
 
 # FPGA top
-VERILOG_SOURCES += $(PWD)/../../../hardware/FPGA_digilent_nexys3/top_nexys3.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/FPGA/top_fpga.v
 
 
 # Program file (passed from terminal)
@@ -45,7 +45,7 @@ export PROGRAM_FILE
 COCOTB_PLUSARGS += +PROGRAM_FILE=$(PROGRAM_FILE)
 
 # COCOTB_TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
-COCOTB_TOPLEVEL = top_nexys3
+COCOTB_TOPLEVEL = top_fpga
 
 # COCOTB_TEST_MODULES is the basename of the Python test file(s)
 COCOTB_TEST_MODULES = test
