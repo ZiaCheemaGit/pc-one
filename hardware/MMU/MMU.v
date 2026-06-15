@@ -17,14 +17,31 @@ module MMU(
     output [31:0] data_to_cpu,
     output        uart_read,
     output        uart_write,
+    output [31:0] mem_add_ram,
     output [17:0] vram_addr // valid from 0 to 153,599 
 );
 
-    wire is_boot_rom = (addr >= 32'h0) && (addr < 32'h500);
-    wire is_ram = (addr >= 32'h2000) && (addr < 32'h2800);
-    wire is_uart_data = (addr == 32'h4000);
-    wire is_uart_tx_status = (addr == 32'h4004);
-    wire is_vram = (addr >= 32'h400C) && (addr <= 32'h2980B);
+    parameter BOOT_ROM_BASE = 32'h0;
+    parameter BOOT_ROM_END = 32'h500;
+
+    parameter RAM_BASE = 32'h2000;
+    parameter RAM_END = 32'h2800;
+
+    parameter UART_DATA_REG = 32'h4000;
+
+    parameter UART_STATUS_REG = 32'h4004;
+
+    parameter VRAM_BASE = 32'h4008;
+    parameter VRAM_END = 32'h29807;
+
+    assign mem_add_ram = addr - RAM_BASE;
+    assign vram_addr = addr - VRAM_BASE; 
+
+    wire is_boot_rom = (addr >= BOOT_ROM_BASE) && (addr <= BOOT_ROM_END );
+    wire is_ram = (addr >= RAM_BASE) && (addr <= RAM_END);
+    wire is_uart_data = (addr == UART_DATA_REG);
+    wire is_uart_tx_status = (addr == UART_STATUS_REG);
+    wire is_vram = (addr >= VRAM_BASE) && (addr <= VRAM_END);
 
     wire boot_rom_read = mem_read_cpu && is_boot_rom;
     assign ram_read = mem_read_cpu && is_ram;
@@ -35,8 +52,6 @@ module MMU(
     wire uart_tx_status_read = mem_read_cpu && is_uart_tx_status;
     assign uart_write = mem_write_cpu && is_uart_data && !uart_tx_busy;
     assign uart_read = mem_read_cpu && is_uart_data && uart_rx_valid;
-
-    assign vram_addr = addr - 32'h0000400C;
 
     reg [31:0] data_to_cpu_r;
     assign data_to_cpu = data_to_cpu_r;

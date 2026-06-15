@@ -1,19 +1,5 @@
 `timescale 1ns / 1ps
 
-/*
-
-This is the top level module for this project
-Its inputs/outputs are connected directly to FPGA ports
-
-MMU
-ROM = 0x00000000 
-RAM = 0x00002000 
-UART =  00004000
-UART_STATUS = 0x00004004
-
-*/
-
-
 module pc_one(
     input clk_from_FPGA,
     input clk_25MHz,
@@ -27,7 +13,7 @@ module pc_one(
     output hsync_for_FPGA
     );
     
-    wire [31:0] mem_add, instr_add, instruction, ram_data_to_mmu, data_from_cpu,
+    wire [31:0] mem_add, mem_add_ram, instr_add, instruction, ram_data_to_mmu, data_from_cpu,
     mmu_data_to_cpu, rom_data_to_mmu, uart_rx_data;
     
     wire [1:0] data_from_vram;
@@ -53,7 +39,8 @@ module pc_one(
         .vram_write(vram_write),
         .data_from_vram(data_from_vram),
         .vram_addr(vram_add),
-        .uart_read(uart_read)
+        .uart_read(uart_read),
+        .mem_add_ram(mem_add_ram)
     );
     
     five_stage_pipelined_rv32i_core core_instance(
@@ -72,7 +59,7 @@ module pc_one(
     
     ram ram_instance(
         .clk(clk_from_FPGA),
-        .data_address(mem_add),
+        .data_address(mem_add_ram),
         .mem_read(mmu_mem_read),
         .mem_write(mmu_mem_write),
         .byte_op(byte_op),

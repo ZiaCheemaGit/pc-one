@@ -1,5 +1,5 @@
 # Makefile
-
+PWD := $(shell pwd)
 # simulator
 SIM ?= icarus
 

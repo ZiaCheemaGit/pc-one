@@ -68,7 +68,7 @@ async def test_word_access(dut):
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
     await reset_dut(dut)
 
-    test_addr = 0x2100
+    test_addr = 0x0
     test_data = 0xDEADBEEF
 
     await write_memory(dut, test_addr, test_data, byte_op=0, half_op=0)
@@ -86,7 +86,7 @@ async def test_byte_isolation(dut):
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
     await reset_dut(dut)
 
-    base_addr = 0x2000
+    base_addr = 0x200
     
     # First, clear the entire word to 0x00000000
     await write_memory(dut, base_addr, 0x00000000, byte_op=0, half_op=0)
@@ -116,7 +116,7 @@ async def test_halfword_isolation(dut):
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
     await reset_dut(dut)
 
-    base_addr = 0x3000
+    base_addr = 0x300
     
     # Clear the word
     await write_memory(dut, base_addr, 0x00000000, byte_op=0, half_op=0)
@@ -143,7 +143,7 @@ async def test_random_fuzzing(dut):
     # Write phase
     for _ in range(50):
         # Generate a random 4-byte aligned address between 0x0 and 0x4000
-        addr = random.randrange(0x2000, 0x6000, 4)
+        addr = random.randrange(0x0, 0x19, 4)
         data = random.randint(0, 0xFFFFFFFF)
         
         memory_model[addr] = data
@@ -173,7 +173,7 @@ async def test_ram_word_aligned(dut):
 
     # Word Aligned LOAD and STORE
     # store 
-    dut.data_address.value = 0x2000
+    dut.data_address.value = 0x00
     dut.mem_read.value = 0
     dut.mem_write.value = 1
     dut.byte_op.value = 0
@@ -184,7 +184,7 @@ async def test_ram_word_aligned(dut):
     logger.info(f"data_out = 0x{data_out:08x}")
 
     # load
-    dut.data_address.value = 0x2000
+    dut.data_address.value = 0x000
     dut.mem_read.value = 1
     dut.mem_write.value = 0
     dut.byte_op.value = 0
@@ -212,16 +212,16 @@ async def test_ram_word_non_aligned(dut):
     clock = Clock(dut.clk, 10, unit="ns")
     cocotb.start_soon(clock.start())
 
-    test_data = 0x00000036
+    test_data = 0xAA000036
     await RisingEdge(dut.clk)
     data_out = 0
 
     # Non Word Aligned LOAD and STORE
     # store 
-    dut.data_address.value = 0x27f4
+    dut.data_address.value = 0x7f4
     dut.mem_read.value = 0
     dut.mem_write.value = 1
-    dut.byte_op.value = 1
+    dut.byte_op.value = 0
     dut.half_op.value = 0
     dut.data_in.value = test_data
     await RisingEdge(dut.clk)
@@ -229,7 +229,7 @@ async def test_ram_word_non_aligned(dut):
     logger.info(f"data_out = 0x{data_out:08x}")
 
     # load
-    dut.data_address.value = 0x27f7
+    dut.data_address.value = 0x7f7
     dut.mem_read.value = 1
     dut.mem_write.value = 0
     dut.byte_op.value = 1
@@ -239,7 +239,7 @@ async def test_ram_word_non_aligned(dut):
     data_out = dut.data_out.value.to_unsigned()
     logger.info(f"data_out = {data_out}")
 
-    assert data_out == 0x36
+    assert data_out == 0xAA000036
     logger.critical(f"Non Word Aligned Test Passed")
     logger.critical(f"Expected value: 0x{test_data:08x}   Received: {data_out:08x}")
 

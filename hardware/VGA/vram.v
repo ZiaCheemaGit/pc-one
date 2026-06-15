@@ -16,8 +16,7 @@ module vram(
 	always @(posedge clk_vga)
 		data_vga <= mem[addr_vga];
 
-	always @(posedge clk_cpu)
-	begin
+	always @(posedge clk_cpu) begin
 		if (we_cpu)
 			mem[addr_cpu] <= data_cpu;
 
