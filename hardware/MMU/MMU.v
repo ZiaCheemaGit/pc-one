@@ -32,16 +32,16 @@ module MMU(
     parameter UART_STATUS_REG = 32'h4004;
 
     parameter VRAM_BASE = 32'h4008;
-    parameter VRAM_END = 32'h29807;
+    parameter VRAM_END = 32'h29808;
 
     assign mem_add_ram = addr - RAM_BASE;
     assign vram_addr = addr - VRAM_BASE; 
 
-    wire is_boot_rom = (addr >= BOOT_ROM_BASE) && (addr <= BOOT_ROM_END );
-    wire is_ram = (addr >= RAM_BASE) && (addr <= RAM_END);
+    wire is_boot_rom = (addr >= BOOT_ROM_BASE) && (addr < BOOT_ROM_END );
+    wire is_ram = (addr >= RAM_BASE) && (addr < RAM_END);
     wire is_uart_data = (addr == UART_DATA_REG);
     wire is_uart_tx_status = (addr == UART_STATUS_REG);
-    wire is_vram = (addr >= VRAM_BASE) && (addr <= VRAM_END);
+    wire is_vram = (addr >= VRAM_BASE) && (addr < VRAM_END);
 
     wire boot_rom_read = mem_read_cpu && is_boot_rom;
     assign ram_read = mem_read_cpu && is_ram;
