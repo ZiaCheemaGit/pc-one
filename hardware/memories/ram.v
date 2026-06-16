@@ -10,7 +10,7 @@ module ram (
     input  wire [31:0] data_in,
     output reg  [31:0] data_out
 ); 
-    parameter length = 32'h800;
+    parameter length = 32'h2000;
     parameter WORDS = length / 4; 
 
     reg [31:0] mem [0:WORDS-1];

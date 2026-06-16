@@ -22,10 +22,12 @@ module MMU(
 );
 
     parameter BOOT_ROM_BASE = 32'h0;
-    parameter BOOT_ROM_END = 32'h500;
+    parameter BOOT_ROM_LENGTH = 32'h2000;
+    parameter BOOT_ROM_END = BOOT_ROM_BASE + BOOT_ROM_LENGTH;
 
     parameter RAM_BASE = 32'h2000;
-    parameter RAM_END = 32'h2800;
+    parameter RAM_LENGTH = 32'h2000;
+    parameter RAM_END = RAM_BASE + RAM_LENGTH;
 
     parameter UART_DATA_REG = 32'h4000;
 
