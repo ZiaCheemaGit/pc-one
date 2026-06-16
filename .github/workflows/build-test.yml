@@ -9,12 +9,14 @@ on:
     branches:
       - main
     paths-ignore:
+      - "*.pdf"
       - "*.md"
 
   pull_request:
     branches:
       - main
     paths-ignore:
+      - "*.pdf"
       - "*.md"
 
 jobs:  
