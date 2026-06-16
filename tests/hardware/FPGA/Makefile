@@ -34,7 +34,6 @@ VERILOG_SOURCES += $(PWD)/../../../hardware/pc_one/pc_one.v
 VERILOG_SOURCES += $(PWD)/../../../hardware/FPGA/top_fpga.v
 
 
-# Program file (passed from terminal)
 PROGRAM_FILE ?= ../../../software/build/BIOS/bios.hex
 
 ifndef PROGRAM_FILE

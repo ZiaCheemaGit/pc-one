@@ -26,14 +26,14 @@ def test_pc_one(session: nox.Session) -> None:
     
     
 @nox.session
-def test_nexys3(session: nox.Session) -> None:
+def test_fpga_bios_uart(session: nox.Session) -> None:
 
     # Build rom image hex file
     session.chdir("software/")
     session.run("make", external=True)
     
     # run test
-    session.chdir("../tests/hardware/FPGA_digilent_nexys3_BIOS_test/")
+    session.chdir("../tests/hardware/FPGA/")
     session.run("make", external=True)
 
 @nox.session

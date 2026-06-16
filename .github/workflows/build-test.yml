@@ -34,8 +34,8 @@ jobs:
       - name: Test pc-one
         run: nox -s test_pc_one
   
-  test_FPGA:
-    name: system tests | hardware | FPGA | BIOS test
+  test_fpga_bios_uart:
+    name: system tests | hardware | UART | FPGA | BIOS test
     runs-on: ubuntu-latest
 
     steps:
@@ -48,7 +48,7 @@ jobs:
         run: pip install nox cocotb pytest
       
       - name: FPGA | digilent_nexys3
-        run: nox -s test_nexys3
+        run: nox -s test_fpga_bios_uart
 
   test_memories:
     name: unit tests| hardware | memories 
