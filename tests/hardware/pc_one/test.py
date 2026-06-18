@@ -69,6 +69,11 @@ async def test_basic_asm(dut):
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x130:
             logger.critical("Test ended control reached at label HALT")
             await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
 
             result = dut.core_instance.reg_file_instance.registers[1]
             try:
@@ -120,6 +125,11 @@ async def test_load_asm(dut):
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x88:
             await RisingEdge(dut.clk_from_FPGA)
             await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+
             logger.critical("Test Ended")
             test_ended = True
             
@@ -175,6 +185,11 @@ async def test_load_neg_asm(dut):
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0xa8:
             await RisingEdge(dut.clk_from_FPGA)
             await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+
             logger.critical("Test Ended")
             test_ended = True
             
@@ -223,6 +238,14 @@ async def test_math_c(dut):
         address = 0x0
         
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x58:
+
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+
             logger.critical("Test ended PC reached 0x58")
             word_index = address >> 2
             result = dut.ram_instance.mem[word_index].value.to_unsigned()
@@ -274,6 +297,25 @@ async def test_aggressive_c(dut):
         address = 0x0
         
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x58:
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+            await RisingEdge(dut.clk_from_FPGA)
+
             logger.critical("Test ended PC reached 0x58")
             result = dut.ram_instance.mem[address].value.to_unsigned()
 
