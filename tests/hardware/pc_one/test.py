@@ -188,6 +188,70 @@ async def test_load_neg_asm(dut):
         assert False, "Test Ended Abnormally"
 
 
+@program_test("test_aggressive_asm")
+async def test_aggressive_asm(dut):
+    pass
+    # test_name = "test_aggressive_c"
+    # logger = logging.getLogger(test_name)
+    # file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
+    # formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    # file_handler.setFormatter(formatter)
+    # logger.addHandler(file_handler)
+    # logger.setLevel(logging.INFO)
+
+    # # run clock concurrently
+    # cocotb.start_soon(Clock(dut.clk_from_FPGA, 1, unit="ns").start()) 
+
+    # # reset cpu 
+    # dut.rst_from_FPGA.value = 1
+    # await RisingEdge(dut.clk_from_FPGA)
+    # await RisingEdge(dut.clk_from_FPGA)
+    # dut.rst_from_FPGA.value = 0
+    # await RisingEdge(dut.clk_from_FPGA)
+
+    # logger.info("Reset released. CPU starting execution.")
+    
+    # threshold_clk_cycles = 10000
+
+    # for _ in range(threshold_clk_cycles):
+
+    #     if LOGGING_ON:
+    #         log_signals_pc_one_sync(logger, dut)
+
+    #     await RisingEdge(dut.clk_from_FPGA)
+        
+    #     address = 0x0
+        
+    #     if dut.boot_rom_instance.pc.value.to_unsigned() == 0x58:
+    #         logger.critical("Test ended PC reached 0x58")
+    #         result = dut.ram_instance.mem[address].value.to_unsigned()
+
+    #         if result == 0xaaaaaaaa:
+    #             logger.critical("Test passed")
+    #             logger.critical(f"ram[0x{address}] = {result:08x}")
+    #             logger.critical("Test Passed")
+
+    #         elif result == 0xbbbbbbbb:
+    #             logger.critical("Test failed with expected value")
+    #             logger.critical(f"ram[0x{address}] = {result:08x}")
+
+    #             logger.critical(f"ram[0x{address + 1}] = {dut.ram_instance.mem[address+1].value.to_unsigned():08x}")
+    #             logger.critical(f"ram[0x{address + 2}] = {dut.ram_instance.mem[address+2].value.to_unsigned():08x}")
+    #             logger.critical(f"ram[0x{address + 3}] = {dut.ram_instance.mem[address+3].value.to_unsigned():08x}")
+    #             logger.critical(f"ram[0x{address + 4}] = {dut.ram_instance.mem[address+4].value.to_unsigned():08x}")
+
+    #             raise Exception("Test failed with expected value")
+            
+    #         else:
+    #             logger.critical("Test failed with un-expected value")
+    #             logger.critical(f"ram[0x{address}] = {result:08x}")
+    #             raise Exception("Test failed with un-expected value")
+            
+    #         return
+        
+    # raise Exception("Threshold cyles passed\nPC never reached end")
+
+
 @program_test("test_math_c")
 async def test_math_c(dut):
     
