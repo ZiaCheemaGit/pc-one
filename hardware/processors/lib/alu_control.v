@@ -67,7 +67,7 @@ module alu_control(
                     3'b100: begin out = 4'd6; invert = 1; end   
                     3'b101: begin out = 4'd6; invert = 0; end 
                     3'b110: begin out = 4'd7; invert = 1; end  
-                    3'b111: begin out = 4'd7; invert = 1; end
+                    3'b111: begin out = 4'd7; invert = 0; end
                     default: out = 4'd0;
                 endcase
             end
