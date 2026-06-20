@@ -4,28 +4,33 @@ all: MMU.png pc_one.png RAM.png ROM.png RV32I.png UART.png clean
 # Verilog to JSON
 
 MMU.json:
-	yosys -p "read_verilog ../hardware/MMU/*.v; hierarchy -top MMU; proc; opt; write_json MMU.json"
+	yosys -p "read_verilog ../../hardware/MMU/*.v; hierarchy -top MMU; proc; opt; write_json MMU.json"
 
 pc_one.json:
-	yosys -p "read_verilog \
-	../hardware/pc_one/pc_one.v \
-	../hardware/UART/*.v \
-	../hardware/single_cycle_rv32i_core/*.v \
-	../hardware/memory/ram.v \
-	../hardware/memory/rom.v \
-	../hardware/MMU/*.v; hierarchy -top pc_one; proc; opt; write_json pc_one.json"
+	yosys -p "read_verilog -lib ../../hardware/memories/ram.v ../../hardware/memories/boot_rom.v ../../hardware/VGA/vram.v; \
+	read_verilog \
+	../../hardware/pc_one/pc_one.v \
+	../../hardware/UART/*.v \
+	../../hardware/processors/single_cycle_rv32i_core/*.v \
+	../../hardware/processors/lib/*.v \
+	../../hardware/VGA/vga_controller.v \
+	../../hardware/MMU/*.v; \
+	hierarchy -top pc_one; proc; opt; write_json -compat-int pc_one.json"
 
 RAM.json:
-	yosys -p "read_verilog ../hardware/memory/ram.v; hierarchy -top ram; proc; opt; write_json RAM.json"
+	yosys -p "read_verilog ../../hardware/memories/ram.v; hierarchy -top ram; proc; opt; write_json RAM.json"
 
 ROM.json:
-	yosys -p "read_verilog ../hardware/memory/rom.v; hierarchy -top rom; proc; opt; write_json ROM.json"
+	yosys -p "read_verilog ../../hardware/memories/boot_rom.v; hierarchy -top boot_rom; proc; opt; write_json ROM.json"
 
 RV32I.json:
-	yosys -p "read_verilog ../hardware/single_cycle_rv32i_core/*.v; hierarchy -top core; proc; opt; write_json RV32I.json"
+	yosys -p "read_verilog \
+	../../hardware/processors/single_cycle_rv32i_core/*.v \
+	../../hardware/processors/lib/*.v; \
+	hierarchy -top single_cycle_rv32i_core; proc; opt; write_json RV32I.json"
 
 UART.json:
-	yosys -p "read_verilog ../hardware/UART/*.v; hierarchy -top uart_tx; proc; opt; write_json UART.json"
+	yosys -p "read_verilog ../../hardware/UART/*.v; hierarchy -top uart_tx; proc; opt; write_json UART.json"
 
 
 # JSON to SVG

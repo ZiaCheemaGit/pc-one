@@ -43,7 +43,7 @@ module pc_one(
         .mem_add_ram(mem_add_ram)
     );
     
-    five_stage_pipelined_rv32i_core core_instance(
+    single_cycle_rv32i_core core_instance(
         .clk(clk_from_FPGA),
         .rst(rst_from_FPGA),
         .instruction_address(instr_add),
@@ -115,8 +115,8 @@ module pc_one(
         .data_vga(vga_data),
         .we_cpu(vram_write),         
         .addr_cpu(vram_add),       
-        .data_cpu(data_from_cpu[1:0]),        
-        .data_cpu_out()          
+        .data_cpu(data_from_cpu[1:0])       
+        //.data_cpu_out()          
     );
     
 endmodule

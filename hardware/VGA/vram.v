@@ -7,8 +7,8 @@ module vram(
 
     input we_cpu,
     input [17:0] addr_cpu,
-    input [1:0] data_cpu,
-    output reg [1:0] data_cpu_out
+    input [1:0] data_cpu
+    //output reg [1:0] data_cpu_out
 );
 
 	reg [1:0] mem [0:153599];
@@ -20,7 +20,7 @@ module vram(
 		if (we_cpu)
 			mem[addr_cpu] <= data_cpu;
 
-		data_cpu_out <= mem[addr_cpu];
+		//data_cpu_out <= mem[addr_cpu];
 	end
 
 endmodule

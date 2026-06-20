@@ -56,7 +56,7 @@ module single_cycle_rv32i_core(
         .s_type_immediate(s_type_immediate)
     );
     
-    wire func3, reg_write_control;
+    wire func3, reg_write_control, unsigned_op;
     wire [1:0] alu_op_control, pc_src, alu_src_control;
     wire [2:0] mem_to_reg_control;
     control_unit control_unit_instance(
