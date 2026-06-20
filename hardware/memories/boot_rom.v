@@ -33,6 +33,7 @@ module boot_rom(
             $display("Loading program from: %s", program_file);
             $readmemh(program_file, mem);
         end
+    `elsif YOSYS
     `else
         initial begin
             $readmemh("D:/git-clones/pc-one/software/build/BIOS/bios.hex", mem);
