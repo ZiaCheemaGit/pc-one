@@ -1,13 +1,14 @@
 # Makefile
-
+PWD := $(shell pwd)
 # simulator
 SIM ?= icarus
 
 # hdl 
 TOPLEVEL_LANG ?= verilog
 
-# Processor to use: five_stage_pipelined_rv32i_core files
+# Processors options
 VERILOG_SOURCES += $(PWD)/../../../hardware/processors/five_stage_pipelined_rv32i_core/five_stage_pipelined_rv32i_core.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/processors/single_cycle_rv32i_core/single_cycle_rv32i_core.v
 
 # Processor Lib files
 VERILOG_SOURCES += $(PWD)/../../../hardware/processors/lib/*.v
