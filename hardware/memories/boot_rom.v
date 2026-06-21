@@ -13,15 +13,12 @@ module boot_rom(
 
     reg [31:0] mem [0:WORDS-1];
 
-    reg [31:0] read_word;
-    reg [31:0] word_index;
-
-    always @(*) begin
-        read_word = mem[addr[31:2]]; 
-        data = read_word;
-        word_index = pc[31:2];
-        instruction = mem[word_index];
+    always @(posedge clk) begin
+        instruction = mem[pc[31:2]];
     end
+
+    assign data = mem[addr[31:2]]; 
+
 
     `ifndef SYNTHESIS
         string program_file;

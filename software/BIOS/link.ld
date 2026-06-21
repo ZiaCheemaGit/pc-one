@@ -7,8 +7,8 @@ ENTRY(_start)
 
 MEMORY
 {
-    ROM (rx)  : ORIGIN = 0x0, LENGTH = 0x400
-    RAM (rwx) : ORIGIN = 0x2000, LENGTH = 0x400
+    ROM (rx)  : ORIGIN = 0x0, LENGTH = 0x2000
+    RAM (rwx) : ORIGIN = 0x2000, LENGTH = 0x2000
 }
 
 /* Universal Variables */

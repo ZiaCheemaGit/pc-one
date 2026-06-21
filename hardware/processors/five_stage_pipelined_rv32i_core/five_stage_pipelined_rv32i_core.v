@@ -1,26 +1,4 @@
 `timescale 1ns / 1ps
-
-/**
-
-RV32I ISA
-https://msyksphinz-self.github.io/riscv-isadoc/#_rv32i_rv64i_instructions
-
-Instructions which are not yet implemented but are mentioned for RV32I in the docs above
-fence, fence.i 
-csrrw, csrrs, csrrc, csrrwi, csrrsi, csrrci 
-ecall, ebreak 
-sret, mret
-wfi, sfence.vma 
-
-
-pc_mux inputs 
-pc + 4
-pc + immediate
-for jalr pc = (rs1 + sign_extend(instruction[31:20])) << 1
-for jal pc = pc + offset sign_extend(instruction[31:12])
-
-**/
-
 module five_stage_pipelined_rv32i_core(
     input clk,
     input rst,
@@ -35,20 +13,40 @@ module five_stage_pipelined_rv32i_core(
     output [31:0] mem_data_to_mem
 );
     
-    wire [31:0] pc_in_add, pc_out_add;
+    wire [31:0] pc_jump_add, pc_out_add;
+    assign instruction_address = pc_out_add;
     pc pc_instance(
         .clk(clk), 
         .rst(rst), 
-        .jump_address(pc_in_add), 
+        .jump_address(pc_jump_add), 
         .pc_next(pc_out_add)
     );
-    assign instruction_address = pc_out_add;
+
+    wire [31:0] pc_plus_4_fetch;
+    adder32 fetch_adder(
+        .in1(4),
+        .in2(pc_out_add),
+        .out(pc_plus_4_fetch)
+    );
+
+    wire [31:0] instruction_from_if_id, pc_out_add_from_if_id;
+    wire [1:0] pc_src_control;
+    if_id_reg if_id_reg_instance(
+        .clk(clk),
+        .rst(rst),
+        .en(1'b1),
+        .flush(pc_src_control != 2'b00),
+        .pc_in(pc_out_add),   
+        .inst_in(instruction), 
+        .pc_out(pc_out_add_from_if_id),
+        .inst_out(instruction_from_if_id)
+    );
      
     wire [31:0] sign_ext_out_shifted;
     wire [31:0] sign_ext_out;
     wire [31:0] u_type_immediate, jal_offset, s_type_immediate, b_type_immediate;
     sign_ext_12_to_32 sign_ext_12_to_32_instance(
-        .instruction(instruction), 
+        .instruction(instruction_from_if_id), 
         .out(sign_ext_out), 
         .b_type_immediate(b_type_immediate),
         .u_type_immediate(u_type_immediate),
@@ -60,8 +58,8 @@ module five_stage_pipelined_rv32i_core(
     wire [1:0] alu_op_control, pc_src, alu_src_control;
     wire [2:0] mem_to_reg_control;
     control_unit control_unit_instance(
-        .opcode(instruction[6:0]),
-        .func3(instruction[14:12]), 
+        .opcode(instruction_from_if_id[6:0]),
+        .func3(instruction_from_if_id[14:12]), 
         .mem_read(mem_read), 
         .mem_write(mem_write), 
         .alu_src(alu_src_control), 
@@ -88,13 +86,12 @@ module five_stage_pipelined_rv32i_core(
     wire invert;
     alu_control alu_control_instance(
         .alu_op(alu_op_control),
-        .fun3(instruction[14:12]),
-        .fun7(instruction[31:25]),
+        .fun3(instruction_from_if_id[14:12]),
+        .fun7(instruction_from_if_id[31:25]),
         .out(alu_control_unit),
         .invert(invert)
     );
     
-    wire [1:0] pc_src_control;
     wire zero_flag;
     pc_src_control pc_src_control_instance(
         .pc_mux_control(pc_src),
@@ -106,9 +103,9 @@ module five_stage_pipelined_rv32i_core(
     reg_file reg_file_instance(
         .clk(clk),
         .rst(rst),
-        .dest_reg(instruction[11:7]), 
-        .src1_reg(instruction[19:15]), 
-        .src2_reg(instruction[24:20]),
+        .dest_reg(instruction_from_if_id[11:7]), 
+        .src1_reg(instruction_from_if_id[19:15]), 
+        .src2_reg(instruction_from_if_id[24:20]),
         .reg_write_data(reg_write_data),
         .reg_write_control(reg_write_control),
         .src1_reg_value(rs1), 
@@ -140,20 +137,20 @@ module five_stage_pipelined_rv32i_core(
     wire [31:0] pc_plus_4;
     adder32 adder32_instance_const4(
         .in1(4),
-        .in2(pc_out_add),
+        .in2(pc_out_add_from_if_id),
         .out(pc_plus_4)
     );
     
     wire [31:0] pc_plus_immediate_out;
     adder32 adder32_instance_immediate(
-        .in1(pc_out_add),
+        .in1(pc_out_add_from_if_id),
         .in2(b_type_immediate),
         .out(pc_plus_immediate_out)
     );
          
     wire [31:0] jal_pc;
     adder32 jal_adder(
-        .in1(pc_out_add),
+        .in1(pc_out_add_from_if_id),
         .in2(jal_offset),
         .out(jal_pc)
     );
@@ -162,18 +159,18 @@ module five_stage_pipelined_rv32i_core(
     assign jalr_pc = {alu_out[31:1], 1'b0};
     
     mux_4X1 pc_mux(
-        .in0(pc_plus_4),
+        .in0(pc_plus_4_fetch),
         .in1(pc_plus_immediate_out),
         .in2(jal_pc), 
         .in3(jalr_pc), 
         .sel(pc_src_control),
-        .out(pc_in_add)
+        .out(pc_jump_add)
     );
     
     wire [31:0] pc_plus_u_type_immediate;
     adder32 u_type_adder(
         .in1(u_type_immediate),
-        .in2(pc_out_add),
+        .in2(pc_out_add_from_if_id),
         .out(pc_plus_u_type_immediate)
     );
        
