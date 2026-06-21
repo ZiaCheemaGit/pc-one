@@ -1,4 +1,4 @@
-all: MMU.png pc_one.png RAM.png ROM.png RV32I.png UART.png clean
+all: MMU.png pc_one.png RAM.png ROM.png RV32I_SINGLE_CYCLE.png UART.png RV32I_FIVE_STAGE_PIPELINED.png clean
 
 
 # Verilog to JSON
@@ -23,11 +23,17 @@ RAM.json:
 ROM.json:
 	yosys -p "read_verilog ../../hardware/memories/boot_rom.v; hierarchy -top boot_rom; proc; opt; write_json ROM.json"
 
-RV32I.json:
+RV32I_SINGLE_CYCLE.json:
 	yosys -p "read_verilog \
 	../../hardware/processors/single_cycle_rv32i_core/*.v \
 	../../hardware/processors/lib/*.v; \
-	hierarchy -top single_cycle_rv32i_core; proc; opt; write_json RV32I.json"
+	hierarchy -top single_cycle_rv32i_core; proc; opt; write_json RV32I_SINGLE_CYCLE.json"
+
+RV32I_FIVE_STAGE_PIPELINED.json:
+	yosys -p "read_verilog \
+	../../hardware/processors/five_stage_pipelined_rv32i_core/*.v \
+	../../hardware/processors/lib/*.v; \
+	hierarchy -top five_stage_pipelined_rv32i_core; proc; opt; write_json RV32I_FIVE_STAGE_PIPELINED.json"
 
 UART.json:
 	yosys -p "read_verilog ../../hardware/UART/*.v; hierarchy -top uart_tx; proc; opt; write_json UART.json"
@@ -47,8 +53,11 @@ RAM.svg: RAM.json
 ROM.svg: ROM.json
 	netlistsvg ROM.json -o ROM.svg
 
-RV32I.svg: RV32I.json
-	netlistsvg RV32I.json -o RV32I.svg
+RV32I_SINGLE_CYCLE.svg: RV32I_SINGLE_CYCLE.json
+	netlistsvg RV32I_SINGLE_CYCLE.json -o RV32I_SINGLE_CYCLE.svg
+
+RV32I_FIVE_STAGE_PIPELINED.svg: RV32I_FIVE_STAGE_PIPELINED.json
+	netlistsvg RV32I_FIVE_STAGE_PIPELINED.json -o RV32I_FIVE_STAGE_PIPELINED.svg
 
 UART.svg: UART.json
 	netlistsvg UART.json -o UART.svg
@@ -68,8 +77,11 @@ RAM.png: RAM.svg
 ROM.png: ROM.svg
 	rsvg-convert -b white ROM.svg -o ROM.png
 
-RV32I.png: RV32I.svg
-	rsvg-convert -b white RV32I.svg -o RV32I.png
+RV32I_SINGLE_CYCLE.png: RV32I_SINGLE_CYCLE.svg
+	rsvg-convert -b white RV32I_SINGLE_CYCLE.svg -o RV32I_SINGLE_CYCLE.png
+
+RV32I_FIVE_STAGE_PIPELINED.png: RV32I_FIVE_STAGE_PIPELINED.svg
+	rsvg-convert -b white RV32I_FIVE_STAGE_PIPELINED.svg -o RV32I_FIVE_STAGE_PIPELINED.png
 
 UART.png: UART.svg
 	rsvg-convert -b white UART.svg -o UART.png
@@ -77,8 +89,8 @@ UART.png: UART.svg
 
 # clean
 
+clean_all:
+	rm -f *.json *.svg *.png
+
 clean:
 	rm -f *.json *.svg
-
-clean_png:
-	rm -f *.png
