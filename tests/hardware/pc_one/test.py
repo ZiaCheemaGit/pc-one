@@ -67,13 +67,8 @@ async def test_basic_asm(dut):
         await RisingEdge(dut.clk_from_FPGA)
 
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x130:
+            await RisingEdge(dut.clk_from_FPGA)
             logger.critical("Test ended control reached at label HALT")
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
 
             result = dut.core_instance.reg_file_instance.registers[1]
             try:
@@ -124,12 +119,6 @@ async def test_load_asm(dut):
         
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x88:
             await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-
             logger.critical("Test Ended")
             test_ended = True
             
@@ -184,13 +173,8 @@ async def test_load_neg_asm(dut):
         
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0xa8:
             await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-
-            logger.critical("Test Ended")
+            
+            logger.critical("Test Ended Reached last address 0xa8")
             test_ended = True
             
             reg_1 = dut.core_instance.reg_file_instance.registers[1].value
@@ -299,16 +283,9 @@ async def test_math_c(dut):
         
         address = 0x0
         
-        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x58:
+        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x290:
 
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-
-            logger.critical("Test ended PC reached 0x58")
+            logger.critical("Test ended PC reached 0x290")
             word_index = address >> 2
             result = dut.ram_instance.mem[word_index].value.to_unsigned()
 
@@ -347,7 +324,7 @@ async def test_aggressive_c(dut):
 
     logger.info("Reset released. CPU starting execution.")
     
-    threshold_clk_cycles = 10000
+    threshold_clk_cycles = 2000
 
     for _ in range(threshold_clk_cycles):
 
@@ -358,27 +335,9 @@ async def test_aggressive_c(dut):
         
         address = 0x0
         
-        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x58:
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
-            await RisingEdge(dut.clk_from_FPGA)
+        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x3e4:
 
-            logger.critical("Test ended PC reached 0x58")
+            logger.critical("Test ended PC reached 0x3e4")
             result = dut.ram_instance.mem[address].value.to_unsigned()
 
             if result == 0xaaaaaaaa:
