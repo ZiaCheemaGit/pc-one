@@ -1,0 +1,52 @@
+# Makefile
+PWD := $(shell pwd)
+# simulator
+SIM ?= icarus
+
+# hdl 
+TOPLEVEL_LANG ?= verilog
+
+# Processors
+VERILOG_SOURCES += $(PWD)/../../../hardware/processors/five_stage_pipelined_rv32i_core/five_stage_pipelined_rv32i_core.v
+
+# Processor Lib files
+VERILOG_SOURCES += $(PWD)/../../../hardware/processors/lib/*.v
+
+# pc_one
+VERILOG_SOURCES += $(PWD)/../../../hardware/pc_one/pc_one.v
+
+# memories
+VERILOG_SOURCES += $(PWD)/../../../hardware/memories/ram.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/memories/boot_rom.v
+
+# MMU
+VERILOG_SOURCES += $(PWD)/../../../hardware/MMU/MMU.v
+
+#UART
+VERILOG_SOURCES += $(PWD)/../../../hardware/UART/uart_tx.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/UART/uart_rx.v
+
+# VGA
+VERILOG_SOURCES += $(PWD)/../../../hardware/VGA/vga_controller.v 
+VERILOG_SOURCES += $(PWD)/../../../hardware/VGA/vram.v 
+ 
+# Program file (passed from terminal)
+PROGRAM_FILE ?=
+
+ifndef PROGRAM_FILE
+$(error PROGRAM_FILE is not set. Use: make PROGRAM_FILE=path_to_hex_file)
+endif
+
+export PROGRAM_FILE
+COCOTB_PLUSARGS += +PROGRAM_FILE=$(PROGRAM_FILE)
+
+# COCOTB_TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
+COCOTB_TOPLEVEL = pc_one
+
+# COCOTB_TEST_MODULES is the basename of the Python test file(s)
+COCOTB_TEST_MODULES = test
+
+# include cocotb's make rules to take care of the simulator setup
+include $(shell cocotb-config --makefiles)/Makefile.sim
+
+
