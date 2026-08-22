@@ -40,8 +40,6 @@ module ram (
     end
 
     always @(posedge clk) begin
-        // If data_address is lower than RAM_BASE, word_addr will underflow 
-        // to a huge number, safely failing this bounds check.
         if (word_addr < WORDS) begin
             if (we_mask[0]) mem[word_addr][7:0]   <= aligned_data[7:0];
             if (we_mask[1]) mem[word_addr][15:8]  <= aligned_data[15:8];

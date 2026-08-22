@@ -20,7 +20,7 @@ on:
       - "*.md"
 
 jobs:  
-  test_pc_one:
+  test_pc_one_single_cycle_rv32i:
     name: system tests | hardware | pc-one
     runs-on: ubuntu-latest
 
@@ -34,10 +34,26 @@ jobs:
         run: pip install nox cocotb pytest
 
       - name: Test pc-one
-        run: nox -s test_pc_one
+        run: nox -s test_pc_one_single_cycle_rv32i
   
-  test_fpga_bios_uart:
-    name: system tests | hardware | UART | FPGA | BIOS test
+  test_pc_one_five_stage_pipelined_rv32i:
+    name: system tests | hardware | pc-one
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: sudo apt install -y  make gcc-riscv64-unknown-elf iverilog python3 python3-pip
+
+      - name: Install nox
+        run: pip install nox cocotb pytest
+
+      - name: Test pc-one
+        run: nox -s test_pc_one_five_stage_pipelined_rv32i
+
+  test_fpga_bios_uart_single_cycle_rv32i:
+    name: FPGA | Single Cycle RV32I
     runs-on: ubuntu-latest
 
     steps:
@@ -50,7 +66,23 @@ jobs:
         run: pip install nox cocotb pytest
       
       - name: FPGA | digilent_nexys3
-        run: nox -s test_fpga_bios_uart
+        run: nox -s test_fpga_bios_uart_single_cycle_rv32i
+
+  test_fpga_bios_uart_five_stage_pipelined_rv32i:
+    name: FPGA | Five Stage Pipelined RV32I
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: sudo apt install -y  make gcc-riscv64-unknown-elf iverilog python3 python3-pip
+
+      - name: Install nox
+        run: pip install nox cocotb pytest
+      
+      - name: FPGA | digilent_nexys3
+        run: nox -s test_fpga_bios_uart_five_stage_pipelined_rv32i
 
   test_memories:
     name: unit tests| hardware | memories 

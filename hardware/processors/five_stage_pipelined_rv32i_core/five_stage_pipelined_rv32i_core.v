@@ -12,7 +12,7 @@ why a store instruction is directly retired from control unit.
 
 */
 
-module five_stage_pipelined_rv32i_core(
+module core(
     input clk,
     input rst,
     input [31:0] instruction,
