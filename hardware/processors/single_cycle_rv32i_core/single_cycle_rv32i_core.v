@@ -21,7 +21,7 @@ for jal pc = pc + offset sign_extend(instruction[31:12])
 
 **/
 
-module single_cycle_rv32i_core(
+module core(
     input clk,
     input rst,
     output [31:0] instruction_address,

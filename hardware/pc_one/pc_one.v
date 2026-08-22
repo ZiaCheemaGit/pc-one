@@ -43,7 +43,7 @@ module pc_one(
         .vram_addr(vram_add)
     );
     
-    five_stage_pipelined_rv32i_core core_instance(
+    core core_instance(
         .clk(clk_from_FPGA),
         .rst(rst_from_FPGA),
         .instruction_address(instr_add),
