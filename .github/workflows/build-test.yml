@@ -85,7 +85,7 @@ jobs:
         run: nox -s test_fpga_bios_uart_five_stage_pipelined_rv32i
 
   test_memories:
-    name: unit tests | hardware | memories 
+    name: unit tests | hardware | memories | ram
     runs-on: ubuntu-latest
 
     steps:
