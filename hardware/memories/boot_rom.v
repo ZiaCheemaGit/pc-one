@@ -17,8 +17,9 @@ module boot_rom(
         instruction = mem[pc[31:2]];
     end
 
-    assign data = mem[addr[31:2]]; 
-
+    always @(*) begin
+        assign data = mem[addr[31:2]]; 
+    end
 
     `ifndef SYNTHESIS
         string program_file;
