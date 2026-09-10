@@ -1,15 +1,16 @@
 `timescale 1ns / 1ps
+
 module five_stage_pipelined_rv32i_core(
     input clk,
     input rst,
-    output [31:0] instruction_address,
     input [31:0] instruction,
+    input [31:0] mem_data_from_mem,
+    output [31:0] instruction_address,
     output mem_write,
     output mem_read,
     output byte_op,
     output half_op,
     output [31:0] mem_address,
-    input [31:0] mem_data_from_mem,
     output [31:0] mem_data_to_mem
 );
     
@@ -54,29 +55,46 @@ module five_stage_pipelined_rv32i_core(
         .s_type_immediate(s_type_immediate)
     );
     
-    wire func3, reg_write_control;
+    wire func3, reg_write_control, mem_write_from_control_unit, byte_op_from_control_unit;
     wire [1:0] alu_op_control, pc_src, alu_src_control;
     wire [2:0] mem_to_reg_control;
     control_unit control_unit_instance(
         .opcode(instruction_from_if_id[6:0]),
         .func3(instruction_from_if_id[14:12]), 
-        .mem_read(mem_read), 
-        .mem_write(mem_write), 
+        .mem_read(mem_read_from_control_unit), 
+        .mem_write(mem_write_from_control_unit), 
         .alu_src(alu_src_control), 
         .reg_write(reg_write_control),
         .alu_op(alu_op_control), 
         .mem_to_reg(mem_to_reg_control),
         .pc_src(pc_src),
-        .byte_op(byte_op),
-        .half_op(half_op),
-        .unsigned_op(unsigned_op)
+        .byte_op(byte_op_from_control_unit),
+        .half_op(half_op_from_control_unit),
+        .unsigned_op(unsigned_op_from_control_unit)
+    );
+
+    wire byte_op_from_ex_mem, half_op_from_ex_mem, unsigned_op_from_control_unit;
+    assign byte_op = byte_op_from_ex_mem;
+    assign half_op = half_op_from_ex_mem;
+    assign unsigned_op = unsigned_op_from_control_unit;
+    ex_mem_reg ex_mem_reg_instance(
+        .byte_op_in(byte_op_from_control_unit),
+        .byte_op_out(byte_op_from_ex_mem),
+        .half_op_in(half_op_from_control_unit),
+        .half_op_out(half_op_from_ex_mem),
+        .unsigned_op_in(unsigned_op_from_control_unit),
+        .unsigned_op_out(unsigned_op_from_ex_mem),
+        .mem_write_in(mem_write_from_control_unit),
+        .mem_read_in(mem_read_from_control_unit),
+        .mem_write_out(mem_write),
+        .mem_read_out(mem_read)
     );
 
     wire [31:0] load_op_data;
     load_op load_op_instance(
-        .byte_op(byte_op),
-        .half_op(half_op),
-        .unsigned_op(unsigned_op),
+        .byte_op(byte_op_from_ex_mem),
+        .half_op(half_op_from_ex_mem),
+        .unsigned_op(unsigned_op_from_ex_mem),
         .byte_offset(mem_address[1:0]),
         .data_from_mem(mem_data_from_mem),
         .op_data(load_op_data)
