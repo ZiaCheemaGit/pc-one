@@ -62,11 +62,11 @@ module ram (
     always @(posedge clk) begin
         if (mem_read) begin
             if (word_addr < WORDS)
-                data_out = mem[word_addr];
+                data_out <= mem[word_addr];
             else
-                data_out = 32'h00000000; 
+                data_out <= 32'h00000000; 
         end else begin
-            data_out = 32'h00000000; 
+            data_out <= 32'h00000000; 
         end
     end
 
