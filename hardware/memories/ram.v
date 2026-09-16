@@ -59,7 +59,7 @@ module ram (
     // --------------------------------------------------------
     // Asynchronous Read
     // --------------------------------------------------------
-    always @(*) begin
+    always @(posedge clk) begin
         if (mem_read) begin
             if (word_addr < WORDS)
                 data_out = mem[word_addr];

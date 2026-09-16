@@ -5,7 +5,7 @@ module boot_rom(
     input wire [31:0] pc,          
     input wire [31:0] addr, 
     output reg [31:0] instruction,
-    output wire [31:0] data
+    output reg [31:0] data
 );
 
     parameter length = 32'h2000;
@@ -15,9 +15,8 @@ module boot_rom(
 
     always @(posedge clk) begin
         instruction <= mem[pc[31:2]];
+        data <= mem[addr[31:2]]; 
     end
-
-    assign data = mem[addr[31:2]]; 
 
     `ifndef SYNTHESIS
         string program_file;
