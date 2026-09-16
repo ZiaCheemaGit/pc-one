@@ -8,7 +8,7 @@ from cocotb.triggers import RisingEdge
 
 sys.path.append(os.path.abspath("../../../"))
 from python_helper.converter import *
-from python_helper.logging import log_signals_pc_one_sync
+from python_helper.logging import log_signals_five_stage_rv32i
 
 TEST_REGISTRY = {}
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
@@ -62,7 +62,7 @@ async def test_basic_asm(dut):
 
     for i in range(threshold_clk_cycles):
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
+            log_signals_five_stage_rv32i(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA)
 
@@ -113,7 +113,7 @@ async def test_load_asm(dut):
 
     for _ in range(threshold_clk_cycles):
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
+            log_signals_five_stage_rv32i(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA)
         
@@ -167,7 +167,7 @@ async def test_load_neg_asm(dut):
 
     for _ in range(threshold_clk_cycles):
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
+            log_signals_five_stage_rv32i(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA)
         
@@ -215,7 +215,7 @@ async def test_math_c(dut):
     for _ in range(threshold_clk_cycles):
 
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
+            log_signals_five_stage_rv32i(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA)
         
@@ -267,7 +267,7 @@ async def test_aggressive_c(dut):
     for _ in range(threshold_clk_cycles):
 
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
+            log_signals_five_stage_rv32i(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA)
         
