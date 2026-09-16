@@ -22,7 +22,7 @@ module five_stage_pipelined_rv32i_core(
         .jump_address(pc_jump_add), 
         .pc_next(pc_out_add)
     );
-
+    
     wire [31:0] pc_plus_4_fetch;
     adder32 fetch_adder(
         .in1(4),
@@ -42,7 +42,7 @@ module five_stage_pipelined_rv32i_core(
         .pc_out(pc_out_add_from_if_id),
         .inst_out(instruction_from_if_id)
     );
-     
+    
     wire [31:0] sign_ext_out_shifted;
     wire [31:0] sign_ext_out;
     wire [31:0] u_type_immediate, jal_offset, s_type_immediate, b_type_immediate;
@@ -107,6 +107,7 @@ module five_stage_pipelined_rv32i_core(
         .u_type_immediate_in(u_type_immediate),
         .u_type_immediate_out(u_type_immediate_from_ex_mem)
     );
+    
 
     wire [31:0] load_op_data;
     load_op load_op_instance(
