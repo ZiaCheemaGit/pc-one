@@ -82,6 +82,8 @@ module five_stage_pipelined_rv32i_core(
     wire [2:0] mem_to_reg_control_from_ex_mem;
     wire byte_op_from_ex_mem, half_op_from_ex_mem;
     ex_mem_reg ex_mem_reg_instance(
+        .clk(clk),
+        .rst(rst),
         .alu_result_in(alu_result_to_ex_mem),
         .alu_result_out(alu_result_from_ex_mem),
         .byte_op_in(byte_op_from_control_unit),
