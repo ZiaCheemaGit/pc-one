@@ -13,12 +13,12 @@ module pc_one(
     output hsync_for_FPGA
     );
     
-    wire [31:0] mem_add, mem_add_ram, instr_add, instruction, ram_data_to_mmu, data_from_cpu,
+    wire [31:0] mem_address_request, mem_add_ram, instr_add, instruction, ram_data_to_mmu, data_from_cpu,
     mmu_data_to_cpu, rom_data_to_mmu, uart_rx_data;
     
     wire [1:0] data_from_vram;
 
-    wire mem_read, mem_write, mmu_mem_read, mmu_mem_write, uart_write_en, uart_read,
+    wire mem_read, mem_read_request, mem_write, mmu_mem_write, uart_write_en, uart_read,
     uart_tx_busy, rx_valid, byte_op , half_op, vram_write;
     
     wire [17:0] vram_add;
@@ -27,12 +27,12 @@ module pc_one(
         .uart_tx_busy(uart_tx_busy),
         .uart_rx_data(uart_rx_data),
         .uart_rx_valid(rx_valid),
-        .addr(mem_add),
+        .addr(mem_address_request),
         .data_from_rom(rom_data_to_mmu),
         .data_from_ram(ram_data_to_mmu),
-        .mem_read_cpu(mem_read),
+        .mem_read_cpu(mem_read_request),
+        .mem_read(mem_read),
         .mem_write_cpu(mem_write),
-        .ram_read(mmu_mem_read),
         .ram_write(mmu_mem_write),
         .data_to_cpu(mmu_data_to_cpu),
         .uart_write(uart_write_en),
@@ -49,8 +49,9 @@ module pc_one(
         .instruction_address(instr_add),
         .instruction(instruction),
         .mem_write(mem_write),
+        .mem_read_request(mem_read_request),
+        .mem_address(mem_address_request),
         .mem_read(mem_read),
-        .mem_address(mem_add),
         .mem_data_from_mem(mmu_data_to_cpu),
         .mem_data_to_mem(data_from_cpu),
         .byte_op(byte_op),
@@ -60,7 +61,7 @@ module pc_one(
     ram ram_instance(
         .clk(clk_from_FPGA),
         .data_address(mem_add_ram),
-        .mem_read(mmu_mem_read),
+        .mem_read(mem_read_request),
         .mem_write(mmu_mem_write),
         .byte_op(byte_op),
         .half_op(half_op),
@@ -72,7 +73,7 @@ module pc_one(
         .clk(clk_from_FPGA),
         .pc(instr_add),       
         .instruction(instruction),
-        .addr(mem_add),
+        .addr(mem_address_request),
         .data(rom_data_to_mmu)
     );
 

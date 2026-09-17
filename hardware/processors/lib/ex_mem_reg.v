@@ -24,7 +24,9 @@ module ex_mem_reg(
     input wire [31:0] pc_plus_u_type_immediate_in,
     output reg [31:0] pc_plus_u_type_immediate_out,
     input wire [31:0] u_type_immediate_in,
-    output reg [31:0] u_type_immediate_out
+    output reg [31:0] u_type_immediate_out,
+    input wire mem_read_in,
+    output reg mem_read_out
 ); 
 
     always @(posedge clk or posedge rst) begin
@@ -40,6 +42,7 @@ module ex_mem_reg(
             pc_plus_4_out <= 32'b0;
             pc_plus_u_type_immediate_out <= 32'b0;
             u_type_immediate_out <= 32'b0;
+            mem_read_out <= 1'b0;
         end else begin
             mem_address_out <= mem_address_in;
             byte_op_out <= byte_op_in;
@@ -52,6 +55,7 @@ module ex_mem_reg(
             pc_plus_4_out <= pc_plus_4_in;
             pc_plus_u_type_immediate_out <= pc_plus_u_type_immediate_in;
             u_type_immediate_out <= u_type_immediate_in;
+            mem_read_out <= mem_read_in;
         end
     end
 

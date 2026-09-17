@@ -10,11 +10,11 @@ module MMU(
     input  [31:0] data_from_ram, 
     input  [1:0] data_from_vram,  
     input         mem_read_cpu,
+    input         mem_read,
     input         mem_write_cpu,
-    output        ram_read,
     output        ram_write,
     output        vram_write,
-    output [31:0] data_to_cpu,
+    output wire [31:0] data_to_cpu,
     output        uart_read,
     output        uart_write,
     output [31:0] mem_add_ram,
@@ -46,7 +46,7 @@ module MMU(
     wire is_vram = (addr >= VRAM_BASE) && (addr < VRAM_END);
 
     wire boot_rom_read = mem_read_cpu && is_boot_rom;
-    assign ram_read = mem_read_cpu && is_ram;
+    assign ram_read = mem_read && is_ram;
     assign ram_write = mem_write_cpu && is_ram;
     wire vram_read = mem_read_cpu && is_vram;
     assign vram_write = mem_write_cpu && is_vram;
@@ -55,24 +55,11 @@ module MMU(
     assign uart_write = mem_write_cpu && is_uart_data && !uart_tx_busy;
     assign uart_read = mem_read_cpu && is_uart_data && uart_rx_valid;
 
-    reg [31:0] data_to_cpu_r;
-    assign data_to_cpu = data_to_cpu_r;
-
-    always @(*) begin
-        data_to_cpu_r = 32'b0;
-
-        if (ram_read) begin
-            data_to_cpu_r = data_from_ram;
-        end else if (uart_tx_status_read) begin
-            data_to_cpu_r = {31'b0, uart_tx_busy};
-        end else if (uart_read) begin
-            data_to_cpu_r = uart_rx_data;
-        end else if (boot_rom_read) begin
-            data_to_cpu_r = data_from_rom;
-        end else if (vram_read) begin
-            data_to_cpu_r = {30'b0, data_from_vram};
-        end
-    end
+    assign data_to_cpu = (uart_tx_status_read) ? {31'b0, uart_tx_busy} :
+                        (uart_read) ? uart_rx_data :
+                        //(boot_rom_read) ? data_from_rom :
+                        (vram_read) ? {30'b0, data_from_vram} :
+                        (mem_read) ? data_from_ram : 
+                        32'b0;
 
 endmodule
-
