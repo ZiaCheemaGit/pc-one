@@ -1,5 +1,17 @@
 `timescale 1ns / 1ps
 
+/*
+
+So the pc in fetch cycle is updated and the instruction is only captured in 
+next cycle directly. This is because rom is synchronus and has a one cycle delay 
+of its own.
+
+Similarly the load/store controls are sent to memory directly from control unit but the 
+load happens in next cycle. The ram is also synchronus and has one cycle delay. That is 
+why a store instruction is directly retired from control unit.   
+
+*/
+
 module five_stage_pipelined_rv32i_core(
     input clk,
     input rst,
@@ -7,6 +19,7 @@ module five_stage_pipelined_rv32i_core(
     input [31:0] mem_data_from_mem,
     output [31:0] instruction_address,
     output mem_write,
+    output mem_read_request,
     output mem_read,
     output byte_op,
     output half_op,
@@ -55,7 +68,8 @@ module five_stage_pipelined_rv32i_core(
         .s_type_immediate(s_type_immediate)
     );
     
-    wire func3, reg_write_control_from_control_unit, unsigned_op_from_control_unit, byte_op_from_control_unit, half_op_from_control_unit;
+    wire func3, reg_write_control_from_control_unit, unsigned_op_from_control_unit, 
+    byte_op_from_control_unit, half_op_from_control_unit, mem_read_from_control_unit;
     wire [1:0] alu_op_control, pc_src, alu_src_control;
     wire [2:0] mem_to_reg_control_from_control_unit;
     assign byte_op = byte_op_from_control_unit;
@@ -63,7 +77,7 @@ module five_stage_pipelined_rv32i_core(
     control_unit control_unit_instance(
         .opcode(instruction_from_if_id[6:0]),
         .func3(instruction_from_if_id[14:12]), 
-        .mem_read(mem_read), 
+        .mem_read(mem_read_from_control_unit), 
         .mem_write(mem_write), 
         .alu_src(alu_src_control), 
         .reg_write(reg_write_control_from_control_unit),
@@ -74,13 +88,14 @@ module five_stage_pipelined_rv32i_core(
         .half_op(half_op_from_control_unit),
         .unsigned_op(unsigned_op_from_control_unit)
     );
+    assign mem_read_request = mem_read_from_control_unit;
 
-    wire [31:0] mem_address_from_ex_mem, alu_result_to_ex_mem, alu_result_from_ex_mem,
+    wire [31:0] alu_out, mem_address_from_ex_mem, alu_result_to_ex_mem, alu_result_from_ex_mem,
     pc_plus_4, pc_plus_4_from_ex_mem, pc_plus_u_type_immediate, pc_plus_u_type_immediate_from_ex_mem,
     u_type_immediate_from_ex_mem;
     wire [4:0] dest_reg_from_ex_mem;
     wire [2:0] mem_to_reg_control_from_ex_mem;
-    wire byte_op_from_ex_mem, half_op_from_ex_mem;
+    wire mem_read_from_ex_mem, byte_op_from_ex_mem, half_op_from_ex_mem, unsigned_op_from_ex_mem;
     ex_mem_reg ex_mem_reg_instance(
         .clk(clk),
         .rst(rst),
@@ -92,7 +107,7 @@ module five_stage_pipelined_rv32i_core(
         .half_op_out(half_op_from_ex_mem),
         .unsigned_op_in(unsigned_op_from_control_unit),
         .unsigned_op_out(unsigned_op_from_ex_mem),
-        .mem_address_in(mem_address),
+        .mem_address_in(alu_out),
         .mem_address_out(mem_address_from_ex_mem),
         .reg_write_control_in(reg_write_control_from_control_unit),
         .reg_write_control_out(reg_write_control_from_ex_mem),
@@ -105,9 +120,24 @@ module five_stage_pipelined_rv32i_core(
         .pc_plus_u_type_immediate_in(pc_plus_u_type_immediate),
         .pc_plus_u_type_immediate_out(pc_plus_u_type_immediate_from_ex_mem),
         .u_type_immediate_in(u_type_immediate),
-        .u_type_immediate_out(u_type_immediate_from_ex_mem)
+        .u_type_immediate_out(u_type_immediate_from_ex_mem),
+        .mem_read_in(mem_read_from_control_unit),
+        .mem_read_out(mem_read_from_ex_mem)
     );
-    
+    assign mem_read = mem_read_from_ex_mem;
+
+    wire [31:0] rs1_value, rs2_value, forwarded_rs1, forwarded_rs2, reg_write_data;
+    forwarding_unit forwarding_unit_instance(
+        .reg_write_control_from_ex_mem(reg_write_control_from_ex_mem),
+        .dest_reg_from_ex_mem(dest_reg_from_ex_mem),
+        .reg_write_data(reg_write_data),
+        .rs1(instruction_from_if_id[19:15]),
+        .rs2(instruction_from_if_id[24:20]),
+        .rs1_value(rs1_value),
+        .rs2_value(rs2_value),
+        .forwarded_rs1(forwarded_rs1),
+        .forwarded_rs2(forwarded_rs2)
+    );
 
     wire [31:0] load_op_data;
     load_op load_op_instance(
@@ -136,7 +166,6 @@ module five_stage_pipelined_rv32i_core(
         .pc_control(pc_src_control)
     );
     
-    wire [31:0] rs1, rs2, reg_write_data;
     reg_file reg_file_instance(
         .clk(clk),
         .rst(rst),
@@ -145,14 +174,14 @@ module five_stage_pipelined_rv32i_core(
         .src2_reg(instruction_from_if_id[24:20]),
         .reg_write_data(reg_write_data),
         .reg_write_control(reg_write_control_from_ex_mem),
-        .src1_reg_value(rs1), 
-        .src2_reg_value(rs2)
+        .src1_reg_value(rs1_value), 
+        .src2_reg_value(rs2_value)
     );
-    assign mem_data_to_mem = rs2;
+    assign mem_data_to_mem = forwarded_rs2;
     
     wire [31:0] alu_src_value;
     mux_4X1 alu_src_mux(
-        .in0(rs2),
+        .in0(forwarded_rs2),
         .in1(sign_ext_out),
         .in2(s_type_immediate),
         .in3(0),
@@ -160,10 +189,9 @@ module five_stage_pipelined_rv32i_core(
         .out(alu_src_value)
     ); 
     
-    wire [31:0] alu_out;
     main_alu main_alu_instance(
         .invert(invert),
-        .src1(rs1), 
+        .src1(forwarded_rs1), 
         .src2(alu_src_value),
         .operation(alu_control_unit),
         .zero_flag(zero_flag),
@@ -210,7 +238,7 @@ module five_stage_pipelined_rv32i_core(
         .in2(pc_out_add_from_if_id),
         .out(pc_plus_u_type_immediate)
     );
-       
+    
     mux_5x1 reg_write_mux(
         .in0(alu_result_from_ex_mem),
         .in1(load_op_data),

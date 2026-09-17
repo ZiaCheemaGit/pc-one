@@ -7,8 +7,8 @@ from cocotb.triggers import Timer, RisingEdge
 
 sys.path.append(os.path.abspath("../../../"))
 from python_helper.converter import *
-from python_helper.uart_terminal import UARTTerminal, UARTDriver
-from python_helper.logging import log_signals_pc_one
+from python_helper.uart_terminal import UARTTerminal
+from python_helper.logging import log_signals_five_stage_rv32i
 
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
 
@@ -52,7 +52,7 @@ async def test_uart_terminal_display(dut):
     )
 
     if LOGGING_ON:
-        cocotb.start_soon(log_signals_pc_one(logger, dut.pc_one_instance))
+        log_signals_five_stage_rv32i(logger, dut.pc_one_instance)
 
     buffer = await terminal.run()
 

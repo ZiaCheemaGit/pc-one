@@ -20,9 +20,6 @@ module ram (
     reg [3:0]  we_mask;
     reg [31:0] aligned_data;
 
-    // --------------------------------------------------------
-    // Mask Generation and Data Alignment
-    // --------------------------------------------------------
     always @(*) begin
         we_mask      = 4'b0000;
         aligned_data = data_in; // Default pass-through
@@ -42,9 +39,6 @@ module ram (
         end
     end
 
-    // --------------------------------------------------------
-    // Synchronous Write
-    // --------------------------------------------------------
     always @(posedge clk) begin
         // If data_address is lower than RAM_BASE, word_addr will underflow 
         // to a huge number, safely failing this bounds check.
@@ -56,9 +50,6 @@ module ram (
         end
     end
 
-    // --------------------------------------------------------
-    // Asynchronous Read
-    // --------------------------------------------------------
     always @(posedge clk) begin
         if (mem_read) begin
             if (word_addr < WORDS)
