@@ -1,6 +1,7 @@
 import logging
 
 from cocotb.triggers import Timer
+from python_helper.logging import log_signals_five_stage_rv32i
 
 class UARTTerminal:
     """
@@ -58,6 +59,8 @@ class UARTTerminal:
         
         while not self.stopTerminal:
             ch = await self.receive_byte()
+            if self.LOGGING_ON:
+                log_signals_five_stage_rv32i(self.logger, self.dut.pc_one_instance)
 
             if ch is not None:
                 c = chr(ch)

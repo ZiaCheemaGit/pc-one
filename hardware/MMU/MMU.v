@@ -44,8 +44,8 @@ module MMU(
 
     wire boot_rom_read = mem_read && is_boot_rom;
     assign ram_read = mem_read && is_ram;
-    // wire vram_read = mem_read_cpu && is_vram;
-    // assign vram_write = mem_write && is_vram;
+    wire vram_read = mem_read && is_vram;
+    assign vram_write = mem_write && is_vram;
 
     wire uart_tx_status_read = mem_read && is_uart_tx_status;
     assign uart_write = mem_write && is_uart_data && !uart_tx_busy;
