@@ -1,6 +1,6 @@
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import RisingEdge
+from cocotb.triggers import RisingEdge, ReadOnly
 import random
 
 import os
@@ -55,6 +55,8 @@ async def read_memory(dut, addr, byte_op=0, half_op=0):
     dut.mem_read.value = 0
     dut.byte_op.value = 0
     dut.half_op.value = 0
+
+    await ReadOnly()
     
     return dut.data_out.value.to_unsigned()
 

@@ -8,16 +8,13 @@ module MMU(
     input  [31:0] addr, 
     input  [31:0] data_from_rom, 
     input  [31:0] data_from_ram, 
-    input  [1:0] data_from_vram,  
-    input         mem_read_cpu,
+    input  [1:0] data_from_vram,
     input         mem_read,
-    input         mem_write_cpu,
-    output        ram_write,
+    input         mem_write,
     output        vram_write,
     output wire [31:0] data_to_cpu,
     output        uart_read,
     output        uart_write,
-    output [31:0] mem_add_ram,
     output [17:0] vram_addr // valid from 0 to 153,599 
 );
 
@@ -45,21 +42,20 @@ module MMU(
     wire is_uart_tx_status = (addr == UART_STATUS_REG);
     wire is_vram = (addr >= VRAM_BASE) && (addr < VRAM_END);
 
-    wire boot_rom_read = mem_read_cpu && is_boot_rom;
+    wire boot_rom_read = mem_read && is_boot_rom;
     assign ram_read = mem_read && is_ram;
-    assign ram_write = mem_write_cpu && is_ram;
-    wire vram_read = mem_read_cpu && is_vram;
-    assign vram_write = mem_write_cpu && is_vram;
+    // wire vram_read = mem_read_cpu && is_vram;
+    // assign vram_write = mem_write && is_vram;
 
-    wire uart_tx_status_read = mem_read_cpu && is_uart_tx_status;
-    assign uart_write = mem_write_cpu && is_uart_data && !uart_tx_busy;
-    assign uart_read = mem_read_cpu && is_uart_data && uart_rx_valid;
+    wire uart_tx_status_read = mem_read && is_uart_tx_status;
+    assign uart_write = mem_write && is_uart_data && !uart_tx_busy;
+    assign uart_read = mem_read && is_uart_data && uart_rx_valid;
 
     assign data_to_cpu = (uart_tx_status_read) ? {31'b0, uart_tx_busy} :
                         (uart_read) ? uart_rx_data :
-                        //(boot_rom_read) ? data_from_rom :
-                        (vram_read) ? {30'b0, data_from_vram} :
-                        (mem_read) ? data_from_ram : 
+                        (boot_rom_read) ? data_from_rom :
+                        //(vram_read) ? {30'b0, data_from_vram} :
+                        (ram_read) ? data_from_ram : 
                         32'b0;
 
 endmodule
