@@ -20,7 +20,7 @@ module pc_one(
     
     wire [1:0] data_from_vram;
 
-    wire mem_read, mem_read_request, mem_write, uart_write_en, uart_read,
+    wire mem_read, mem_read_request, mem_write_request, uart_write_en, uart_read,
     uart_tx_busy, rx_valid, byte_op , half_op, vram_write;
     
     wire [17:0] vram_add;
@@ -32,7 +32,8 @@ module pc_one(
         .uart_read(uart_read),
         .uart_rx_valid(rx_valid),
         .addr(mem_address),
-        .mem_write(mem_write),
+        .addr_request(mem_address_request),
+        .mem_write_request(mem_write_request),
         .mem_read(mem_read),
         .data_from_rom(rom_data_to_mmu),
         .data_from_ram(ram_data_to_mmu),
@@ -47,7 +48,7 @@ module pc_one(
         .rst(rst_from_FPGA),
         .instruction_address(instr_add),
         .instruction(instruction),
-        .mem_write(mem_write),
+        .mem_write_request(mem_write_request),
         .mem_read_request(mem_read_request),
         .mem_address_request(mem_address_request),
         .mem_address(mem_address),
@@ -62,7 +63,7 @@ module pc_one(
         .clk(clk_from_FPGA),
         .data_address(mem_address_request - RAM_BASE),
         .mem_read(mem_read_request),
-        .mem_write(mem_write),
+        .mem_write(mem_write_request),
         .byte_op(byte_op),
         .half_op(half_op),
         .data_in(data_from_cpu),
