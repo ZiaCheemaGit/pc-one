@@ -8,7 +8,7 @@ from cocotb.triggers import RisingEdge
 
 sys.path.append(os.path.abspath("../../../"))
 from python_helper.converter import *
-from python_helper.logging import log_signals_pc_one_sync
+from python_helper.logging import log_signals_five_stage_rv32i
 
 TEST_REGISTRY = {}
 LOGGING_ON = os.environ.get("LOGGING_ON") == "1"
@@ -36,7 +36,6 @@ async def run_program_test(dut):
 
 @program_test("test_basic_asm")
 async def test_basic_asm(dut):
-
     test_name = "test_basic_asm"
     logger = logging.getLogger(test_name)
     file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
@@ -51,7 +50,6 @@ async def test_basic_asm(dut):
     # reset cpu 
     dut.rst_from_FPGA.value = 1
     await RisingEdge(dut.clk_from_FPGA)
-    await RisingEdge(dut.clk_from_FPGA)
     dut.rst_from_FPGA.value = 0
     await RisingEdge(dut.clk_from_FPGA)
 
@@ -62,12 +60,17 @@ async def test_basic_asm(dut):
 
     for i in range(threshold_clk_cycles):
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
-
-        await RisingEdge(dut.clk_from_FPGA)
+            log_signals_five_stage_rv32i(logger, dut)
 
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x130:
+
             await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+                
             logger.critical("Test ended control reached at label HALT")
 
             result = dut.core_instance.reg_file_instance.registers[1]
@@ -84,6 +87,8 @@ async def test_basic_asm(dut):
         
         elif i >= (threshold_clk_cycles - 1) and dut.instr_add.value.to_unsigned() != 0xe0:
             assert False, "TIMEOUT: PC never reached label HALT)"
+
+        await RisingEdge(dut.clk_from_FPGA)
 
 
 @program_test("test_load_asm")
@@ -102,7 +107,6 @@ async def test_load_asm(dut):
     # reset cpu 
     dut.rst_from_FPGA.value = 1
     await RisingEdge(dut.clk_from_FPGA)
-    await RisingEdge(dut.clk_from_FPGA)
     dut.rst_from_FPGA.value = 0
     await RisingEdge(dut.clk_from_FPGA)
 
@@ -113,12 +117,17 @@ async def test_load_asm(dut):
 
     for _ in range(threshold_clk_cycles):
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
-
-        await RisingEdge(dut.clk_from_FPGA)
+            log_signals_five_stage_rv32i(logger, dut)
         
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x88:
             await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+                
             logger.critical("Test Ended")
             test_ended = True
             
@@ -135,6 +144,8 @@ async def test_load_asm(dut):
             assert int(reg_14) == 0x0000CCDD
             
             break
+
+        await RisingEdge(dut.clk_from_FPGA)
     
     if not test_ended:
         assert False, "Test Ended Abnormally"
@@ -156,7 +167,6 @@ async def test_load_neg_asm(dut):
     # reset cpu 
     dut.rst_from_FPGA.value = 1
     await RisingEdge(dut.clk_from_FPGA)
-    await RisingEdge(dut.clk_from_FPGA)
     dut.rst_from_FPGA.value = 0
     await RisingEdge(dut.clk_from_FPGA)
 
@@ -167,12 +177,12 @@ async def test_load_neg_asm(dut):
 
     for _ in range(threshold_clk_cycles):
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
-
-        await RisingEdge(dut.clk_from_FPGA)
+            log_signals_five_stage_rv32i(logger, dut)
         
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0xa8:
             await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
             
             logger.critical("Test Ended Reached last address 0xa8")
             test_ended = True
@@ -182,14 +192,15 @@ async def test_load_neg_asm(dut):
             assert int(reg_1) == 0xCAFEBBAE
             logger.critical("Test Passed")
             break
-    
+
+        await RisingEdge(dut.clk_from_FPGA)
+
     if not test_ended:
         assert False, "Test Ended Abnormally"
 
 
 @program_test("test_math_c")
 async def test_math_c(dut):
-    
     test_name = "test_math_c"
     logger = logging.getLogger(test_name)
     file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
@@ -204,7 +215,6 @@ async def test_math_c(dut):
     # reset cpu 
     dut.rst_from_FPGA.value = 1
     await RisingEdge(dut.clk_from_FPGA)
-    await RisingEdge(dut.clk_from_FPGA)
     dut.rst_from_FPGA.value = 0
     await RisingEdge(dut.clk_from_FPGA)
 
@@ -213,17 +223,25 @@ async def test_math_c(dut):
     threshold_clk_cycles = 2000
 
     for _ in range(threshold_clk_cycles):
-
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
-
-        await RisingEdge(dut.clk_from_FPGA)
+            log_signals_five_stage_rv32i(logger, dut)
         
         address = 0x0
         
-        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x290:
+        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x288:
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
 
-            logger.critical("Test ended PC reached 0x290")
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+                
+            logger.critical("Test ended PC reached 0x288")
             word_index = address >> 2
             result = dut.ram_instance.mem[word_index].value.to_unsigned()
 
@@ -235,7 +253,9 @@ async def test_math_c(dut):
             logger.info("g3 variable value is correctly calculated")
             
             return
-        
+
+        await RisingEdge(dut.clk_from_FPGA)
+
     raise Exception("Threshold cyles passed\nPC never reached end")
 
 
@@ -267,7 +287,7 @@ async def test_aggressive_c(dut):
     for _ in range(threshold_clk_cycles):
 
         if LOGGING_ON:
-            log_signals_pc_one_sync(logger, dut)
+            log_signals_five_stage_rv32i(logger, dut)
 
         await RisingEdge(dut.clk_from_FPGA)
         

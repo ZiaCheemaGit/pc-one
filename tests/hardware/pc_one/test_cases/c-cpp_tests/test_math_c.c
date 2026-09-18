@@ -34,7 +34,6 @@ int recurse(int x) {
 
 int bios() {
     int local1 = 50;
-    int local2 = -20;
     int arr[5] = {1, 2, 3, 4, 5};
 
     int v1 = add_many(local1, g1, g2);

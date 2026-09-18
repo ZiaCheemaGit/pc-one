@@ -14,11 +14,8 @@ module boot_rom(
     reg [31:0] mem [0:WORDS-1];
 
     always @(posedge clk) begin
-        instruction = mem[pc[31:2]];
-    end
-
-    always @(*) begin
-        assign data = mem[addr[31:2]]; 
+        instruction <= mem[pc[31:2]];
+        data <= mem[addr[31:2]]; 
     end
 
     `ifndef SYNTHESIS

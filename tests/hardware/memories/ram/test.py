@@ -1,6 +1,6 @@
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import RisingEdge
+from cocotb.triggers import RisingEdge, ReadOnly
 import random
 
 import os
@@ -55,6 +55,8 @@ async def read_memory(dut, addr, byte_op=0, half_op=0):
     dut.mem_read.value = 0
     dut.byte_op.value = 0
     dut.half_op.value = 0
+
+    await ReadOnly()
     
     return dut.data_out.value.to_unsigned()
 
@@ -152,6 +154,7 @@ async def test_random_fuzzing(dut):
     # Read phase
     for addr, expected_data in memory_model.items():
         read_val = await read_memory(dut, addr, byte_op=0, half_op=0)
+        await RisingEdge(dut.clk)
         assert read_val == expected_data, f"Fuzz test failed at {hex(addr)}. Expected {hex(expected_data)}, got {hex(read_val)}"
 
 @cocotb.test()
@@ -191,6 +194,7 @@ async def test_ram_word_aligned(dut):
     dut.half_op.value = 0
     dut.data_in.value = 0
     await RisingEdge(dut.clk)
+    await ReadOnly()
     data_out = dut.data_out.value.to_unsigned()
     logger.info(f"data_out = {data_out}")
 
@@ -236,6 +240,7 @@ async def test_ram_word_non_aligned(dut):
     dut.half_op.value = 0
     dut.data_in.value = 0
     await RisingEdge(dut.clk)
+    await ReadOnly()
     data_out = dut.data_out.value.to_unsigned()
     logger.info(f"data_out = {data_out}")
 
