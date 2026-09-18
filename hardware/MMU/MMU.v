@@ -5,16 +5,17 @@ module MMU(
     input uart_tx_busy,
     input uart_rx_valid,
     input [31:0] uart_rx_data,
-    input  [31:0] addr, 
+    input  [31:0] addr,
+    input  [31:0] addr_request,
     input  [31:0] data_from_rom, 
     input  [31:0] data_from_ram, 
     input  [1:0] data_from_vram,
-    input         mem_read,
-    input         mem_write,
-    output        vram_write,
+    input mem_read,
+    input mem_write_request,
+    output vram_write,
     output wire [31:0] data_to_cpu,
-    output        uart_read,
-    output        uart_write,
+    output uart_read,
+    output uart_write,
     output [17:0] vram_addr // valid from 0 to 153,599 
 );
 
@@ -39,22 +40,24 @@ module MMU(
     wire is_boot_rom = (addr >= BOOT_ROM_BASE) && (addr < BOOT_ROM_END );
     wire is_ram = (addr >= RAM_BASE) && (addr < RAM_END);
     wire is_uart_data = (addr == UART_DATA_REG);
+    wire is_uart_data_request = (addr_request == UART_DATA_REG);
     wire is_uart_tx_status = (addr == UART_STATUS_REG);
     wire is_vram = (addr >= VRAM_BASE) && (addr < VRAM_END);
+    wire is_vram_request = (addr_request >= VRAM_BASE) && (addr_request < VRAM_END);
 
     wire boot_rom_read = mem_read && is_boot_rom;
     assign ram_read = mem_read && is_ram;
     wire vram_read = mem_read && is_vram;
-    assign vram_write = mem_write && is_vram;
+    assign vram_write = mem_write_request && is_vram_request;
 
     wire uart_tx_status_read = mem_read && is_uart_tx_status;
-    assign uart_write = mem_write && is_uart_data && !uart_tx_busy;
+    assign uart_write = mem_write_request && is_uart_data_request && !uart_tx_busy;
     assign uart_read = mem_read && is_uart_data && uart_rx_valid;
 
     assign data_to_cpu = (uart_tx_status_read) ? {31'b0, uart_tx_busy} :
                         (uart_read) ? uart_rx_data :
                         (boot_rom_read) ? data_from_rom :
-                        //(vram_read) ? {30'b0, data_from_vram} :
+                        (vram_read) ? {30'b0, data_from_vram} :
                         (ram_read) ? data_from_ram : 
                         32'b0;
 
