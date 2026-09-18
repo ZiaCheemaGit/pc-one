@@ -24,6 +24,7 @@ module five_stage_pipelined_rv32i_core(
     output byte_op,
     output half_op,
     output [31:0] mem_address,
+    output [31:0] mem_address_request,
     output [31:0] mem_data_to_mem
 );
     
@@ -125,6 +126,8 @@ module five_stage_pipelined_rv32i_core(
         .mem_read_out(mem_read_from_ex_mem)
     );
     assign mem_read = mem_read_from_ex_mem;
+    assign mem_address = mem_address_from_ex_mem;
+    assign mem_address_request = alu_out;
 
     wire [31:0] rs1_value, rs2_value, forwarded_rs1, forwarded_rs2, reg_write_data;
     forwarding_unit forwarding_unit_instance(
@@ -197,7 +200,6 @@ module five_stage_pipelined_rv32i_core(
         .zero_flag(zero_flag),
         .out(alu_out)
     );
-    assign mem_address = alu_out;
     assign alu_result_to_ex_mem = alu_out;
     
     
