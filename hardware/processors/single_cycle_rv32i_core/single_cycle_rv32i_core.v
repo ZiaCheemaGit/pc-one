@@ -32,8 +32,15 @@ module core(
     output half_op,
     output [31:0] mem_address,
     input [31:0] mem_data_from_mem,
-    output [31:0] mem_data_to_mem
+    output [31:0] mem_data_to_mem,
+    output mem_write_request,
+    output mem_read_request,
+    output [31:0] mem_address_request
 );
+
+    assign mem_write_request = mem_write;
+    assign mem_read_request = mem_read;
+    assign mem_address_request = mem_address;
     
     wire [31:0] pc_in_add, pc_out_add;
     pc pc_instance(

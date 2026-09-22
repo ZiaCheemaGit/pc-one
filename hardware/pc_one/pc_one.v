@@ -69,7 +69,7 @@ module pc_one(
         .data_in(data_from_cpu),
         .data_out(ram_data_to_mmu)
     );
-
+    
     boot_rom boot_rom_instance(
         .clk(clk_from_FPGA),
         .pc(instr_add),       

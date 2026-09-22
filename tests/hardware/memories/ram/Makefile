@@ -7,7 +7,7 @@ SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
 # dut
-VERILOG_SOURCES += $(PWD)/../../../../hardware/memories/ram.v
+VERILOG_SOURCES += $(PWD)/../../../../hardware/memories/ram_synchronus.v
 
 # COCOTB_TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
 COCOTB_TOPLEVEL = ram

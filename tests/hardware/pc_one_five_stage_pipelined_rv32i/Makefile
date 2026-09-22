@@ -16,8 +16,8 @@ VERILOG_SOURCES += $(PWD)/../../../hardware/processors/lib/*.v
 VERILOG_SOURCES += $(PWD)/../../../hardware/pc_one/pc_one.v
 
 # memories
-VERILOG_SOURCES += $(PWD)/../../../hardware/memories/ram.v
-VERILOG_SOURCES += $(PWD)/../../../hardware/memories/boot_rom.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/memories/ram_synchronus.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/memories/boot_rom_synchronus.v
 
 # MMU
 VERILOG_SOURCES += $(PWD)/../../../hardware/MMU/MMU.v
