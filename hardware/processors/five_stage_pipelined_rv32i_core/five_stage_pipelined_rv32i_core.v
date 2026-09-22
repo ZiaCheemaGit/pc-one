@@ -27,54 +27,101 @@ module core(
     output [31:0] mem_address_request,
     output [31:0] mem_data_to_mem
 );
-    
-    wire [31:0] pc_jump_add, pc_out_add;
-    assign instruction_address = pc_out_add;
+
+    wire [31:0] pc_plus_immediate_from_adder_instance, b_type_immediate_from_sign_ext_instance,
+    pc_value_from_if_id, jal_pc, jal_offset_from_sign_ext_instance, jalr_pc, 
+    alu_out_from_main_alu_instance, pc_jump_add, pc_value, pc_plus_4_fetch,
+    instruction_from_if_id, sign_ext_out_shifted, sign_ext_from_sign_ext_instance, 
+    u_type_immediate_from_sign_ext_instance, s_type_immediate_from_sign_ext_instance, 
+    mem_address_from_ex_mem, alu_result_to_ex_mem, alu_result_from_ex_mem,
+    pc_plus_4, pc_plus_4_from_ex_mem, pc_plus_u_type_immediate, 
+    pc_plus_u_type_immediate_from_ex_mem, u_type_immediate_from_ex_mem, alu_src_value,
+    load_op_data, rs1_value, rs2_value, forwarded_rs1, forwarded_rs2, reg_write_data;
+
+    wire [4:0] dest_reg_from_ex_mem;
+
+    wire [3:0] alu_control_unit;
+
+    wire [2:0] mem_to_reg_control_from_control_unit, mem_to_reg_control_from_ex_mem;
+
+    wire [1:0] pc_src_control, alu_op_control, pc_src, alu_src_control;
+
+    wire invert, zero_flag_from_main_alu_instance, func3, reg_write_control_from_control_unit, 
+    unsigned_op_from_control_unit, byte_op_from_control_unit, half_op_from_control_unit, 
+    mem_read_from_control_unit, mem_read_from_ex_mem, byte_op_from_ex_mem, half_op_from_ex_mem,
+    unsigned_op_from_ex_mem;
+
+    assign jalr_pc = {alu_out_from_main_alu_instance[31:1], 1'b0};
+    assign instruction_address = pc_value;
+    assign alu_result_to_ex_mem = alu_out_from_main_alu_instance;
+    assign byte_op = byte_op_from_control_unit;
+    assign half_op = half_op_from_control_unit;
+    assign mem_read_request = mem_read_from_control_unit;
+    assign mem_read = mem_read_from_ex_mem;
+    assign mem_address = mem_address_from_ex_mem;
+    assign mem_address_request = alu_out_from_main_alu_instance;
+    assign mem_data_to_mem = forwarded_rs2;
+
+    adder32 adder32_instance_immediate(
+        .in1(pc_value_from_if_id),
+        .in2(b_type_immediate_from_sign_ext_instance),
+        .out(pc_plus_immediate_from_adder_instance)
+    );
+
+    adder32 jal_adder(
+        .in1(pc_value_from_if_id),
+        .in2(jal_offset_from_sign_ext_instance),
+        .out(jal_pc)
+    );
+
+    pc_src_control pc_src_control_instance(
+        .pc_mux_control(pc_src),
+        .zero_flag(zero_flag_from_main_alu_instance),
+        .pc_control(pc_src_control)
+    );
+
     pc pc_instance(
         .clk(clk), 
         .rst(rst), 
         .jump_address(pc_jump_add), 
-        .pc_next(pc_out_add)
+        .pc_next(pc_value)
     );
-    
-    wire [31:0] pc_plus_4_fetch;
+
     adder32 fetch_adder(
         .in1(4),
-        .in2(pc_out_add),
+        .in2(pc_value),
         .out(pc_plus_4_fetch)
     );
 
-    wire [31:0] instruction_from_if_id, pc_out_add_from_if_id;
-    wire [1:0] pc_src_control;
+    mux_4X1 pc_mux(
+        .in0(pc_plus_4_fetch),
+        .in1(pc_plus_immediate_from_adder_instance),
+        .in2(jal_pc), 
+        .in3(jalr_pc), 
+        .sel(pc_src_control),
+        .out(pc_jump_add)
+    );
+
     if_id_reg if_id_reg_instance(
         .clk(clk),
         .rst(rst),
         .en(1'b1),
         .flush(pc_src_control != 2'b00),
-        .pc_in(pc_out_add),   
+        .pc_in(pc_value),   
         .inst_in(instruction), 
-        .pc_out(pc_out_add_from_if_id),
+        .pc_out(pc_value_from_if_id),
         .inst_out(instruction_from_if_id)
     );
     
-    wire [31:0] sign_ext_out_shifted;
-    wire [31:0] sign_ext_out;
-    wire [31:0] u_type_immediate, jal_offset, s_type_immediate, b_type_immediate;
     sign_ext_12_to_32 sign_ext_12_to_32_instance(
         .instruction(instruction_from_if_id), 
-        .out(sign_ext_out), 
-        .b_type_immediate(b_type_immediate),
-        .u_type_immediate(u_type_immediate),
-        .jal_offset(jal_offset),
-        .s_type_immediate(s_type_immediate)
+        .out(sign_ext_from_sign_ext_instance), 
+        .b_type_immediate(b_type_immediate_from_sign_ext_instance),
+        .u_type_immediate(u_type_immediate_from_sign_ext_instance),
+        .jal_offset(jal_offset_from_sign_ext_instance),
+        .s_type_immediate(s_type_immediate_from_sign_ext_instance)
     );
     
-    wire func3, reg_write_control_from_control_unit, unsigned_op_from_control_unit, 
-    byte_op_from_control_unit, half_op_from_control_unit, mem_read_from_control_unit;
-    wire [1:0] alu_op_control, pc_src, alu_src_control;
-    wire [2:0] mem_to_reg_control_from_control_unit;
-    assign byte_op = byte_op_from_control_unit;
-    assign half_op = half_op_from_control_unit;
     control_unit control_unit_instance(
         .opcode(instruction_from_if_id[6:0]),
         .func3(instruction_from_if_id[14:12]), 
@@ -89,14 +136,7 @@ module core(
         .half_op(half_op_from_control_unit),
         .unsigned_op(unsigned_op_from_control_unit)
     );
-    assign mem_read_request = mem_read_from_control_unit;
 
-    wire [31:0] alu_out, mem_address_from_ex_mem, alu_result_to_ex_mem, alu_result_from_ex_mem,
-    pc_plus_4, pc_plus_4_from_ex_mem, pc_plus_u_type_immediate, pc_plus_u_type_immediate_from_ex_mem,
-    u_type_immediate_from_ex_mem;
-    wire [4:0] dest_reg_from_ex_mem;
-    wire [2:0] mem_to_reg_control_from_ex_mem;
-    wire mem_read_from_ex_mem, byte_op_from_ex_mem, half_op_from_ex_mem, unsigned_op_from_ex_mem;
     ex_mem_reg ex_mem_reg_instance(
         .clk(clk),
         .rst(rst),
@@ -108,7 +148,7 @@ module core(
         .half_op_out(half_op_from_ex_mem),
         .unsigned_op_in(unsigned_op_from_control_unit),
         .unsigned_op_out(unsigned_op_from_ex_mem),
-        .mem_address_in(alu_out),
+        .mem_address_in(alu_out_from_main_alu_instance),
         .mem_address_out(mem_address_from_ex_mem),
         .reg_write_control_in(reg_write_control_from_control_unit),
         .reg_write_control_out(reg_write_control_from_ex_mem),
@@ -120,16 +160,12 @@ module core(
         .pc_plus_4_out(pc_plus_4_from_ex_mem),
         .pc_plus_u_type_immediate_in(pc_plus_u_type_immediate),
         .pc_plus_u_type_immediate_out(pc_plus_u_type_immediate_from_ex_mem),
-        .u_type_immediate_in(u_type_immediate),
+        .u_type_immediate_in(u_type_immediate_from_sign_ext_instance),
         .u_type_immediate_out(u_type_immediate_from_ex_mem),
         .mem_read_in(mem_read_from_control_unit),
         .mem_read_out(mem_read_from_ex_mem)
     );
-    assign mem_read = mem_read_from_ex_mem;
-    assign mem_address = mem_address_from_ex_mem;
-    assign mem_address_request = alu_out;
 
-    wire [31:0] rs1_value, rs2_value, forwarded_rs1, forwarded_rs2, reg_write_data;
     forwarding_unit forwarding_unit_instance(
         .reg_write_control_from_ex_mem(reg_write_control_from_ex_mem),
         .dest_reg_from_ex_mem(dest_reg_from_ex_mem),
@@ -142,7 +178,6 @@ module core(
         .forwarded_rs2(forwarded_rs2)
     );
 
-    wire [31:0] load_op_data;
     load_op load_op_instance(
         .byte_op(byte_op_from_ex_mem),
         .half_op(half_op_from_ex_mem),
@@ -152,21 +187,12 @@ module core(
         .op_data(load_op_data)
     );
     
-    wire [3:0] alu_control_unit;
-    wire invert;
     alu_control alu_control_instance(
         .alu_op(alu_op_control),
         .fun3(instruction_from_if_id[14:12]),
         .fun7(instruction_from_if_id[31:25]),
         .out(alu_control_unit),
         .invert(invert)
-    );
-    
-    wire zero_flag;
-    pc_src_control pc_src_control_instance(
-        .pc_mux_control(pc_src),
-        .zero_flag(zero_flag),
-        .pc_control(pc_src_control)
     );
     
     reg_file reg_file_instance(
@@ -180,13 +206,11 @@ module core(
         .src1_reg_value(rs1_value), 
         .src2_reg_value(rs2_value)
     );
-    assign mem_data_to_mem = forwarded_rs2;
     
-    wire [31:0] alu_src_value;
     mux_4X1 alu_src_mux(
         .in0(forwarded_rs2),
-        .in1(sign_ext_out),
-        .in2(s_type_immediate),
+        .in1(sign_ext_from_sign_ext_instance),
+        .in2(s_type_immediate_from_sign_ext_instance),
         .in3(0),
         .sel(alu_src_control),
         .out(alu_src_value)
@@ -197,47 +221,19 @@ module core(
         .src1(forwarded_rs1), 
         .src2(alu_src_value),
         .operation(alu_control_unit),
-        .zero_flag(zero_flag),
-        .out(alu_out)
+        .zero_flag(zero_flag_from_main_alu_instance),
+        .out(alu_out_from_main_alu_instance)
     );
-    assign alu_result_to_ex_mem = alu_out;
-    
     
     adder32 adder32_instance_const4(
         .in1(4),
-        .in2(pc_out_add_from_if_id),
+        .in2(pc_value_from_if_id),
         .out(pc_plus_4)
     );
     
-    wire [31:0] pc_plus_immediate_out;
-    adder32 adder32_instance_immediate(
-        .in1(pc_out_add_from_if_id),
-        .in2(b_type_immediate),
-        .out(pc_plus_immediate_out)
-    );
-         
-    wire [31:0] jal_pc;
-    adder32 jal_adder(
-        .in1(pc_out_add_from_if_id),
-        .in2(jal_offset),
-        .out(jal_pc)
-    );
-    
-    wire [31:0] jalr_pc;
-    assign jalr_pc = {alu_out[31:1], 1'b0};
-    
-    mux_4X1 pc_mux(
-        .in0(pc_plus_4_fetch),
-        .in1(pc_plus_immediate_out),
-        .in2(jal_pc), 
-        .in3(jalr_pc), 
-        .sel(pc_src_control),
-        .out(pc_jump_add)
-    );
-    
     adder32 u_type_adder(
-        .in1(u_type_immediate),
-        .in2(pc_out_add_from_if_id),
+        .in1(u_type_immediate_from_sign_ext_instance),
+        .in2(pc_value_from_if_id),
         .out(pc_plus_u_type_immediate)
     );
     
