@@ -18,22 +18,22 @@ pc_one.json:
 	hierarchy -top pc_one; proc; opt; write_json -compat-int pc_one.json"
 
 RAM.json:
-	yosys -p "read_verilog ../../hardware/memories/ram.v; hierarchy -top ram; proc; opt; write_json RAM.json"
+	yosys -p "read_verilog ../../hardware/memories/ram_synchronus.v; hierarchy -top ram; proc; opt; write_json RAM.json"
 
 ROM.json:
-	yosys -p "read_verilog ../../hardware/memories/boot_rom.v; hierarchy -top boot_rom; proc; opt; write_json ROM.json"
+	yosys -p "read_verilog ../../hardware/memories/boot_rom_synchronus.v; hierarchy -top boot_rom; proc; opt; write_json ROM.json"
 
 RV32I_SINGLE_CYCLE.json:
 	yosys -p "read_verilog \
 	../../hardware/processors/single_cycle_rv32i_core/*.v \
 	../../hardware/processors/lib/*.v; \
-	hierarchy -top single_cycle_rv32i_core; proc; opt; write_json RV32I_SINGLE_CYCLE.json"
+	hierarchy -top core; proc; opt; write_json RV32I_SINGLE_CYCLE.json"
 
 RV32I_FIVE_STAGE_PIPELINED.json:
 	yosys -p "read_verilog \
 	../../hardware/processors/five_stage_pipelined_rv32i_core/*.v \
 	../../hardware/processors/lib/*.v; \
-	hierarchy -top five_stage_pipelined_rv32i_core; proc; opt; write_json RV32I_FIVE_STAGE_PIPELINED.json"
+	hierarchy -top core; proc; opt; write_json RV32I_FIVE_STAGE_PIPELINED.json"
 
 UART.json:
 	yosys -p "read_verilog ../../hardware/UART/*.v; hierarchy -top uart_tx; proc; opt; write_json UART.json"
