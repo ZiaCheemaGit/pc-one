@@ -5,8 +5,6 @@ module ex_mem_reg(
     input clk,
     input wire [31:0] alu_result_in,
     output reg [31:0] alu_result_out,
-    input wire [31:0] mem_address_in,
-    output reg [31:0] mem_address_out,
     input wire reg_write_control_in,
     input wire byte_op_in,
     input wire half_op_in,
@@ -31,7 +29,6 @@ module ex_mem_reg(
 
     always @(posedge clk or posedge rst) begin
         if (rst) begin 
-            mem_address_out <= 32'b0;
             byte_op_out <= 1'b0;
             half_op_out <= 1'b0;
             unsigned_op_out <= 1'b0;
@@ -44,7 +41,6 @@ module ex_mem_reg(
             u_type_immediate_out <= 32'b0;
             mem_read_out <= 1'b0;
         end else begin
-            mem_address_out <= mem_address_in;
             byte_op_out <= byte_op_in;
             half_op_out <= half_op_in;
             unsigned_op_out <= unsigned_op_in;

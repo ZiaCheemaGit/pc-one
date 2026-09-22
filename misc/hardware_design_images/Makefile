@@ -7,7 +7,7 @@ MMU.json:
 	yosys -p "read_verilog ../../hardware/MMU/*.v; hierarchy -top MMU; proc; opt; write_json MMU.json"
 
 pc_one.json:
-	yosys -p "read_verilog -lib ../../hardware/memories/ram.v ../../hardware/memories/boot_rom.v ../../hardware/VGA/vram.v; \
+	yosys -p "read_verilog -lib ../../hardware/memories/ram_synchronus.v ../../hardware/memories/boot_rom_synchronus.v ../../hardware/VGA/vram.v; \
 	read_verilog \
 	../../hardware/pc_one/pc_one.v \
 	../../hardware/UART/*.v \
