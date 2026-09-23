@@ -1,7 +1,7 @@
 ![CI](https://github.com/ZiaCheemaGit/pc-one/actions/workflows/build-test.yml/badge.svg)
 ![License](https://img.shields.io/github/license/ZiaCheemaGit/pc-one?style=for-the-badge)
 
-*This project is under development. Regardless feel free to contribute*
+*The comments in source files are stale and should not be considered the source of truth*
 
 # PC-ONE
 
