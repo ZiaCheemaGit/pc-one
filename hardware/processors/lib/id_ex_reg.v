@@ -1,6 +1,7 @@
 module id_ex_reg(
     input wire clk,
     input wire rst,
+    input wire flush,
     input wire reg_write_control_in,
     input wire [2:0] mem_to_reg_control_in,
     input wire byte_op_in,
@@ -36,7 +37,13 @@ module id_ex_reg(
     input wire invert_control_in,
     output reg invert_control_out,
     input wire [3:0] alu_control_in,
-    output reg [3:0] alu_control_out
+    output reg [3:0] alu_control_out,
+    input wire [1:0] pc_src_control_in,
+    output reg [1:0] pc_src_control_out,
+    input wire [31:0] pc_plus_immediate_in,
+    output reg [31:0] pc_plus_immediate_out,
+    input wire [31:0] pc_plus_jal_offset_in,
+    output reg [31:0] pc_plus_jal_offset_out
 );
 
     always @(posedge clk or posedge rst) begin
@@ -59,6 +66,31 @@ module id_ex_reg(
             u_type_immediate_out <= 32'b0;
             sign_ext_out <= 32'b0;
             s_type_immediate_out <= 32'b0;
+            pc_src_control_out <= 2'b0;
+            pc_plus_immediate_out <= 32'b0;
+            pc_plus_jal_offset_out <= 32'b0;
+        end else if (flush) begin 
+            alu_control_out <= 4'b0;
+            invert_control_out <= 1'b0;
+            alu_src_control_out <= 2'b0;
+            rs1_out <= 5'b0;
+            rs2_out <= 5'b0;
+            mem_write_out <= 1'b0;
+            mem_read_out <= 1'b0;
+            dest_reg_out <= 5'b0;
+            byte_op_out <= 1'b0;
+            half_op_out <= 1'b0;
+            unsigned_op_out <= 1'b0;
+            reg_write_control_out <= 1'b0; 
+            pc_plus_u_type_immediate_value_out <= 32'b0;
+            mem_to_reg_control_out <= 3'b0;
+            pc_plus_4_out <= 32'b0;
+            u_type_immediate_out <= 32'b0;
+            sign_ext_out <= 32'b0;
+            s_type_immediate_out <= 32'b0;
+            pc_src_control_out <= 2'b0;
+            pc_plus_immediate_out <= 32'b0;
+            pc_plus_jal_offset_out <= 32'b0;
         end else begin 
             alu_control_out <= alu_control_in;
             invert_control_out <= invert_control_in;
@@ -78,6 +110,9 @@ module id_ex_reg(
             u_type_immediate_out <= u_type_immediate_in;
             sign_ext_out <= sign_ext_in;
             s_type_immediate_out <= s_type_immediate_in;
+            pc_src_control_out <= pc_src_control_in;
+            pc_plus_immediate_out <= pc_plus_immediate_in;
+            pc_plus_jal_offset_out <= pc_plus_jal_offset_in;
         end
     end
 

@@ -141,9 +141,10 @@ def log_signals_five_stage_rv32i(logger, dut):
     log_sig("u_type_immediate", core.u_type_immediate_from_sign_ext_instance, is_hex=True)
     log_sig("s_type_immediate", core.s_type_immediate_from_sign_ext_instance, is_signed=True)
     log_sig("pc_plus_u_type_immediate_value", core.pc_plus_u_type_immediate_value, is_hex=True)
-
+    log_sig("pc_plus_immediate_value (Branch Target)", core.pc_plus_immediate_value, is_hex=True)
+    
     # Control Signals (Decode)
-    log_sig("pc_src_from_control_unit", core.pc_src_from_control_unit)
+    log_sig("pc_src_from_control_unit", core.pc_src_control)
     log_sig("alu_src_control_from_control_unit", core.alu_src_control_from_control_unit)
     log_sig("alu_op_control_from_control_unit", core.alu_op_control_from_control_unit)
     log_sig("mem_read_from_control_unit", core.mem_read_from_control_unit)
@@ -173,7 +174,7 @@ def log_signals_five_stage_rv32i(logger, dut):
     
     # Branch & Jump Targets
     log_sig("pc_src_control_value (Final PC Mux Sel)", core.pc_src_control_value)
-    log_sig("pc_plus_immediate_value (Branch Target)", core.pc_plus_immediate_value, is_hex=True)
+    log_sig("pc_plus_immediate_from_id_ex (Branch Target)", core.pc_plus_immediate_from_id_ex, is_hex=True)
     log_sig("pc_plus_u_type_immediate_from_id_ex", core.pc_plus_u_type_immediate_from_id_ex, is_hex=True)
     log_sig("pc_plus_jal_offset_value (JAL Target)", core.pc_plus_jal_offset_value, is_hex=True)
     log_sig("jalr_pc (JALR Target)", core.jalr_pc, is_hex=True)
