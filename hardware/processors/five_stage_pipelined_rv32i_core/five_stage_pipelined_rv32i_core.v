@@ -38,7 +38,8 @@ module core(
     load_op_data, rs1_value, rs2_value, rs1_value_from_forwarding_unit, 
     rs2_value_from_forwarding_unit, reg_write_back_data, pc_plus_4_from_if_id, 
     pc_plus_u_type_immediate_from_id_ex, pc_plus_4_from_id_ex, u_type_immediate_from_id_ex,
-    sign_ext_from_id_ex, s_type_immediate_from_id_ex;
+    sign_ext_from_id_ex, s_type_immediate_from_id_ex, pc_plus_immediate_from_id_ex,
+    pc_plus_jal_offset_from_id_ex;
 
     wire [4:0] dest_reg_from_ex_mem, dest_reg_from_id_ex, rs1_from_id_ex, rs2_from_id_ex;
 
@@ -47,16 +48,17 @@ module core(
     wire [2:0] write_back_mux_control_from_control_unit, write_back_mux_control_from_ex_mem,
     write_back_mux_control_from_id_ex;
 
-    wire [1:0] pc_src_control_value, alu_op_control_from_control_unit, pc_src_from_control_unit, 
-    alu_src_control_from_control_unit, unsigned_op_from_id_ex, alu_src_control_from_id_ex;
+    wire [1:0] pc_src_control_value, alu_op_control_from_control_unit, pc_src_control, 
+    alu_src_control_from_control_unit, alu_src_control_from_id_ex, pc_src_control_from_id_ex;
 
-    wire invert_control_from_alu_control, zero_flag_from_main_alu_instance, func3, 
+    wire flush, invert_control_from_alu_control, zero_flag_from_main_alu_instance, func3, 
     reg_write_control_from_control_unit, unsigned_op_from_control_unit, byte_op_from_control_unit, 
     half_op_from_control_unit, mem_read_from_control_unit, mem_read_from_ex_mem, byte_op_from_ex_mem,
     half_op_from_ex_mem, unsigned_op_from_ex_mem, mem_write_from_control_unit, 
     byte_op_from_id_ex, half_op_from_id_ex, reg_write_control_from_id_ex, mem_read_from_id_ex,
     mem_write_from_id_ex, invert_control_from_id_ex;
 
+    assign flush = pc_src_control_value != 2'b00;
     assign jalr_pc = {alu_out_from_main_alu_instance[31:1], 1'b0};
     assign instruction_address = pc_value;
     assign mem_read = mem_read_from_ex_mem;
@@ -81,7 +83,7 @@ module core(
     );
 
     pc_src_control pc_src_control_instance(
-        .pc_mux_control(pc_src_from_control_unit),
+        .pc_mux_control(pc_src_control_from_id_ex),
         .zero_flag(zero_flag_from_main_alu_instance),
         .pc_control(pc_src_control_value)
     );
@@ -101,8 +103,8 @@ module core(
 
     mux_4X1 pc_mux(
         .in0(pc_plus_4_value),
-        .in1(pc_plus_immediate_value),
-        .in2(pc_plus_jal_offset_value), 
+        .in1(pc_plus_immediate_from_id_ex),
+        .in2(pc_plus_jal_offset_from_id_ex), 
         .in3(jalr_pc), 
         .sel(pc_src_control_value),
         .out(pc_jump_add)
@@ -112,7 +114,7 @@ module core(
         .clk(clk),
         .rst(rst),
         .en(1'b1),
-        .flush(pc_src_control_value != 2'b00),
+        .flush(flush),
         .pc_in(pc_value),   
         .inst_in(instruction), 
         .pc_plus_4_in(pc_plus_4_value),
@@ -145,7 +147,7 @@ module core(
         .reg_write(reg_write_control_from_control_unit),
         .alu_op(alu_op_control_from_control_unit), 
         .mem_to_reg(write_back_mux_control_from_control_unit),
-        .pc_src(pc_src_from_control_unit),
+        .pc_src(pc_src_control),
         .byte_op(byte_op_from_control_unit),
         .half_op(half_op_from_control_unit),
         .unsigned_op(unsigned_op_from_control_unit)
@@ -162,6 +164,7 @@ module core(
     id_ex_reg id_ex_reg_instance(
         .clk(clk),
         .rst(rst),
+        .flush(flush),
         .mem_to_reg_control_in(write_back_mux_control_from_control_unit),
         .mem_to_reg_control_out(write_back_mux_control_from_id_ex),
         .reg_write_control_in(reg_write_control_from_control_unit),
@@ -197,7 +200,13 @@ module core(
         .invert_control_in(invert_control_from_alu_control),
         .invert_control_out(invert_control_from_id_ex),
         .alu_control_in(alu_control),
-        .alu_control_out(alu_control_from_id_ex)
+        .alu_control_out(alu_control_from_id_ex),
+        .pc_src_control_in(pc_src_control),
+        .pc_src_control_out(pc_src_control_from_id_ex),
+        .pc_plus_immediate_in(pc_plus_immediate_value),
+        .pc_plus_immediate_out(pc_plus_immediate_from_id_ex),
+        .pc_plus_jal_offset_in(pc_plus_jal_offset_value),
+        .pc_plus_jal_offset_out(pc_plus_jal_offset_from_id_ex)
     );
 
     reg_file reg_file_instance(
