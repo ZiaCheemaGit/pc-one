@@ -208,3 +208,4 @@ def log_signals_five_stage_rv32i(logger, dut):
     
     # Final Write Back Data directly to RegFile
     log_sig("reg_write_back_data (Data to RegFile)", core.reg_write_back_data, is_hex=True, is_signed=True)
+
