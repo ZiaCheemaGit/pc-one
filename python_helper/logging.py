@@ -159,7 +159,6 @@ def log_signals_five_stage_rv32i(logger, dut):
     log_sig("rs2_from_id_ex (Reg Addr 2)", core.rs2_from_id_ex)
     log_sig("rs1_value (RegFile Out 1)", core.rs1_value, is_hex=True)
     log_sig("rs2_value (RegFile Out 2)", core.rs2_value, is_hex=True)
-    log_sig("dest_reg_from_id_ex (Dest Reg Addr)", core.dest_reg_from_id_ex)
     
     # Forwarding & ALU Inputs
     log_sig("rs1_value_from_forwarding_unit (ALU Src1)", core.rs1_value_from_forwarding_unit, is_hex=True)
@@ -188,6 +187,7 @@ def log_signals_five_stage_rv32i(logger, dut):
 
     logger.critical(f"---------Stage-04 MEMORY AND WRITE BACK (SIM TIME: {sim_time} ns)-----------")
     # Memory Address & Status
+    log_sig("dest_reg_from_id_ex (Dest Reg Addr)", core.dest_reg_from_ex_mem)
     log_sig("alu_out_from_ex_mem (Mem Address)", core.alu_out_from_ex_mem, is_hex=True)
     log_sig("mem_read (from ex_mem)", core.mem_read)
     
