@@ -26,10 +26,23 @@ module id_ex_reg(
     input wire [4:0] rs1_in,
     output reg [4:0] rs1_out,
     input wire [4:0] rs2_in,
-    output reg [4:0] rs2_out
+    output reg [4:0] rs2_out,
+    input wire [31:0] sign_ext_in,
+    output reg [31:0] sign_ext_out,
+    input wire [31:0] s_type_immediate_in,
+    output reg [31:0] s_type_immediate_out,
+    input wire [1:0] alu_src_control_in,
+    output reg [1:0] alu_src_control_out,
+    input wire invert_control_in,
+    output reg invert_control_out,
+    input wire [3:0] alu_control_in,
+    output reg [3:0] alu_control_out
 );
 
     always @(*) begin
+        alu_control_out <= alu_control_in;
+        invert_control_out <= invert_control_in;
+        alu_src_control_out <= alu_src_control_in;
         rs1_out <= rs1_in;
         rs2_out <= rs2_in;
         mem_write_out <= mem_write_in;
@@ -43,6 +56,8 @@ module id_ex_reg(
         mem_to_reg_control_out <= mem_to_reg_control_in;
         pc_plus_4_out <= pc_plus_4_in;
         u_type_immediate_out <= u_type_immediate_in;
+        sign_ext_out <= sign_ext_in;
+        s_type_immediate_out <= s_type_immediate_in;
     end
 
 endmodule
