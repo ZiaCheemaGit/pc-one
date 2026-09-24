@@ -39,25 +39,46 @@ module id_ex_reg(
     output reg [3:0] alu_control_out
 );
 
-    always @(*) begin
-        alu_control_out <= alu_control_in;
-        invert_control_out <= invert_control_in;
-        alu_src_control_out <= alu_src_control_in;
-        rs1_out <= rs1_in;
-        rs2_out <= rs2_in;
-        mem_write_out <= mem_write_in;
-        mem_read_out <= mem_read_in;
-        dest_reg_out <= dest_reg_in;
-        byte_op_out <= byte_op_in;
-        half_op_out <= half_op_in;
-        unsigned_op_out <= unsigned_op_in;
-        reg_write_control_out <= reg_write_control_in; 
-        pc_plus_u_type_immediate_value_out <= pc_plus_u_type_immediate_value_in;
-        mem_to_reg_control_out <= mem_to_reg_control_in;
-        pc_plus_4_out <= pc_plus_4_in;
-        u_type_immediate_out <= u_type_immediate_in;
-        sign_ext_out <= sign_ext_in;
-        s_type_immediate_out <= s_type_immediate_in;
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin 
+            alu_control_out <= 4'b0;
+            invert_control_out <= 1'b0;
+            alu_src_control_out <= 2'b0;
+            rs1_out <= 5'b0;
+            rs2_out <= 5'b0;
+            mem_write_out <= 1'b0;
+            mem_read_out <= 1'b0;
+            dest_reg_out <= 5'b0;
+            byte_op_out <= 1'b0;
+            half_op_out <= 1'b0;
+            unsigned_op_out <= 1'b0;
+            reg_write_control_out <= 1'b0; 
+            pc_plus_u_type_immediate_value_out <= 32'b0;
+            mem_to_reg_control_out <= 3'b0;
+            pc_plus_4_out <= 32'b0;
+            u_type_immediate_out <= 32'b0;
+            sign_ext_out <= 32'b0;
+            s_type_immediate_out <= 32'b0;
+        end else begin 
+            alu_control_out <= alu_control_in;
+            invert_control_out <= invert_control_in;
+            alu_src_control_out <= alu_src_control_in;
+            rs1_out <= rs1_in;
+            rs2_out <= rs2_in;
+            mem_write_out <= mem_write_in;
+            mem_read_out <= mem_read_in;
+            dest_reg_out <= dest_reg_in;
+            byte_op_out <= byte_op_in;
+            half_op_out <= half_op_in;
+            unsigned_op_out <= unsigned_op_in;
+            reg_write_control_out <= reg_write_control_in; 
+            pc_plus_u_type_immediate_value_out <= pc_plus_u_type_immediate_value_in;
+            mem_to_reg_control_out <= mem_to_reg_control_in;
+            pc_plus_4_out <= pc_plus_4_in;
+            u_type_immediate_out <= u_type_immediate_in;
+            sign_ext_out <= sign_ext_in;
+            s_type_immediate_out <= s_type_immediate_in;
+        end
     end
 
 endmodule

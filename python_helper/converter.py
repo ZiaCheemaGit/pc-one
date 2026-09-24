@@ -133,9 +133,10 @@ def binary_to_assembly(instruction: int) -> str:
         # I-Type
         case '0010011' | '0000011' | '1100111' | '1110011' | '0001111':
             mnemonic = mnemonic_table.get_mnemonic(opcode, funct3, funct7)
+            imm_to_pass = immediate
             if mnemonic in ['slli', 'srli', 'srai']:
-                immediate_val = immediate_val & 0x1F
-            return I_instruction(immediate, rs1, funct3, rd, opcode, mnemonic).get_asm()
+                imm_to_pass = int(immediate, 2) & 0x1F
+            return I_instruction(imm_to_pass, rs1, funct3, rd, opcode, mnemonic).get_asm()
         
         # U-Type
         case '0110111' | '0010111':
