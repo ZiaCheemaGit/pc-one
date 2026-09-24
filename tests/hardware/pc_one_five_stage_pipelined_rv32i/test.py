@@ -210,6 +210,72 @@ async def test_load_neg_asm(dut):
         assert False, "Test Ended Abnormally"
 
 
+@program_test("test_hazards_asm")
+async def test_hazards_asm(dut):
+    test_name = "test_hazards_asm"
+    logger = logging.getLogger(test_name)
+    file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    logger.setLevel(logging.INFO)
+
+    # run clock concurrently
+    cocotb.start_soon(Clock(dut.clk_from_FPGA, 1, unit="ns").start()) 
+
+    # reset cpu 
+    dut.rst_from_FPGA.value = 1
+    await RisingEdge(dut.clk_from_FPGA)
+    dut.rst_from_FPGA.value = 0
+    await RisingEdge(dut.clk_from_FPGA)
+
+    logger.info("Reset released. CPU starting execution.")
+    logger.info("Starting test_basic_asm")
+    
+    threshold_clk_cycles = 2000
+
+    for i in range(threshold_clk_cycles):
+        if LOGGING_ON:
+            log_signals_five_stage_rv32i(logger, dut)
+
+        if dut.boot_rom_instance.pc.value.to_unsigned() == 0x150:
+
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+
+            logger.critical("Test ended control reached at label HALT")
+
+            result = dut.core_instance.reg_file_instance.registers[1]
+            try:
+                result = int(result.value)
+            except:
+                logger.info(f"result = {result}")
+            assert result == 0xCAFEBBAE, f"Expected PASS, got 0x{result:08x}"
+            logger.info("Test Passed")
+            logger.info(f"result = 0x{result:08x}")
+            logger.info("Value is Correctly set by label PASS")
+            
+            return
+        
+        elif i >= (threshold_clk_cycles - 1) and dut.instr_add.value.to_unsigned() != 0xe0:
+            assert False, "TIMEOUT: PC never reached label HALT)"
+
+        await RisingEdge(dut.clk_from_FPGA)
+
+
 @program_test("test_math_c")
 async def test_math_c(dut):
     test_name = "test_math_c"
@@ -333,4 +399,3 @@ async def test_aggressive_c(dut):
             return
         
     raise Exception("Threshold cyles passed\nPC never reached end")
-
