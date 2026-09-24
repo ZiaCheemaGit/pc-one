@@ -104,122 +104,106 @@ def log_signals_five_stage_rv32i(logger, dut):
     sim_time = get_sim_time('ns')
     logger.info(f"\n\n")
 
-    logger.critical(f"---------Stage-01 FETCH(SIM TIME: {sim_time} ns)-----------")
-    # PC
-    try: 
-        logger.info(f"PC = {dut.core_instance.instruction_address.value.to_unsigned()} OR " + 
-                    f"0x{dut.core_instance.instruction_address.value.to_unsigned():08x}")
-    except Exception:
-        logger.info(f"PC = {dut.core_instance.instruction_address.value}")
+    core = dut.core_instance
 
-    logger.critical(f"---------Stage-02 DECODE AND EXECUTE(SIM TIME: {sim_time} ns)-----------")
-    # instruction
-    try: 
-        logger.info(f"instruction = {binary_to_assembly((dut.core_instance.if_id_reg_instance.inst_out.value.to_unsigned()))}")
-    except Exception:
-        logger.info(f"instruction = {dut.core_instance.if_id_reg_instance.inst_out.value}")
+    def log_sig(name, sig, is_hex=False, is_signed=False):
+        try:
+            val_unsigned = sig.value.to_unsigned()
+            if is_signed:
+                val_signed = sig.value.to_signed()
+                logger.info(f"{name} = {val_signed} OR 0x{val_unsigned:08x}")
+            elif is_hex:
+                logger.info(f"{name} = {val_unsigned} OR 0x{val_unsigned:08x}")
+            else:
+                logger.info(f"{name} = {val_unsigned}")
+        except Exception:
+            logger.info(f"{name} = {sig.value}")
 
-    # main_alu_instance alu_out
-    try: 
-        logger.info(f"alu_out = {dut.core_instance.main_alu_instance.out.value.to_unsigned()}")
-    except Exception:
-        logger.info(f"alu_out = {dut.core_instance.main_alu_instance.out.value}")
+    logger.critical(f"---------Stage-01 FETCH (SIM TIME: {sim_time} ns)-----------")
+    log_sig("pc_value (Current PC)", core.pc_value, is_hex=True)
 
-    # mem_write
-    try: 
-        logger.info(f"ram_mem_write = {dut.ram_instance.mem_write.value.to_unsigned()}")
-    except Exception:
-        logger.info(f"ram_mem_write = {dut.ram_instance.mem_write.value}")
 
-    # data_in
-    try: 
-        logger.info(f"data_in ram = {dut.ram_instance.data_in.value.to_signed()} OR " +
-                    f"0x{dut.ram_instance.data_in.value.to_unsigned():08x}")
-    except Exception:
-        logger.info(f"data_in ram = {dut.ram_instance.data_in.value}")
+    logger.critical(f"---------Stage-02 DECODE (SIM TIME: {sim_time} ns)-----------")
+    log_sig("pc_value_from_if_id", core.pc_value_from_if_id, is_hex=True)
 
-    # mem_read request
+    instruction = 0
     try: 
-        logger.info(f"ram_mem_read_request = {dut.ram_instance.mem_read.value.to_unsigned()}")
+        instruction = core.instruction_from_if_id.value.to_unsigned()
     except Exception:
-        logger.info(f"ram_mem_read_request = {dut.ram_instance.mem_read.value}")
+        logger.info(f"instruction_from_if_id = {core.instruction_from_if_id.value}")
+    else:
+        logger.info(f"instruction_from_if_id = {binary_to_assembly((instruction))}")
 
-    # mem_read 
-    try: 
-        logger.info(f"MMU_mem_read = {dut.MMU_instance.mem_read.value.to_unsigned()}")
-    except Exception:
-        logger.info(f"MMU_mem_read = {dut.MMU_instance.mem_read.value}")
-        
-    # ram_address
-    try: 
-        logger.info(f"ram_address = {dut.ram_instance.data_address.value.to_unsigned()} or " + 
-                    f"0x{dut.ram_instance.data_address.value.to_unsigned():08x}")
-    except Exception:
-        logger.info(f"ram_address = {dut.ram_instance.data_address.value}")
+    # Immediates
+    log_sig("sign_ext_from_sign_ext_instance", core.sign_ext_from_sign_ext_instance, is_hex=True, is_signed=True)
+    log_sig("b_type_immediate", core.b_type_immediate_from_sign_ext_instance, is_signed=True)
+    log_sig("jal_offset", core.jal_offset_from_sign_ext_instance, is_signed=True)
+    log_sig("u_type_immediate", core.u_type_immediate_from_sign_ext_instance, is_hex=True)
+    log_sig("s_type_immediate", core.s_type_immediate_from_sign_ext_instance, is_signed=True)
+    log_sig("pc_plus_u_type_immediate_value", core.pc_plus_u_type_immediate_value, is_hex=True)
 
-    # cpu_address
-    try: 
-        logger.info(f"cpu_address = {dut.core_instance.mem_address.value.to_unsigned()} or " + 
-                    f"0x{dut.core_instance.mem_address.value.to_unsigned():08x}")
-    except Exception:
-        logger.info(f"cpu_address = {dut.core_instance.mem_address.value}")
+    # Control Signals (Decode)
+    log_sig("pc_src_from_control_unit", core.pc_src_from_control_unit)
+    log_sig("alu_src_control_from_control_unit", core.alu_src_control_from_control_unit)
+    log_sig("alu_op_control_from_control_unit", core.alu_op_control_from_control_unit)
+    log_sig("mem_read_from_control_unit", core.mem_read_from_control_unit)
+    log_sig("mem_write_from_control_unit", core.mem_write_from_control_unit)
+    log_sig("reg_write_control_from_control_unit", core.reg_write_control_from_control_unit)
+    log_sig("write_back_mux_control_from_control_unit", core.write_back_mux_control_from_control_unit)
+    log_sig("byte_op_from_control_unit", core.byte_op_from_control_unit)
+    log_sig("half_op_from_control_unit", core.half_op_from_control_unit)
+
+
+    logger.critical(f"---------Stage-03 EXECUTE (SIM TIME: {sim_time} ns)-----------")
+    log_sig("rs1_from_id_ex (Reg Addr 1)", core.rs1_from_id_ex)
+    log_sig("rs2_from_id_ex (Reg Addr 2)", core.rs2_from_id_ex)
+    log_sig("rs1_value (RegFile Out 1)", core.rs1_value, is_hex=True)
+    log_sig("rs2_value (RegFile Out 2)", core.rs2_value, is_hex=True)
+    log_sig("dest_reg_from_id_ex (Dest Reg Addr)", core.dest_reg_from_id_ex)
     
-    logger.critical(f"---------Stage-03 MEMORY AND WRITE-BACK(SIM TIME: {sim_time} ns)-----------")
-    # reg_write_control
-    try: 
-        logger.info(f"reg_write_control = {dut.core_instance.reg_file_instance.reg_write_control.value.to_unsigned()}")
-    except Exception:
-        logger.info(f"reg_write_control = {dut.core_instance.reg_file_instance.reg_write_control.value}")   
+    # Forwarding & ALU Inputs
+    log_sig("rs1_value_from_forwarding_unit (ALU Src1)", core.rs1_value_from_forwarding_unit, is_hex=True)
+    log_sig("alu_src_value (ALU Src2)", core.alu_src_value, is_hex=True)
+    log_sig("rs2_value_from_forwarding_unit (Forwarded Mem Data/Reg Src 2)", core.rs2_value_from_forwarding_unit, is_hex=True)
+    
+    # ALU Control & Output
+    log_sig("alu_control_from_id_ex", core.alu_control_from_id_ex)
+    log_sig("invert_control_from_id_ex", core.invert_control_from_id_ex)
+    log_sig("alu_out_from_main_alu_instance", core.alu_out_from_main_alu_instance, is_hex=True, is_signed=True)
+    log_sig("zero_flag_from_main_alu_instance", core.zero_flag_from_main_alu_instance)
+    
+    # Branch & Jump Targets
+    log_sig("pc_src_control_value (Final PC Mux Sel)", core.pc_src_control_value)
+    log_sig("pc_plus_immediate_value (Branch Target)", core.pc_plus_immediate_value, is_hex=True)
+    log_sig("pc_plus_u_type_immediate_from_id_ex", core.pc_plus_u_type_immediate_from_id_ex, is_hex=True)
+    log_sig("pc_plus_jal_offset_value (JAL Target)", core.pc_plus_jal_offset_value, is_hex=True)
+    log_sig("jalr_pc (JALR Target)", core.jalr_pc, is_hex=True)
 
-    # reg_write_data
-    try: 
-        logger.info(f"reg_write_data = {dut.core_instance.reg_file_instance.reg_write_data.value.to_signed()} or " + 
-                    f"0x{dut.core_instance.reg_file_instance.reg_write_data.value.to_unsigned():08x}")
-    except Exception:
-        logger.info(f"reg_write_data = {dut.core_instance.reg_file_instance.reg_write_data.value}")   
+    # Memory Requests to outside world
+    log_sig("mem_read_request (To Mem)", core.mem_read_request)
+    log_sig("mem_write_request (To Mem)", core.mem_write_request)
+    log_sig("mem_address_request (To Mem)", core.mem_address_request, is_hex=True)
+    log_sig("mem_data_to_mem (Data out to Mem)", core.mem_data_to_mem, is_hex=True, is_signed=True)
 
-    # dest_reg
-    try: 
-        logger.info(f"dest_reg = {dut.core_instance.reg_file_instance.dest_reg.value.to_unsigned()}")
-    except Exception:
-        logger.info(f"dest_reg = {dut.core_instance.reg_file_instance.dest_reg.value}")   
 
-    # data_out ram
-    try: 
-        logger.info(f"data_out of ram = {dut.ram_instance.data_out.value.to_unsigned()} or " + 
-                    f"0x{dut.ram_instance.data_out.value.to_unsigned():08x}")
-    except Exception:
-        logger.info(f"data_out of ram = {dut.ram_instance.data_out.value}")
-
-    # data_out ram
-    try: 
-        logger.info(f"data_out of boot rom = {dut.boot_rom_instance.data.value.to_unsigned()} or " + 
-                    f"0x{dut.boot_rom_instance.data.value.to_unsigned():08x}")
-    except Exception:
-        logger.info(f"data_out of boot rom = {dut.boot_rom_instance.data.value}")
-
-    # mem_read 
-    try: 
-        logger.info(f"MMU_mem_read = {dut.MMU_instance.mem_read.value.to_unsigned()}")
-    except Exception:
-        logger.info(f"MMU_mem_read = {dut.MMU_instance.mem_read.value}")
-
-    # MMU data to cpu
-    try: 
-        logger.info(f"MMU_data_to_cpu = {dut.MMU_instance.data_to_cpu.value.to_unsigned()}")
-    except Exception:
-        logger.info(f"MMU_data_to_cpu = {dut.MMU_instance.data_to_cpu.value}")
-
-    # MMU signals
-    try: 
-        logger.info(f"MMU_uart_tx_status_read = {dut.MMU_instance.uart_tx_status_read.value.to_unsigned()}")
-        logger.info(f"MMU_uart_read = {dut.MMU_instance.uart_read.value.to_unsigned()}")
-        logger.info(f"MMU_boot_rom_read = {dut.MMU_instance.boot_rom_read.value.to_unsigned()}")
-        logger.info(f"MMU_vram_read = {dut.MMU_instance.vram_read.value.to_unsigned()}")
-        logger.info(f"MMU_mem_read = {dut.MMU_instance.mem_read.value.to_unsigned()}")
-    except Exception:
-        logger.info(f"MMU_uart_tx_status_read = {dut.MMU_instance.uart_tx_status_read.value}")
-        logger.info(f"MMU_uart_read = {dut.MMU_instance.uart_read.value}")
-        logger.info(f"MMU_boot_rom_read = {dut.MMU_instance.boot_rom_read.value}")
-        logger.info(f"MMU_vram_read = {dut.MMU_instance.vram_read.value}")
-        logger.info(f"MMU_mem_read = {dut.MMU_instance.mem_read.value}")
+    logger.critical(f"---------Stage-04 MEMORY AND WRITE BACK (SIM TIME: {sim_time} ns)-----------")
+    # Memory Address & Status
+    log_sig("alu_out_from_ex_mem (Mem Address)", core.alu_out_from_ex_mem, is_hex=True)
+    log_sig("mem_read (from ex_mem)", core.mem_read)
+    
+    # Inbound Memory Data
+    log_sig("mem_data_from_mem (Raw CPU Input)", core.mem_data_from_mem, is_hex=True)
+    log_sig("load_op_data (Formatted Load Data)", core.load_op_data, is_hex=True, is_signed=True)
+    
+    # Format Control
+    log_sig("byte_op", core.byte_op)
+    log_sig("half_op", core.half_op)
+    log_sig("unsigned_op_from_ex_mem", core.unsigned_op_from_ex_mem)
+    
+    # Write Back Muxing & Controls
+    log_sig("dest_reg_from_ex_mem", core.dest_reg_from_ex_mem)
+    log_sig("reg_write_control_from_ex_mem", core.reg_write_control_from_ex_mem)
+    log_sig("write_back_mux_control_from_ex_mem", core.write_back_mux_control_from_ex_mem)
+    
+    # Final Write Back Data directly to RegFile
+    log_sig("reg_write_back_data (Data to RegFile)", core.reg_write_back_data, is_hex=True, is_signed=True)

@@ -160,6 +160,8 @@ module core(
     );
 
     id_ex_reg id_ex_reg_instance(
+        .clk(clk),
+        .rst(rst),
         .mem_to_reg_control_in(write_back_mux_control_from_control_unit),
         .mem_to_reg_control_out(write_back_mux_control_from_id_ex),
         .reg_write_control_in(reg_write_control_from_control_unit),

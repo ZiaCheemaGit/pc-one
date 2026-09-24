@@ -70,6 +70,9 @@ async def test_basic_asm(dut):
             await RisingEdge(dut.clk_from_FPGA)
             if LOGGING_ON:
                 log_signals_five_stage_rv32i(logger, dut)
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
                 
             logger.critical("Test ended control reached at label HALT")
 

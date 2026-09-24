@@ -47,7 +47,8 @@ class B_instruction:
         return int(self.get_binary_string(), 2)
     
     def get_asm(self):
-        return f"{self.mnemonic} x{int(self.rs1_str, 2)}, x{int(self.rs2_str, 2)}, {self._sign_extend(self.imm_12)}"
+        b_imm_str = f"{self.imm_12:013b}"
+        return f"{self.mnemonic} x{int(self.rs1_str, 2)}, x{int(self.rs2_str, 2)}, {self._sign_extend(b_imm_str)}"
 
 class S_instruction:
     def __init__(self, imm_12, rs2, rs1, funct3, opcode, mnemonic):
