@@ -134,25 +134,25 @@ def log_signals_five_stage_rv32i(logger, dut):
     else:
         logger.info(f"instruction_from_if_id = {binary_to_assembly((instruction))}")
 
-    # Immediates
-    log_sig("sign_ext_from_sign_ext_instance", core.sign_ext_from_sign_ext_instance, is_hex=True, is_signed=True)
-    log_sig("b_type_immediate", core.b_type_immediate_from_sign_ext_instance, is_signed=True)
-    log_sig("jal_offset", core.jal_offset_from_sign_ext_instance, is_signed=True)
-    log_sig("u_type_immediate", core.u_type_immediate_from_sign_ext_instance, is_hex=True)
-    log_sig("s_type_immediate", core.s_type_immediate_from_sign_ext_instance, is_signed=True)
-    log_sig("pc_plus_u_type_immediate_value", core.pc_plus_u_type_immediate_value, is_hex=True)
-    log_sig("pc_plus_immediate_value (Branch Target)", core.pc_plus_immediate_value, is_hex=True)
+    # # Immediates
+    # log_sig("sign_ext_from_sign_ext_instance", core.sign_ext_from_sign_ext_instance, is_hex=True, is_signed=True)
+    # log_sig("b_type_immediate", core.b_type_immediate_from_sign_ext_instance, is_signed=True)
+    # log_sig("jal_offset", core.jal_offset_from_sign_ext_instance, is_signed=True)
+    # log_sig("u_type_immediate", core.u_type_immediate_from_sign_ext_instance, is_hex=True)
+    # log_sig("s_type_immediate", core.s_type_immediate_from_sign_ext_instance, is_signed=True)
+    # log_sig("pc_plus_u_type_immediate_value", core.pc_plus_u_type_immediate_value, is_hex=True)
+    # log_sig("pc_plus_immediate_value (Branch Target)", core.pc_plus_immediate_value, is_hex=True)
     
-    # Control Signals (Decode)
-    log_sig("pc_src_from_control_unit", core.pc_src_control)
-    log_sig("alu_src_control_from_control_unit", core.alu_src_control_from_control_unit)
-    log_sig("alu_op_control_from_control_unit", core.alu_op_control_from_control_unit)
-    log_sig("mem_read_from_control_unit", core.mem_read_from_control_unit)
-    log_sig("mem_write_from_control_unit", core.mem_write_from_control_unit)
-    log_sig("reg_write_control_from_control_unit", core.reg_write_control_from_control_unit)
-    log_sig("write_back_mux_control_from_control_unit", core.write_back_mux_control_from_control_unit)
-    log_sig("byte_op_from_control_unit", core.byte_op_from_control_unit)
-    log_sig("half_op_from_control_unit", core.half_op_from_control_unit)
+    # # Control Signals (Decode)
+    # log_sig("pc_src_from_control_unit", core.pc_src_control)
+    # log_sig("alu_src_control_from_control_unit", core.alu_src_control_from_control_unit)
+    # log_sig("alu_op_control_from_control_unit", core.alu_op_control_from_control_unit)
+    # log_sig("mem_read_from_control_unit", core.mem_read_from_control_unit)
+    # log_sig("mem_write_from_control_unit", core.mem_write_from_control_unit)
+    # log_sig("reg_write_control_from_control_unit", core.reg_write_control_from_control_unit)
+    # log_sig("write_back_mux_control_from_control_unit", core.write_back_mux_control_from_control_unit)
+    # log_sig("byte_op_from_control_unit", core.byte_op_from_control_unit)
+    # log_sig("half_op_from_control_unit", core.half_op_from_control_unit)
 
 
     logger.critical(f"---------Stage-03 EXECUTE (SIM TIME: {sim_time} ns)-----------")
@@ -163,6 +163,8 @@ def log_signals_five_stage_rv32i(logger, dut):
     
     # Forwarding & ALU Inputs
     log_sig("rs1_value_from_forwarding_unit (ALU Src1)", core.rs1_value_from_forwarding_unit, is_hex=True)
+    log_sig("dest_reg_from_ex_mem", core.dest_reg_from_ex_mem)
+    log_sig("dest_reg_from_ex_mem", core.rs1_value)
     log_sig("alu_src_value (ALU Src2)", core.alu_src_value, is_hex=True)
     log_sig("rs2_value_from_forwarding_unit (Forwarded Mem Data/Reg Src 2)", core.rs2_value_from_forwarding_unit, is_hex=True)
     
@@ -186,10 +188,8 @@ def log_signals_five_stage_rv32i(logger, dut):
     log_sig("mem_data_to_mem (Data out to Mem)", core.mem_data_to_mem, is_hex=True, is_signed=True)
 
 
-    logger.critical(f"---------Stage-04 MEMORY AND WRITE BACK (SIM TIME: {sim_time} ns)-----------")
+    logger.critical(f"---------------Stage-04 MEMORY (SIM TIME: {sim_time} ns)-----------------")
     # Memory Address & Status
-    log_sig("dest_reg_from_id_ex (Dest Reg Addr)", core.dest_reg_from_ex_mem)
-    log_sig("alu_out_from_ex_mem (Mem Address)", core.alu_out_from_ex_mem, is_hex=True)
     log_sig("mem_read (from ex_mem)", core.mem_read)
     
     # Inbound Memory Data
@@ -200,12 +200,10 @@ def log_signals_five_stage_rv32i(logger, dut):
     log_sig("byte_op", core.byte_op)
     log_sig("half_op", core.half_op)
     log_sig("unsigned_op_from_ex_mem", core.unsigned_op_from_ex_mem)
-    
-    # Write Back Muxing & Controls
+
+    logger.critical(f"--------------Stage-05 WRITE BACK (SIM TIME: {sim_time} ns)--------------")
     log_sig("dest_reg_from_ex_mem", core.dest_reg_from_ex_mem)
-    log_sig("reg_write_control_from_ex_mem", core.reg_write_control_from_ex_mem)
-    log_sig("write_back_mux_control_from_ex_mem", core.write_back_mux_control_from_ex_mem)
-    
-    # Final Write Back Data directly to RegFile
+    log_sig("reg_write_control_from_mem_write_back_reg", core.reg_write_control_from_mem_write_back_reg)
+    log_sig("write_back_mux_control_from_mem_write_back_reg", core.write_back_mux_control_from_mem_write_back_reg)
     log_sig("reg_write_back_data (Data to RegFile)", core.reg_write_back_data, is_hex=True, is_signed=True)
 
