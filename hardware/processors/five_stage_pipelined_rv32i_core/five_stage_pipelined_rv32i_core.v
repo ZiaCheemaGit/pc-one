@@ -28,17 +28,16 @@ module core(
     output [31:0] mem_data_to_mem
 );
 
-    wire [31:0] pc_plus_immediate_value, b_type_immediate_from_sign_ext_instance,
-    pc_value_from_if_id, pc_plus_jal_offset_value, jal_offset_from_sign_ext_instance, jalr_pc, 
-    alu_out_from_main_alu_instance, pc_jump_add, pc_value, pc_plus_4_value, 
+    wire [31:0] b_type_immediate_from_sign_ext_instance,
+    pc_value_from_if_id, jal_offset_from_sign_ext_instance, jalr_pc, 
+    alu_out_from_main_alu_instance, pc_jump_add, pc_value, 
     instruction_from_if_id, sign_ext_from_sign_ext_instance, 
     u_type_immediate_from_sign_ext_instance, s_type_immediate_from_sign_ext_instance, 
-    alu_out_from_ex_mem, pc_plus_4, 
-    alu_src_value,
+    alu_out_from_ex_mem, pc_plus_4, alu_src1_value,
+    alu_src2_value, pc_value_from_id_ex,
     load_op_data, rs1_value, rs2_value, rs1_value_from_forwarding_unit, 
     rs2_value_from_forwarding_unit, reg_write_back_data, sign_ext_from_id_ex, 
-    s_type_immediate_from_id_ex, pc_plus_immediate_from_id_ex,
-    pc_plus_jal_offset_from_id_ex, load_op_data_from_mem_write_back_reg,
+    s_type_immediate_from_id_ex, load_op_data_from_mem_write_back_reg,
     alu_out_from_mem_write_back_reg;
 
     wire [4:0] dest_reg_from_ex_mem, dest_reg_from_id_ex, rs1_from_id_ex, rs2_from_id_ex, 
@@ -71,18 +70,6 @@ module core(
     assign byte_op = byte_op_from_id_ex;
     assign half_op = half_op_from_id_ex;
 
-    adder32 adder32_instance_immediate(
-        .in1(pc_value_from_if_id),
-        .in2(b_type_immediate_from_sign_ext_instance),
-        .out(pc_plus_immediate_value)
-    );
-
-    adder32 jal_adder(
-        .in1(pc_value_from_if_id),
-        .in2(jal_offset_from_sign_ext_instance),
-        .out(pc_plus_jal_offset_value)
-    );
-
     pc_src_control pc_src_control_instance(
         .pc_mux_control(pc_src_control_from_id_ex),
         .zero_flag(zero_flag_from_main_alu_instance),
@@ -96,16 +83,10 @@ module core(
         .pc_next(pc_value)
     );
 
-    adder32 fetch_adder(
-        .in1(32'h4),
-        .in2(pc_value),
-        .out(pc_plus_4_value)
-    );
-
     mux_4X1 pc_mux(
-        .in0(pc_plus_4_value),
-        .in1(pc_plus_immediate_from_id_ex),
-        .in2(pc_plus_jal_offset_from_id_ex), 
+        .in0(),
+        .in1(),
+        .in2(), 
         .in3(jalr_pc), 
         .sel(pc_src_control_value),
         .out(pc_jump_add)
@@ -158,6 +139,8 @@ module core(
         .clk(clk),
         .rst(rst),
         .flush(flush),
+        .pc_value_in(pc_value_from_if_id),
+        .pc_value_out(pc_value_from_id_ex),
         .mem_to_reg_control_in(write_back_mux_control_from_control_unit),
         .mem_to_reg_control_out(write_back_mux_control_from_id_ex),
         .reg_write_control_in(reg_write_control_from_control_unit),
@@ -189,11 +172,7 @@ module core(
         .alu_control_in(alu_control),
         .alu_control_out(alu_control_from_id_ex),
         .pc_src_control_in(pc_src_control),
-        .pc_src_control_out(pc_src_control_from_id_ex),
-        .pc_plus_immediate_in(pc_plus_immediate_value),
-        .pc_plus_immediate_out(pc_plus_immediate_from_id_ex),
-        .pc_plus_jal_offset_in(pc_plus_jal_offset_value),
-        .pc_plus_jal_offset_out(pc_plus_jal_offset_from_id_ex)
+        .pc_src_control_out(pc_src_control_from_id_ex)
     );
 
     reg_file reg_file_instance(
@@ -208,18 +187,27 @@ module core(
         .reg_write_control(reg_write_control_from_mem_write_back_reg)
     );
     
-    mux_4X1 alu_src_mux(
+    mux_4X1 alu_src1_mux(
+        .in0(rs1_value_from_forwarding_unit),
+        .in1(pc_value_from_id_ex),
+        .in2(),
+        .sel(),
+        .out(alu_src1_value)
+    ); 
+
+    mux_4X1 alu_src2_mux(
         .in0(rs2_value_from_forwarding_unit),
         .in1(sign_ext_from_id_ex),
         .in2(s_type_immediate_from_id_ex),
+        .in3(32'b4),
         .sel(alu_src_control_from_id_ex),
-        .out(alu_src_value)
+        .out(alu_src2_value)
     ); 
     
     main_alu main_alu_instance(
         .invert(invert_control_from_id_ex),
-        .src1(rs1_value_from_forwarding_unit), 
-        .src2(alu_src_value),
+        .src1(alu_src1_value), 
+        .src2(alu_src2_value),
         .operation(alu_control_from_id_ex),
         .zero_flag(zero_flag_from_main_alu_instance),
         .out(alu_out_from_main_alu_instance)

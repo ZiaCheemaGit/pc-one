@@ -24,6 +24,8 @@ module id_ex_reg(
     output reg [4:0] rs2_out,
     input wire [31:0] sign_ext_in,
     output reg [31:0] sign_ext_out,
+    input wire [31:0] pc_value_in,
+    output reg [31:0] pc_value_out,
     input wire [31:0] s_type_immediate_in,
     output reg [31:0] s_type_immediate_out,
     input wire [1:0] alu_src_control_in,
@@ -54,6 +56,7 @@ module id_ex_reg(
             sign_ext_out <= 32'b0;
             s_type_immediate_out <= 32'b0;
             pc_src_control_out <= 2'b0;
+            pc_value_out <= 32'b0;
         end else if (flush) begin 
             alu_control_out <= 4'b0;
             invert_control_out <= 1'b0;
@@ -71,6 +74,7 @@ module id_ex_reg(
             sign_ext_out <= 32'b0;
             s_type_immediate_out <= 32'b0;
             pc_src_control_out <= 2'b0;
+            pc_value_out <= 32'b0;
         end else begin 
             alu_control_out <= alu_control_in;
             invert_control_out <= invert_control_in;
@@ -88,6 +92,7 @@ module id_ex_reg(
             sign_ext_out <= sign_ext_in;
             s_type_immediate_out <= s_type_immediate_in;
             pc_src_control_out <= pc_src_control_in;
+            pc_value_out <= pc_value_in;
         end
     end
 
