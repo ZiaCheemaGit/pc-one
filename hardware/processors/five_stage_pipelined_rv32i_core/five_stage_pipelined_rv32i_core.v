@@ -33,16 +33,13 @@ module core(
     alu_out_from_main_alu_instance, pc_jump_add, pc_value, pc_plus_4_value, 
     instruction_from_if_id, sign_ext_from_sign_ext_instance, 
     u_type_immediate_from_sign_ext_instance, s_type_immediate_from_sign_ext_instance, 
-    alu_out_from_ex_mem, pc_plus_4, pc_plus_4_from_ex_mem, pc_plus_u_type_immediate_value, 
-    pc_plus_u_type_immediate_from_ex_mem, u_type_immediate_from_ex_mem, alu_src_value,
+    alu_out_from_ex_mem, pc_plus_4, 
+    alu_src_value,
     load_op_data, rs1_value, rs2_value, rs1_value_from_forwarding_unit, 
-    rs2_value_from_forwarding_unit, reg_write_back_data, pc_plus_4_from_if_id, 
-    pc_plus_u_type_immediate_from_id_ex, pc_plus_4_from_id_ex, u_type_immediate_from_id_ex,
-    sign_ext_from_id_ex, s_type_immediate_from_id_ex, pc_plus_immediate_from_id_ex,
+    rs2_value_from_forwarding_unit, reg_write_back_data, sign_ext_from_id_ex, 
+    s_type_immediate_from_id_ex, pc_plus_immediate_from_id_ex,
     pc_plus_jal_offset_from_id_ex, load_op_data_from_mem_write_back_reg,
-    alu_out_from_mem_write_back_reg, pc_plus_4_from_mem_write_back_reg, 
-    u_type_immediate_from_mem_write_back_reg, 
-    pc_plus_u_type_immediate_from_mem_write_back_reg;
+    alu_out_from_mem_write_back_reg;
 
     wire [4:0] dest_reg_from_ex_mem, dest_reg_from_id_ex, rs1_from_id_ex, rs2_from_id_ex, 
     dest_reg_from_mem_write_back_reg;
@@ -120,11 +117,9 @@ module core(
         .en(1'b1),
         .flush(flush),
         .pc_in(pc_value),   
-        .inst_in(instruction), 
-        .pc_plus_4_in(pc_plus_4_value),
+        .inst_in(instruction),
         .pc_out(pc_value_from_if_id),
-        .inst_out(instruction_from_if_id),
-        .pc_plus_4_out(pc_plus_4_from_if_id)
+        .inst_out(instruction_from_if_id)
     );
     
     sign_ext_12_to_32 sign_ext_12_to_32_instance(
@@ -134,12 +129,6 @@ module core(
         .u_type_immediate(u_type_immediate_from_sign_ext_instance),
         .jal_offset(jal_offset_from_sign_ext_instance),
         .s_type_immediate(s_type_immediate_from_sign_ext_instance)
-    );
-
-    adder32 u_type_adder(
-        .in1(u_type_immediate_from_sign_ext_instance),
-        .in2(pc_value_from_if_id),
-        .out(pc_plus_u_type_immediate_value)
     );
     
     control_unit control_unit_instance(
@@ -177,16 +166,10 @@ module core(
         .unsigned_op_out(unsigned_op_from_id_ex),
         .byte_op_in(byte_op_from_control_unit),
         .byte_op_out(byte_op_from_id_ex),
-        .pc_plus_u_type_immediate_value_in(pc_plus_u_type_immediate_value),
-        .pc_plus_u_type_immediate_value_out(pc_plus_u_type_immediate_from_id_ex),
         .half_op_in(half_op_from_control_unit),
         .half_op_out(half_op_from_id_ex),
         .dest_reg_in(instruction_from_if_id[11:7]),
         .dest_reg_out(dest_reg_from_id_ex),
-        .pc_plus_4_in(pc_plus_4_from_if_id),
-        .pc_plus_4_out(pc_plus_4_from_id_ex),
-        .u_type_immediate_in(u_type_immediate_from_sign_ext_instance),
-        .u_type_immediate_out(u_type_immediate_from_id_ex),
         .mem_read_in(mem_read_from_control_unit),
         .mem_read_out(mem_read_from_id_ex),
         .mem_write_in(mem_write_from_control_unit),
@@ -259,12 +242,6 @@ module core(
         .dest_reg_out(dest_reg_from_ex_mem),
         .mem_to_reg_control_in(write_back_mux_control_from_id_ex),
         .mem_to_reg_control_out(write_back_mux_control_from_ex_mem),
-        .pc_plus_4_in(pc_plus_4_from_id_ex),
-        .pc_plus_4_out(pc_plus_4_from_ex_mem),
-        .pc_plus_u_type_immediate_in(pc_plus_u_type_immediate_from_id_ex),
-        .pc_plus_u_type_immediate_out(pc_plus_u_type_immediate_from_ex_mem),
-        .u_type_immediate_in(u_type_immediate_from_id_ex),
-        .u_type_immediate_out(u_type_immediate_from_ex_mem),
         .mem_read_in(mem_read_from_id_ex),
         .mem_read_out(mem_read_from_ex_mem)
     );
@@ -285,12 +262,6 @@ module core(
         .load_op_data_out(load_op_data_from_mem_write_back_reg),
         .alu_result_in(alu_out_from_ex_mem),
         .alu_result_out(alu_out_from_mem_write_back_reg),
-        .pc_plus_4_in(pc_plus_4_from_ex_mem),
-        .pc_plus_4_out(pc_plus_4_from_mem_write_back_reg),
-        .u_type_immediate_in(u_type_immediate_from_ex_mem),
-        .u_type_immediate_out(u_type_immediate_from_mem_write_back_reg),
-        .pc_plus_u_type_immediate_in(pc_plus_u_type_immediate_from_ex_mem),
-        .pc_plus_u_type_immediate_out(pc_plus_u_type_immediate_from_mem_write_back_reg),
         .write_back_mux_control_in(write_back_mux_control_from_ex_mem),
         .write_back_mux_control_out(write_back_mux_control_from_mem_write_back_reg),
         .dest_reg_in(dest_reg_from_ex_mem),
@@ -303,9 +274,9 @@ module core(
     mux_5x1 ex_mem_forward_mux(
         .in0(alu_out_from_ex_mem),
         // .in1(32'h00000000),
-        .in2(pc_plus_4_from_ex_mem), 
-        .in3(u_type_immediate_from_ex_mem), 
-        .in4(pc_plus_u_type_immediate_from_ex_mem),
+        .in2(), 
+        .in3(), 
+        .in4(),
         .sel(write_back_mux_control_from_ex_mem),
         .out(forwarded_data_from_ex_mem)
     );
@@ -325,9 +296,9 @@ module core(
     mux_5x1 reg_write_mux(
         .in0(alu_out_from_mem_write_back_reg),
         .in1(load_op_data_from_mem_write_back_reg),
-        .in2(pc_plus_4_from_mem_write_back_reg), 
-        .in3(u_type_immediate_from_mem_write_back_reg), 
-        .in4(pc_plus_u_type_immediate_from_mem_write_back_reg),
+        .in2(), 
+        .in3(), 
+        .in4(),
         .sel(write_back_mux_control_from_mem_write_back_reg),
         .out(reg_write_back_data)
     );
