@@ -33,7 +33,7 @@ module core(
     alu_out_from_main_alu_instance, pc_jump_add, pc_value, pc_plus_4_value, 
     instruction_from_if_id, sign_ext_from_sign_ext_instance, 
     u_type_immediate_from_sign_ext_instance, s_type_immediate_from_sign_ext_instance, 
-    alu_out_from_ex_mem, pc_plus_4, pc_plus_4_from_ex_mem, pc_plus_u_type_immediate_value, 
+    alu_out_from_ex_mem, pc_plus_4_from_ex_mem, pc_plus_u_type_immediate_value, 
     pc_plus_u_type_immediate_from_ex_mem, u_type_immediate_from_ex_mem, alu_src_value,
     load_op_data, rs1_value, rs2_value, rs1_value_from_forwarding_unit, 
     rs2_value_from_forwarding_unit, reg_write_back_data, pc_plus_4_from_if_id, 
@@ -55,7 +55,7 @@ module core(
     wire [1:0] pc_src_control_value, alu_op_control_from_control_unit, pc_src_control, 
     alu_src_control_from_control_unit, alu_src_control_from_id_ex, pc_src_control_from_id_ex;
 
-    wire flush, invert_control_from_alu_control, zero_flag_from_main_alu_instance, func3, 
+    wire flush, invert_control_from_alu_control, zero_flag_from_main_alu_instance, 
     reg_write_control_from_control_unit, unsigned_op_from_control_unit, byte_op_from_control_unit, 
     half_op_from_control_unit, mem_read_from_control_unit, mem_read_from_ex_mem, byte_op_from_ex_mem,
     half_op_from_ex_mem, unsigned_op_from_ex_mem, mem_write_from_control_unit, 
