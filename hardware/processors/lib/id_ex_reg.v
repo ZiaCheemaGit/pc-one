@@ -7,8 +7,6 @@ module id_ex_reg(
     input wire byte_op_in,
     input wire unsigned_op_in,
     input wire half_op_in,
-    input wire [31:0] pc_plus_u_type_immediate_value_in,
-    output reg [31:0] pc_plus_u_type_immediate_value_out,
     output reg byte_op_out,
     output reg half_op_out,
     output reg unsigned_op_out,
@@ -16,10 +14,6 @@ module id_ex_reg(
     input wire [4:0] dest_reg_in,
     output reg [4:0] dest_reg_out,
     output reg [2:0] mem_to_reg_control_out,
-    input wire [31:0] pc_plus_4_in,
-    output reg [31:0] pc_plus_4_out,
-    input wire [31:0] u_type_immediate_in,
-    output reg [31:0] u_type_immediate_out,
     input wire mem_read_in,
     output reg mem_read_out,
     input wire mem_write_in,
@@ -30,6 +24,8 @@ module id_ex_reg(
     output reg [4:0] rs2_out,
     input wire [31:0] sign_ext_in,
     output reg [31:0] sign_ext_out,
+    input wire [31:0] pc_value_in,
+    output reg [31:0] pc_value_out,
     input wire [31:0] s_type_immediate_in,
     output reg [31:0] s_type_immediate_out,
     input wire [1:0] alu_src_control_in,
@@ -39,11 +35,7 @@ module id_ex_reg(
     input wire [3:0] alu_control_in,
     output reg [3:0] alu_control_out,
     input wire [1:0] pc_src_control_in,
-    output reg [1:0] pc_src_control_out,
-    input wire [31:0] pc_plus_immediate_in,
-    output reg [31:0] pc_plus_immediate_out,
-    input wire [31:0] pc_plus_jal_offset_in,
-    output reg [31:0] pc_plus_jal_offset_out
+    output reg [1:0] pc_src_control_out
 );
 
     always @(posedge clk or posedge rst) begin
@@ -60,15 +52,11 @@ module id_ex_reg(
             half_op_out <= 1'b0;
             unsigned_op_out <= 1'b0;
             reg_write_control_out <= 1'b0; 
-            pc_plus_u_type_immediate_value_out <= 32'b0;
             mem_to_reg_control_out <= 3'b0;
-            pc_plus_4_out <= 32'b0;
-            u_type_immediate_out <= 32'b0;
             sign_ext_out <= 32'b0;
             s_type_immediate_out <= 32'b0;
             pc_src_control_out <= 2'b0;
-            pc_plus_immediate_out <= 32'b0;
-            pc_plus_jal_offset_out <= 32'b0;
+            pc_value_out <= 32'b0;
         end else if (flush) begin 
             alu_control_out <= 4'b0;
             invert_control_out <= 1'b0;
@@ -82,15 +70,11 @@ module id_ex_reg(
             half_op_out <= 1'b0;
             unsigned_op_out <= 1'b0;
             reg_write_control_out <= 1'b0; 
-            pc_plus_u_type_immediate_value_out <= 32'b0;
             mem_to_reg_control_out <= 3'b0;
-            pc_plus_4_out <= 32'b0;
-            u_type_immediate_out <= 32'b0;
             sign_ext_out <= 32'b0;
             s_type_immediate_out <= 32'b0;
             pc_src_control_out <= 2'b0;
-            pc_plus_immediate_out <= 32'b0;
-            pc_plus_jal_offset_out <= 32'b0;
+            pc_value_out <= 32'b0;
         end else begin 
             alu_control_out <= alu_control_in;
             invert_control_out <= invert_control_in;
@@ -104,15 +88,11 @@ module id_ex_reg(
             half_op_out <= half_op_in;
             unsigned_op_out <= unsigned_op_in;
             reg_write_control_out <= reg_write_control_in; 
-            pc_plus_u_type_immediate_value_out <= pc_plus_u_type_immediate_value_in;
             mem_to_reg_control_out <= mem_to_reg_control_in;
-            pc_plus_4_out <= pc_plus_4_in;
-            u_type_immediate_out <= u_type_immediate_in;
             sign_ext_out <= sign_ext_in;
             s_type_immediate_out <= s_type_immediate_in;
             pc_src_control_out <= pc_src_control_in;
-            pc_plus_immediate_out <= pc_plus_immediate_in;
-            pc_plus_jal_offset_out <= pc_plus_jal_offset_in;
+            pc_value_out <= pc_value_in;
         end
     end
 
