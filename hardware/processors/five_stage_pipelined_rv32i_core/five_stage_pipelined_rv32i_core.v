@@ -6,9 +6,9 @@ So the pc in fetch cycle is updated and the instruction is only captured in
 next cycle directly. This is because rom is synchronus and has a one cycle delay 
 of its own.
 
-Similarly the load/store controls are sent to memory directly from control unit but the 
+Similarly the load/store controls are sent to memory directly from execute stage and 
 load happens in next cycle. The ram is also synchronus and has one cycle delay. That is 
-why a store instruction is directly retired from control unit.   
+why a store instruction is directly retired in execute stage.   
 
 */
 
@@ -39,14 +39,18 @@ module core(
     rs2_value_from_forwarding_unit, reg_write_back_data, pc_plus_4_from_if_id, 
     pc_plus_u_type_immediate_from_id_ex, pc_plus_4_from_id_ex, u_type_immediate_from_id_ex,
     sign_ext_from_id_ex, s_type_immediate_from_id_ex, pc_plus_immediate_from_id_ex,
-    pc_plus_jal_offset_from_id_ex;
+    pc_plus_jal_offset_from_id_ex, load_op_data_from_mem_write_back_reg,
+    alu_out_from_mem_write_back_reg, pc_plus_4_from_mem_write_back_reg, 
+    u_type_immediate_from_mem_write_back_reg, 
+    pc_plus_u_type_immediate_from_mem_write_back_reg;
 
-    wire [4:0] dest_reg_from_ex_mem, dest_reg_from_id_ex, rs1_from_id_ex, rs2_from_id_ex;
+    wire [4:0] dest_reg_from_ex_mem, dest_reg_from_id_ex, rs1_from_id_ex, rs2_from_id_ex, 
+    dest_reg_from_mem_write_back_reg;
 
     wire [3:0] alu_control, alu_control_from_id_ex;
 
     wire [2:0] write_back_mux_control_from_control_unit, write_back_mux_control_from_ex_mem,
-    write_back_mux_control_from_id_ex;
+    write_back_mux_control_from_id_ex, write_back_mux_control_from_mem_write_back_reg;
 
     wire [1:0] pc_src_control_value, alu_op_control_from_control_unit, pc_src_control, 
     alu_src_control_from_control_unit, alu_src_control_from_id_ex, pc_src_control_from_id_ex;
@@ -56,7 +60,7 @@ module core(
     half_op_from_control_unit, mem_read_from_control_unit, mem_read_from_ex_mem, byte_op_from_ex_mem,
     half_op_from_ex_mem, unsigned_op_from_ex_mem, mem_write_from_control_unit, 
     byte_op_from_id_ex, half_op_from_id_ex, reg_write_control_from_id_ex, mem_read_from_id_ex,
-    mem_write_from_id_ex, invert_control_from_id_ex;
+    mem_write_from_id_ex, invert_control_from_id_ex, reg_write_control_from_mem_write_back_reg;
 
     assign flush = pc_src_control_value != 2'b00;
     assign jalr_pc = {alu_out_from_main_alu_instance[31:1], 1'b0};
@@ -216,9 +220,9 @@ module core(
         .src2_reg(rs2_from_id_ex),
         .src1_reg_value(rs1_value), 
         .src2_reg_value(rs2_value),
-        .dest_reg(dest_reg_from_ex_mem),
+        .dest_reg(dest_reg_from_mem_write_back_reg),
         .reg_write_data(reg_write_back_data),
-        .reg_write_control(reg_write_control_from_ex_mem)
+        .reg_write_control(reg_write_control_from_mem_write_back_reg)
     );
     
     mux_4X1 alu_src_mux(
@@ -274,10 +278,42 @@ module core(
         .op_data(load_op_data)
     );
 
+    mem_write_back_reg mem_write_back_reg_instance(
+        .clk(clk),
+        .rst(rst),
+        .load_op_data_in(load_op_data),
+        .load_op_data_out(load_op_data_from_mem_write_back_reg),
+        .alu_result_in(alu_out_from_ex_mem),
+        .alu_result_out(alu_out_from_mem_write_back_reg),
+        .pc_plus_4_in(pc_plus_4_from_ex_mem),
+        .pc_plus_4_out(pc_plus_4_from_mem_write_back_reg),
+        .u_type_immediate_in(u_type_immediate_from_ex_mem),
+        .u_type_immediate_out(u_type_immediate_from_mem_write_back_reg),
+        .pc_plus_u_type_immediate_in(pc_plus_u_type_immediate_from_ex_mem),
+        .pc_plus_u_type_immediate_out(pc_plus_u_type_immediate_from_mem_write_back_reg),
+        .write_back_mux_control_in(write_back_mux_control_from_ex_mem),
+        .write_back_mux_control_out(write_back_mux_control_from_mem_write_back_reg),
+        .dest_reg_in(dest_reg_from_ex_mem),
+        .dest_reg_out(dest_reg_from_mem_write_back_reg),
+        .reg_write_control_in(reg_write_control_from_ex_mem),
+        .reg_write_control_out(reg_write_control_from_mem_write_back_reg)
+    );
+
+    wire [31:0] forwarded_data_from_ex_mem;
+    mux_5x1 ex_mem_forward_mux(
+        .in0(alu_out_from_ex_mem),
+        // .in1(32'h00000000),
+        .in2(pc_plus_4_from_ex_mem), 
+        .in3(u_type_immediate_from_ex_mem), 
+        .in4(pc_plus_u_type_immediate_from_ex_mem),
+        .sel(write_back_mux_control_from_ex_mem),
+        .out(forwarded_data_from_ex_mem)
+    );
+
     forwarding_unit forwarding_unit_instance(
         .reg_write_control_from_ex_mem(reg_write_control_from_ex_mem),
         .dest_reg_from_ex_mem(dest_reg_from_ex_mem),
-        .reg_write_data(reg_write_back_data),
+        .reg_write_data(forwarded_data_from_ex_mem),
         .rs1(rs1_from_id_ex),
         .rs2(rs2_from_id_ex),
         .rs1_value(rs1_value),
@@ -287,12 +323,12 @@ module core(
     );
     
     mux_5x1 reg_write_mux(
-        .in0(alu_out_from_ex_mem),
-        .in1(load_op_data),
-        .in2(pc_plus_4_from_ex_mem), 
-        .in3(u_type_immediate_from_ex_mem), 
-        .in4(pc_plus_u_type_immediate_from_ex_mem),
-        .sel(write_back_mux_control_from_ex_mem),
+        .in0(alu_out_from_mem_write_back_reg),
+        .in1(load_op_data_from_mem_write_back_reg),
+        .in2(pc_plus_4_from_mem_write_back_reg), 
+        .in3(u_type_immediate_from_mem_write_back_reg), 
+        .in4(pc_plus_u_type_immediate_from_mem_write_back_reg),
+        .sel(write_back_mux_control_from_mem_write_back_reg),
         .out(reg_write_back_data)
     );
            
