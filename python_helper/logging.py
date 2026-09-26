@@ -197,13 +197,13 @@ def log_signals_five_stage_rv32i(logger, dut):
     log_sig("load_op_data (Formatted Load Data)", core.load_op_data, is_hex=True, is_signed=True)
     
     # Format Control
-    log_sig("byte_op", core.byte_op)
-    log_sig("half_op", core.half_op)
+    log_sig("byte_op_from_ex_mem", core.byte_op_from_ex_mem)
+    log_sig("half_op_from_ex_mem", core.half_op_from_ex_mem)
     log_sig("unsigned_op_from_ex_mem", core.unsigned_op_from_ex_mem)
 
     logger.critical(f"--------------Stage-05 WRITE BACK (SIM TIME: {sim_time} ns)--------------")
-    log_sig("dest_reg_from_ex_mem", core.dest_reg_from_ex_mem)
-    log_sig("reg_write_control_from_mem_write_back_reg", core.reg_write_control_from_mem_write_back_reg)
+    log_sig("dest_reg_from_mem_write_back", core.dest_reg_from_mem_write_back)
+    log_sig("reg_write_control_from_mem_write_back", core.reg_write_control_from_mem_write_back)
     log_sig("write_back_mux_control_from_mem_write_back_reg", core.write_back_mux_control_from_mem_write_back_reg)
     log_sig("reg_write_back_data (Data to RegFile)", core.reg_write_back_data, is_hex=True, is_signed=True)
 
