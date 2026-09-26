@@ -33,7 +33,7 @@ module core(
     alu_out_from_main_alu_instance, pc_jump_add, pc_value, pc_plus_4_value, 
     instruction_from_if_id, sign_ext_from_sign_ext_instance, 
     u_type_immediate_from_sign_ext_instance, s_type_immediate_from_sign_ext_instance, 
-    alu_out_from_ex_mem, pc_plus_4, pc_plus_4_from_ex_mem, pc_plus_u_type_immediate_value, 
+    alu_out_from_ex_mem, pc_plus_4_from_ex_mem, pc_plus_u_type_immediate_value, 
     pc_plus_u_type_immediate_from_ex_mem, u_type_immediate_from_ex_mem, alu_src_value,
     load_op_data, rs1_value, rs2_value, rs1_value_from_forwarding_unit, 
     rs2_value_from_forwarding_unit, reg_write_back_data, pc_plus_4_from_if_id, 
@@ -45,7 +45,7 @@ module core(
     pc_plus_u_type_immediate_from_mem_write_back_reg;
 
     wire [4:0] dest_reg_from_ex_mem, dest_reg_from_id_ex, rs1_from_id_ex, rs2_from_id_ex, 
-    dest_reg_from_mem_write_back_reg;
+    dest_reg_from_mem_write_back, rs1_from_ex_mem, rs2_from_ex_mem;
 
     wire [3:0] alu_control, alu_control_from_id_ex;
 
@@ -55,13 +55,13 @@ module core(
     wire [1:0] pc_src_control_value, alu_op_control_from_control_unit, pc_src_control, 
     alu_src_control_from_control_unit, alu_src_control_from_id_ex, pc_src_control_from_id_ex;
 
-    wire flush, invert_control_from_alu_control, zero_flag_from_main_alu_instance, func3, 
+    wire flush, invert_control_from_alu_control, zero_flag_from_main_alu_instance, 
     reg_write_control_from_control_unit, unsigned_op_from_control_unit, byte_op_from_control_unit, 
     half_op_from_control_unit, mem_read_from_control_unit, mem_read_from_ex_mem, byte_op_from_ex_mem,
     half_op_from_ex_mem, unsigned_op_from_ex_mem, mem_write_from_control_unit, 
     byte_op_from_id_ex, half_op_from_id_ex, reg_write_control_from_id_ex, mem_read_from_id_ex,
-    mem_write_from_id_ex, invert_control_from_id_ex, reg_write_control_from_mem_write_back_reg;
-
+    mem_write_from_id_ex, invert_control_from_id_ex, reg_write_control_from_mem_write_back;
+    
     assign flush = pc_src_control_value != 2'b00;
     assign jalr_pc = {alu_out_from_main_alu_instance[31:1], 1'b0};
     assign instruction_address = pc_value;
@@ -220,9 +220,9 @@ module core(
         .src2_reg(rs2_from_id_ex),
         .src1_reg_value(rs1_value), 
         .src2_reg_value(rs2_value),
-        .dest_reg(dest_reg_from_mem_write_back_reg),
+        .dest_reg(dest_reg_from_mem_write_back),
         .reg_write_data(reg_write_back_data),
-        .reg_write_control(reg_write_control_from_mem_write_back_reg)
+        .reg_write_control(reg_write_control_from_mem_write_back)
     );
     
     mux_4X1 alu_src_mux(
@@ -266,7 +266,11 @@ module core(
         .u_type_immediate_in(u_type_immediate_from_id_ex),
         .u_type_immediate_out(u_type_immediate_from_ex_mem),
         .mem_read_in(mem_read_from_id_ex),
-        .mem_read_out(mem_read_from_ex_mem)
+        .mem_read_out(mem_read_from_ex_mem),
+        .rs1_in(rs1_from_id_ex),
+        .rs2_in(rs2_from_id_ex),
+        .rs1_out(rs1_from_ex_mem),
+        .rs2_out(rs2_from_ex_mem)
     );
 
     load_op load_op_instance(
@@ -294,15 +298,14 @@ module core(
         .write_back_mux_control_in(write_back_mux_control_from_ex_mem),
         .write_back_mux_control_out(write_back_mux_control_from_mem_write_back_reg),
         .dest_reg_in(dest_reg_from_ex_mem),
-        .dest_reg_out(dest_reg_from_mem_write_back_reg),
+        .dest_reg_out(dest_reg_from_mem_write_back),
         .reg_write_control_in(reg_write_control_from_ex_mem),
-        .reg_write_control_out(reg_write_control_from_mem_write_back_reg)
+        .reg_write_control_out(reg_write_control_from_mem_write_back)
     );
 
     wire [31:0] forwarded_data_from_ex_mem;
     mux_5x1 ex_mem_forward_mux(
         .in0(alu_out_from_ex_mem),
-        // .in1(32'h00000000),
         .in2(pc_plus_4_from_ex_mem), 
         .in3(u_type_immediate_from_ex_mem), 
         .in4(pc_plus_u_type_immediate_from_ex_mem),
@@ -312,10 +315,15 @@ module core(
 
     forwarding_unit forwarding_unit_instance(
         .reg_write_control_from_ex_mem(reg_write_control_from_ex_mem),
+        .reg_write_control_from_mem_write_back(reg_write_control_from_mem_write_back),
         .dest_reg_from_ex_mem(dest_reg_from_ex_mem),
-        .reg_write_data(forwarded_data_from_ex_mem),
-        .rs1(rs1_from_id_ex),
-        .rs2(rs2_from_id_ex),
+        .dest_reg_from_mem_write_back(dest_reg_from_mem_write_back),
+        .reg_write_back_data_from_ex_mem(forwarded_data_from_ex_mem),
+        .reg_write_back_data(reg_write_back_data),
+        .rs1_from_id_ex(rs1_from_id_ex),
+        .rs2_from_id_ex(rs2_from_id_ex),
+        .rs1_from_ex_mem(0),
+        .rs2_from_ex_mem(0),
         .rs1_value(rs1_value),
         .rs2_value(rs2_value),
         .forwarded_rs1(rs1_value_from_forwarding_unit),
@@ -333,5 +341,3 @@ module core(
     );
            
 endmodule
-
-
