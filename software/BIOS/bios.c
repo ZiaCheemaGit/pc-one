@@ -5,7 +5,7 @@
 
 int bios(void)
 {
-    uart_println("Hello from pc-one!");
+    uart_println("Hello from PC-ONE!");
     return 0;
 }
 
