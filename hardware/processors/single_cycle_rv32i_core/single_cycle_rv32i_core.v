@@ -46,6 +46,7 @@ module core(
     pc pc_instance(
         .clk(clk), 
         .rst(rst), 
+        .enable(1'b1),
         .jump_address(pc_in_add), 
         .pc_next(pc_out_add)
     );
