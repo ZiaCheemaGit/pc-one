@@ -79,7 +79,10 @@ async def test_basic_asm(dut):
             await RisingEdge(dut.clk_from_FPGA)
             if LOGGING_ON:
                 log_signals_five_stage_rv32i(logger, dut)
-
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+                
             logger.critical("Test ended control reached at label HALT")
 
             result = dut.core_instance.reg_file_instance.registers[1]
@@ -129,6 +132,9 @@ async def test_load_asm(dut):
             log_signals_five_stage_rv32i(logger, dut)
         
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x88:
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
             await RisingEdge(dut.clk_from_FPGA)
             if LOGGING_ON:
                 log_signals_five_stage_rv32i(logger, dut)
@@ -304,12 +310,21 @@ async def test_math_c(dut):
             log_signals_five_stage_rv32i(logger, dut)
         
         address = 0x0
-        
         if dut.boot_rom_instance.pc.value.to_unsigned() == 0x288:
             await RisingEdge(dut.clk_from_FPGA)
             if LOGGING_ON:
                 log_signals_five_stage_rv32i(logger, dut)
 
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
+            await RisingEdge(dut.clk_from_FPGA)
+            if LOGGING_ON:
+                log_signals_five_stage_rv32i(logger, dut)
             await RisingEdge(dut.clk_from_FPGA)
             if LOGGING_ON:
                 log_signals_five_stage_rv32i(logger, dut)
@@ -338,7 +353,6 @@ async def test_math_c(dut):
 
 @program_test("test_aggressive_c")
 async def test_aggressive_c(dut):
-    
     test_name = "test_aggressive_c"
     logger = logging.getLogger(test_name)
     file_handler = logging.FileHandler(f"simulation_{test_name}.log", mode='w')

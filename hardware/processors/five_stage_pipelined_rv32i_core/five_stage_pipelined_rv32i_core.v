@@ -41,11 +41,13 @@ module core(
     sign_ext_from_id_ex, s_type_immediate_from_id_ex, pc_plus_immediate_from_id_ex,
     pc_plus_jal_offset_from_id_ex, load_op_data_from_mem_write_back_reg,
     alu_out_from_mem_write_back_reg, pc_plus_4_from_mem_write_back_reg, 
-    u_type_immediate_from_mem_write_back_reg, 
+    u_type_immediate_from_mem_write_back_reg, forwarded_data_from_ex_mem,
     pc_plus_u_type_immediate_from_mem_write_back_reg;
 
+    wire [6:0] opcode_from_id_ex;
+
     wire [4:0] dest_reg_from_ex_mem, dest_reg_from_id_ex, rs1_from_id_ex, rs2_from_id_ex, 
-    dest_reg_from_mem_write_back, rs1_from_ex_mem, rs2_from_ex_mem;
+    dest_reg_from_mem_write_back;
 
     wire [3:0] alu_control, alu_control_from_id_ex;
 
@@ -60,7 +62,8 @@ module core(
     half_op_from_control_unit, mem_read_from_control_unit, mem_read_from_ex_mem, byte_op_from_ex_mem,
     half_op_from_ex_mem, unsigned_op_from_ex_mem, mem_write_from_control_unit, 
     byte_op_from_id_ex, half_op_from_id_ex, reg_write_control_from_id_ex, mem_read_from_id_ex,
-    mem_write_from_id_ex, invert_control_from_id_ex, reg_write_control_from_mem_write_back;
+    mem_write_from_id_ex, invert_control_from_id_ex, reg_write_control_from_mem_write_back,
+    is_load_instruction, load_use_detected, stall;
     
     assign flush = pc_src_control_value != 2'b00;
     assign jalr_pc = {alu_out_from_main_alu_instance[31:1], 1'b0};
@@ -73,6 +76,11 @@ module core(
     assign mem_read_request = mem_read_from_id_ex;
     assign byte_op = byte_op_from_id_ex;
     assign half_op = half_op_from_id_ex;
+
+    assign is_load_instruction = opcode_from_id_ex == 7'd3;
+    assign load_use_detected = dest_reg_from_id_ex == instruction_from_if_id[19:15]
+                            || dest_reg_from_id_ex == instruction_from_if_id[24:20];
+    assign stall = is_load_instruction && load_use_detected;
 
     adder32 adder32_instance_immediate(
         .in1(pc_value_from_if_id),
@@ -95,6 +103,7 @@ module core(
     pc pc_instance(
         .clk(clk), 
         .rst(rst), 
+        .enable(!stall),
         .jump_address(pc_jump_add), 
         .pc_next(pc_value)
     );
@@ -117,7 +126,7 @@ module core(
     if_id_reg if_id_reg_instance(
         .clk(clk),
         .rst(rst),
-        .en(1'b1),
+        .en(!stall),
         .flush(flush),
         .pc_in(pc_value),   
         .inst_in(instruction), 
@@ -168,7 +177,9 @@ module core(
     id_ex_reg id_ex_reg_instance(
         .clk(clk),
         .rst(rst),
-        .flush(flush),
+        .flush(flush || stall),
+        .opcode_in(instruction_from_if_id[6:0]),
+        .opcode_out(opcode_from_id_ex),
         .mem_to_reg_control_in(write_back_mux_control_from_control_unit),
         .mem_to_reg_control_out(write_back_mux_control_from_id_ex),
         .reg_write_control_in(reg_write_control_from_control_unit),
@@ -266,11 +277,7 @@ module core(
         .u_type_immediate_in(u_type_immediate_from_id_ex),
         .u_type_immediate_out(u_type_immediate_from_ex_mem),
         .mem_read_in(mem_read_from_id_ex),
-        .mem_read_out(mem_read_from_ex_mem),
-        .rs1_in(rs1_from_id_ex),
-        .rs2_in(rs2_from_id_ex),
-        .rs1_out(rs1_from_ex_mem),
-        .rs2_out(rs2_from_ex_mem)
+        .mem_read_out(mem_read_from_ex_mem)
     );
 
     load_op load_op_instance(
@@ -303,7 +310,6 @@ module core(
         .reg_write_control_out(reg_write_control_from_mem_write_back)
     );
 
-    wire [31:0] forwarded_data_from_ex_mem;
     mux_5x1 ex_mem_forward_mux(
         .in0(alu_out_from_ex_mem),
         .in2(pc_plus_4_from_ex_mem), 
@@ -322,8 +328,6 @@ module core(
         .reg_write_back_data(reg_write_back_data),
         .rs1_from_id_ex(rs1_from_id_ex),
         .rs2_from_id_ex(rs2_from_id_ex),
-        .rs1_from_ex_mem(0),
-        .rs2_from_ex_mem(0),
         .rs1_value(rs1_value),
         .rs2_value(rs2_value),
         .forwarded_rs1(rs1_value_from_forwarding_unit),

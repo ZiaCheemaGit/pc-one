@@ -169,6 +169,7 @@ def log_signals_five_stage_rv32i(logger, dut):
     log_sig("rs2_value_from_forwarding_unit (Forwarded Mem Data/Reg Src 2)", core.rs2_value_from_forwarding_unit, is_hex=True)
     
     # ALU Control & Output
+    log_sig("load_use_stall", core.stall)
     log_sig("alu_control_from_id_ex", core.alu_control_from_id_ex)
     log_sig("invert_control_from_id_ex", core.invert_control_from_id_ex)
     log_sig("alu_out_from_main_alu_instance", core.alu_out_from_main_alu_instance, is_hex=True, is_signed=True)

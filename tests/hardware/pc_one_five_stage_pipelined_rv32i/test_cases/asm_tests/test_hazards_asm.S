@@ -6,6 +6,9 @@
     .section .text
     .globl bios
 
+# TODO replace all bne's with a beq. bne evaluates to false with unknown states,
+# which leaves hazards undetected.
+
 bios:
     # Setup base address for memory test
     .extern _ram_base
@@ -79,14 +82,12 @@ CTRL_PASS_3:
     lw    x15, 8(x1)           # Load 100 to x15
     addi  x16, x15, 10         # USE x15 immediately! Needs stalling.
     addi  x4, x0, 110
-    bne   x16, x4, FAIL        # If x16 is 10 (0+10), Load-Use stall failed!
+    beq   x16, x4, PASS_3B
+    j FAIL      
 
-    # -----------------------------------------------------------------
-    # PHASE 3 EXTREME: Multi-Stage Dependency Stress Test
-    # -----------------------------------------------------------------
-    
     # This ensures your Hazard unit correctly prioritizes the most recent
     # register value when multiple instructions write to the same register.
+PASS_3B:
     addi  x17, x0, 1           # Oldest x17 (Distance 3)
     addi  x17, x0, 2           # Older x17  (Distance 2)
     addi  x17, x0, 3           # Newest x17 (Distance 1)
@@ -96,11 +97,6 @@ CTRL_PASS_3:
 
     # If we made it here without jumping to FAIL, all hazard units work!
     j PASS
-
-
-    # -----------------------------------------------------------------
-    # END STATES (PASS / FAIL / HALT)
-    # -----------------------------------------------------------------
 
 FAIL:
     # Generates 0xDEADCEEF
