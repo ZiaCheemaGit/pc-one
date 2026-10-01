@@ -16,5 +16,5 @@ sim_build
 build/
 *.json
 *.svg
-
-
+.venv
+output
