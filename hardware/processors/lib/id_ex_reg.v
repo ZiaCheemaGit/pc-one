@@ -43,7 +43,9 @@ module id_ex_reg(
     input wire [31:0] pc_plus_immediate_in,
     output reg [31:0] pc_plus_immediate_out,
     input wire [31:0] pc_plus_jal_offset_in,
-    output reg [31:0] pc_plus_jal_offset_out
+    output reg [31:0] pc_plus_jal_offset_out,
+    input wire [6:0] opcode_in,
+    output reg [6:0] opcode_out
 );
 
     always @(posedge clk or posedge rst) begin
@@ -69,6 +71,7 @@ module id_ex_reg(
             pc_src_control_out <= 2'b0;
             pc_plus_immediate_out <= 32'b0;
             pc_plus_jal_offset_out <= 32'b0;
+            opcode_out <= 7'b0;
         end else if (flush) begin 
             alu_control_out <= 4'b0;
             invert_control_out <= 1'b0;
@@ -91,6 +94,7 @@ module id_ex_reg(
             pc_src_control_out <= 2'b0;
             pc_plus_immediate_out <= 32'b0;
             pc_plus_jal_offset_out <= 32'b0;
+            opcode_out <= 7'b0;
         end else begin 
             alu_control_out <= alu_control_in;
             invert_control_out <= invert_control_in;
@@ -113,6 +117,7 @@ module id_ex_reg(
             pc_src_control_out <= pc_src_control_in;
             pc_plus_immediate_out <= pc_plus_immediate_in;
             pc_plus_jal_offset_out <= pc_plus_jal_offset_in;
+            opcode_out <= opcode_in;
         end
     end
 
