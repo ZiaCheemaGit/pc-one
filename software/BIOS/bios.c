@@ -5,8 +5,10 @@
 
 int bios(void)
 {
-    uart_println("Hello from PC-ONE!");
-    return 0;
+    while(1) {
+        uart_println("Hello from PC-ONE!");
+        delay_second(2);
+    }
 }
 
 

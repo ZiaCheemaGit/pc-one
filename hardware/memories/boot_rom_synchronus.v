@@ -31,7 +31,7 @@ module boot_rom(
     `elsif YOSYS
     `else
         initial begin
-            $readmemh("D:/git-clones/pc-one/software/build/BIOS/bios.hex", mem);
+            $readmemh("//wsl.localhost/Ubuntu/root/git-clones/pc-one/software/build/BIOS/bios.hex", mem);
         end
     `endif
 
