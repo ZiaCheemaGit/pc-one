@@ -21,7 +21,7 @@ on:
 
 jobs:  
   test_pc_one_single_cycle_rv32i:
-    name: system tests | hardware | pc-one | Single Cycle RV32I
+    name: System Test | Hardware | Single Cycle RV32I
     runs-on: ubuntu-latest
 
     steps:
@@ -37,7 +37,7 @@ jobs:
         run: nox -s test_pc_one_single_cycle_rv32i
   
   test_pc_one_five_stage_pipelined_rv32i:
-    name: system tests | hardware | pc-one | Five Stage Pipelined RV32I
+    name: System Test | Hardware | Five Stage Pipelined RV32I
     runs-on: ubuntu-latest
 
     steps:
@@ -52,8 +52,8 @@ jobs:
       - name: Test pc-one
         run: nox -s test_pc_one_five_stage_pipelined_rv32i
 
-  test_fpga_bios_uart_single_cycle_rv32i:
-    name: FPGA | Single Cycle RV32I
+  test_uart_single_cycle_rv32i:
+    name: System Test | Hardware | UART | Single Cycle RV32I
     runs-on: ubuntu-latest
 
     steps:
@@ -66,10 +66,10 @@ jobs:
         run: pip install nox cocotb pytest
       
       - name: FPGA | digilent_nexys3
-        run: nox -s test_fpga_bios_uart_single_cycle_rv32i
+        run: nox -s test_uart_single_cycle_rv32i
 
-  test_fpga_bios_uart_five_stage_pipelined_rv32i:
-    name: FPGA | Five Stage Pipelined RV32I
+  test_uart_five_stage_pipelined_rv32i:
+    name: System Test | Hardware | UART | Five Stage Pipelined RV32I
     runs-on: ubuntu-latest
 
     steps:
@@ -82,10 +82,10 @@ jobs:
         run: pip install nox cocotb pytest
       
       - name: FPGA | digilent_nexys3
-        run: nox -s test_fpga_bios_uart_five_stage_pipelined_rv32i
+        run: nox -s test_uart_five_stage_pipelined_rv32i
 
   test_memories:
-    name: unit tests | hardware | memories | ram
+    name: Unit Test | Hardware | MEMORY | RAM
     runs-on: ubuntu-latest
 
     steps:
