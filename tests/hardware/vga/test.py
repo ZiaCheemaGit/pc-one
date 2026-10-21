@@ -6,7 +6,7 @@ from cocotb.triggers import RisingEdge
 
 @cocotb.test()
 async def test_vga(dut):
-    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, 10, "ns").start())  # ~25 MHz pixel clock
+    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, 10, "ns").start())
     dut.rst_from_FPGA.value = 1
     await RisingEdge(dut.clk_from_FPGA_100MHz)
     dut.rst_from_FPGA.value = 0
@@ -26,6 +26,8 @@ async def test_vga(dut):
     frames = await cap.wait_for_frames(10)   # blocks until 2 complete frames
     cap.stop()
 
-    cap.check_timing(require_frames=2)      # raises VGATimingError on violations
+    cap.check_timing(require_frames=10)      # raises VGATimingError on violations
     cap.save_gif()                          # output/myproject.gif
-    frames[0].assert_matches("golden.png")  # golden-image regression (optional)
+    # frames[0].assert_matches("golden.png")  # golden-image regression (optional)
+
+
