@@ -33,7 +33,7 @@ jobs:
       - name: Install nox
         run: pip install nox cocotb pytest
 
-      - name: Test pc-one
+      - name: Test System
         run: nox -s test_pc_one_single_cycle_rv32i
   
   test_pc_one_five_stage_pipelined_rv32i:
@@ -49,7 +49,7 @@ jobs:
       - name: Install nox
         run: pip install nox cocotb pytest
 
-      - name: Test pc-one
+      - name: Test System
         run: nox -s test_pc_one_five_stage_pipelined_rv32i
 
   test_uart_single_cycle_rv32i:
@@ -65,7 +65,7 @@ jobs:
       - name: Install nox
         run: pip install nox cocotb pytest
       
-      - name: FPGA | digilent_nexys3
+      - name: Test System
         run: nox -s test_uart_single_cycle_rv32i
 
   test_uart_five_stage_pipelined_rv32i:
@@ -81,7 +81,7 @@ jobs:
       - name: Install nox
         run: pip install nox cocotb pytest
       
-      - name: FPGA | digilent_nexys3
+      - name: Test System
         run: nox -s test_uart_five_stage_pipelined_rv32i
 
   test_memories:
