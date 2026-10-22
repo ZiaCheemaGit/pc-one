@@ -80,3 +80,15 @@ def test_vga_five_stage_pipelined_rv32i(session: nox.Session) -> None:
     # run test
     session.chdir("../")
     session.run("make", external=True)
+
+@nox.session
+def test_vga_single_cycle_rv32i(session: nox.Session) -> None:
+
+    # Build test
+    session.chdir("tests/hardware/VGA_single_cycle_rv32i/test_case/")
+    session.run("make", external=True)
+    
+    # run test
+    session.chdir("../")
+    session.run("make", external=True)
+
