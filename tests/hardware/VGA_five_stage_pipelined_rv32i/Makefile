@@ -34,7 +34,7 @@ VERILOG_SOURCES += $(PWD)/../../../hardware/pc_one/pc_one.v
 VERILOG_SOURCES += $(PWD)/../../../hardware/FPGA/top_fpga.v
 
 
-PROGRAM_FILE ?= ../../../software/build/BIOS/bios.hex
+PROGRAM_FILE ?= test_case/build/vga_test.hex
 
 ifndef PROGRAM_FILE
 $(error PROGRAM_FILE is not set. Use: make PROGRAM_FILE=path_to_hex_file)

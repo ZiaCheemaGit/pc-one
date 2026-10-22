@@ -70,3 +70,13 @@ def test_ram(session: nox.Session) -> None:
     session.chdir("tests/hardware/memories/ram/")
     session.run("make", external=True)
 
+@nox.session
+def test_vga_five_stage_pipelined_rv32i(session: nox.Session) -> None:
+
+    # Build test
+    session.chdir("tests/hardware/VGA_five_stage_pipelined_rv32i/test_case/")
+    session.run("make", external=True)
+    
+    # run test
+    session.chdir("../")
+    session.run("make", external=True)
