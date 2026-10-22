@@ -18,3 +18,4 @@ build/
 *.svg
 .venv
 output
+.workspace

@@ -34,8 +34,7 @@ module MMU(
     parameter VRAM_BASE = 32'h4008;
     parameter VRAM_END = 32'h29808;
 
-    assign mem_add_ram = addr - RAM_BASE;
-    assign vram_addr = addr - VRAM_BASE; 
+    assign vram_addr = addr_request - VRAM_BASE; 
 
     wire is_boot_rom = (addr >= BOOT_ROM_BASE) && (addr < BOOT_ROM_END );
     wire is_ram = (addr >= RAM_BASE) && (addr < RAM_END);

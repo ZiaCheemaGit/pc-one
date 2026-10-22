@@ -42,25 +42,25 @@ def test_pc_one_five_stage_pipelined_rv32i(session: nox.Session) -> None:
         session.run("make", f"PROGRAM_FILE=test_cases/{hex_file}", external=True)
     
 @nox.session
-def test_fpga_bios_uart_single_cycle_rv32i(session: nox.Session) -> None:
+def test_uart_single_cycle_rv32i(session: nox.Session) -> None:
 
-    # Build rom image hex file
-    session.chdir("software/")
+    # Build test
+    session.chdir("tests/hardware/UART_single_cycle_rv32i/test_case/")
     session.run("make", external=True)
     
     # run test
-    session.chdir("../tests/hardware/FPGA_single_cycle_rv32i/")
+    session.chdir("../")
     session.run("make", external=True)
 
 @nox.session
-def test_fpga_bios_uart_five_stage_pipelined_rv32i(session: nox.Session) -> None:
+def test_uart_five_stage_pipelined_rv32i(session: nox.Session) -> None:
 
-    # Build rom image hex file
-    session.chdir("software/")
+    # Build test
+    session.chdir("tests/hardware/UART_five_stage_pipelined_rv32i/test_case/")
     session.run("make", external=True)
     
     # run test
-    session.chdir("../tests/hardware/FPGA_five_stage_pipelined_rv32i/")
+    session.chdir("../")
     session.run("make", external=True)
 
 @nox.session
@@ -68,5 +68,27 @@ def test_ram(session: nox.Session) -> None:
     
     # run test
     session.chdir("tests/hardware/memories/ram/")
+    session.run("make", external=True)
+
+@nox.session
+def test_vga_five_stage_pipelined_rv32i(session: nox.Session) -> None:
+
+    # Build test
+    session.chdir("tests/hardware/VGA_five_stage_pipelined_rv32i/test_case/")
+    session.run("make", external=True)
+    
+    # run test
+    session.chdir("../")
+    session.run("make", external=True)
+
+@nox.session
+def test_vga_single_cycle_rv32i(session: nox.Session) -> None:
+
+    # Build test
+    session.chdir("tests/hardware/VGA_single_cycle_rv32i/test_case/")
+    session.run("make", external=True)
+    
+    # run test
+    session.chdir("../")
     session.run("make", external=True)
 

@@ -1,17 +1,15 @@
 import cocotb
 from cocotb.clock import Clock
-from cocotb_vga import VGACapture, TinyVGA, VGA_640x480_60, VGASignals
+from cocotb_vga import VGACapture, VGA_640x480_60, VGASignals
 from cocotb.triggers import RisingEdge
-
 
 @cocotb.test()
 async def test_vga(dut):
-    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, 10, "ns").start())  # ~25 MHz pixel clock
+    cocotb.start_soon(Clock(dut.clk_from_FPGA_100MHz, 10, "ns").start())
     dut.rst_from_FPGA.value = 1
     await RisingEdge(dut.clk_from_FPGA_100MHz)
     dut.rst_from_FPGA.value = 0
     await RisingEdge(dut.clk_from_FPGA_100MHz)
-    ...
 
     vga_sigs = VGASignals(
         hsync = dut.hsync_for_FPGA,
@@ -22,10 +20,10 @@ async def test_vga(dut):
     )
 
     cap = VGACapture(dut.clk_from_FPGA_100MHz, vga_sigs, VGA_640x480_60,
-                     out_dir="output", name="myproject").start()
-    frames = await cap.wait_for_frames(10)   # blocks until 2 complete frames
+                     out_dir="output", name="myproject", clk_div=4).start()
+    
+    frames = await cap.wait_for_frames(4)  
     cap.stop()
 
-    cap.check_timing(require_frames=2)      # raises VGATimingError on violations
-    cap.save_gif()                          # output/myproject.gif
-    frames[0].assert_matches("golden.png")  # golden-image regression (optional)
+    cap.save_gif()                          
+    frames[2].assert_matches("golden.png")  

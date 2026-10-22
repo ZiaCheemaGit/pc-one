@@ -7,14 +7,14 @@ SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
 # Processors options
-VERILOG_SOURCES += $(PWD)/../../../hardware/processors/single_cycle_rv32i_core/single_cycle_rv32i_core.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/processors/five_stage_pipelined_rv32i_core/five_stage_pipelined_rv32i_core.v
 
 # Processor Lib files
 VERILOG_SOURCES += $(PWD)/../../../hardware/processors/lib/*.v
 
 # memories
-VERILOG_SOURCES += $(PWD)/../../../hardware/memories/boot_rom_combinational.v
-VERILOG_SOURCES += $(PWD)/../../../hardware/memories/ram_combinational.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/memories/boot_rom_synchronus.v
+VERILOG_SOURCES += $(PWD)/../../../hardware/memories/ram_synchronus.v
 
 # MMU
 VERILOG_SOURCES += $(PWD)/../../../hardware/MMU/MMU.v
@@ -34,7 +34,7 @@ VERILOG_SOURCES += $(PWD)/../../../hardware/pc_one/pc_one.v
 VERILOG_SOURCES += $(PWD)/../../../hardware/FPGA/top_fpga.v
 
 
-PROGRAM_FILE ?= ../../../software/build/BIOS/bios.hex
+PROGRAM_FILE ?= test_case/build/vga_test.hex
 
 ifndef PROGRAM_FILE
 $(error PROGRAM_FILE is not set. Use: make PROGRAM_FILE=path_to_hex_file)
