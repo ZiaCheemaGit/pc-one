@@ -19,3 +19,4 @@ build/
 .venv
 output
 .workspace
+obj_dir/

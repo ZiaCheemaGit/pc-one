@@ -1,10 +1,8 @@
-# include "../include/tests.h"
-# include "../include/uart.h"
-# include "../include/vga.h"
-# include "../include/time.h"
+# include "../../../../software/include/uart.h"
+# include "../../../../software/include/vga.h"
+# include "../../../../software/include/time.h"
 
-int test(void)
-{
+int bios(void) {
     uart_println("Hello from pc-one!");
     
     uart_println("Display plain Red on VGA Screen after 7 seconds");
