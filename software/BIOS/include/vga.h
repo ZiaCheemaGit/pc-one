@@ -1,7 +1,7 @@
-# ifndef VGA_H
-# define VGA_H
+#ifndef VGA_H
+#define VGA_H
 
-# include <stdint.h>
+#include <stdint.h>
 
 #define VRAM_START_ADDR 0x00004008
 #define VRAM_END_ADDR 0x00007C2F
@@ -16,8 +16,4 @@
 
 void display_plain_color(int color);
 
-# endif 
-
-
-
-
+#endif

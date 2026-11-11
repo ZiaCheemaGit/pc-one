@@ -1,4 +1,4 @@
-# include "../include/vga.h"
+#include "../include/vga.h"
 
 void display_plain_color(int color)
 {
@@ -9,5 +9,3 @@ void display_plain_color(int color)
         vram_address[i] = (uint8_t)(color & 0x03);
     }
 }
-
-

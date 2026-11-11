@@ -28,5 +28,3 @@ char uart_getc(){
     char r = (char)(*uart_data);
     return r;
 }
-
-

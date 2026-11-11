@@ -8,19 +8,12 @@ OBJDUMP = riscv64-unknown-elf-objdump
 OBJCOPY = riscv64-unknown-elf-objcopy
 
 # Architecture flags
-CFLAGS  = -march=rv32i -mabi=ilp32 -ffreestanding -nostdlib -O2 -Wall
-CFLAGS += -Iinclude
+CFLAGS  = -march=rv32i -mabi=ilp32 -ffreestanding -nostdlib -O2 -Wall -Iinclude
 
 # BIOS Sources
-BIOS_LINKER = BIOS/link.ld
-BIOS_SRC  = BIOS/bios.c BIOS/crt0.S
+BIOS_SRCS = BIOS/link.ld BIOS/crt0.S BIOS/src/*.c BIOS/include/*.h
 
-# Other Sources
-DRIVER_SRC = $(wildcard drivers/*.c)
-LIB_SRC = $(wildcard lib/*.c)
-TESTS_SRC = $(wildcard tests/*.c)
-
-# Output files
+# BIOS Output files
 ELF  = $(BUILD_DIR_BIOS)/bios.elf
 DUMP = $(BUILD_DIR_BIOS)/bios.dump
 BIN  = $(BUILD_DIR_BIOS)/bios.bin
@@ -33,8 +26,7 @@ build_bios:
 
 elf_bios: build_bios
 	$(CC) $(CFLAGS) -T \
-	$(BIOS_LINKER) $(BIOS_SRC) \
-	$(LIB_SRC) $(DRIVER_SRC) \
+	$(BIOS_SRCS) \
 	-lgcc -o $(ELF)
 
 dump_bios: elf_bios

@@ -1,4 +1,4 @@
-# include "../include/time.h"
+#include "../include/time.h"
 
 void delay_one_second()
 {
@@ -15,7 +15,3 @@ void delay_second(int seconds){
         delay_one_second();
     }
 }
-
-
-
-
