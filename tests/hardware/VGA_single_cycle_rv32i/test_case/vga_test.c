@@ -1,6 +1,6 @@
-# include "../../../../software/include/uart.h"
-# include "../../../../software/include/vga.h"
-# include "../../../../software/include/time.h"
+# include "../../../../software/BIOS/include/uart.h"
+# include "../../../../software/BIOS/include/vga.h"
+# include "../../../../software/BIOS/include/time.h"
 
 static void fill_rect(
     volatile uint8_t *fb,
