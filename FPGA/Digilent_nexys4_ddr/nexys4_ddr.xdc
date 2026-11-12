@@ -15,6 +15,18 @@ set_property PACKAGE_PIN V10 [get_ports rst_from_FPGA]
 set_property PACKAGE_PIN V11 [get_ports rst_on]
 set_property PACKAGE_PIN C4 [get_ports uart_rx_pin_from_FPGA]
 set_property PACKAGE_PIN D4 [get_ports uart_tx_pin_for_FPGA]
+
 set_property PACKAGE_PIN A3 [get_ports vga_red_for_FPGA]
+set_property PACKAGE_PIN B4 [get_ports vga_red_for_FPGA]
+set_property PACKAGE_PIN C5 [get_ports vga_red_for_FPGA]
+set_property PACKAGE_PIN A4 [get_ports vga_red_for_FPGA]
+
 set_property PACKAGE_PIN C6 [get_ports vga_green_for_FPGA]
+set_property PACKAGE_PIN A5 [get_ports vga_green_for_FPGA]
+set_property PACKAGE_PIN B6 [get_ports vga_green_for_FPGA]
+set_property PACKAGE_PIN A6 [get_ports vga_green_for_FPGA]
+
 set_property PACKAGE_PIN B7 [get_ports vga_blue_for_FPGA]
+set_property PACKAGE_PIN C7 [get_ports vga_blue_for_FPGA]
+set_property PACKAGE_PIN D7 [get_ports vga_blue_for_FPGA]
+set_property PACKAGE_PIN D8 [get_ports vga_blue_for_FPGA]

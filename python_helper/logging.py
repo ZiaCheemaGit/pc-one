@@ -187,7 +187,9 @@ def log_signals_five_stage_rv32i(logger, dut):
     log_sig("mem_write_request (To Mem)", core.mem_write_request)
     log_sig("mem_address_request (To Mem)", core.mem_address_request, is_hex=True)
     log_sig("mem_data_to_mem (Data out to Mem)", core.mem_data_to_mem, is_hex=True, is_signed=True)
-
+    log_sig("vram_write(From MMU)", dut.MMU_instance.vram_write)
+    log_sig("vram_write(From MMU)", dut.MMU_instance.vram_write)
+    log_sig("data_from_cpu", dut.vram_inst.data_cpu)
 
     logger.critical(f"---------------Stage-04 MEMORY (SIM TIME: {sim_time} ns)-----------------")
     # Memory Address & Status

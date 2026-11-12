@@ -18,3 +18,5 @@ build/
 *.svg
 .venv
 output
+.workspace
+obj_dir/
